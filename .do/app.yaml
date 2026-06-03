@@ -1,0 +1,11 @@
+name: headstartchannels
+region: lon
+static_sites:
+  - name: headstartchannels-web
+    github:
+      repo: keviscoding/autopilotchannels
+      branch: main
+      deploy_on_push: true
+    build_command: npm run build
+    output_dir: /dist
+    catchall_document: index.html
