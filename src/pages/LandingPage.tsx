@@ -34,23 +34,24 @@ function Logo({ light }: { light?: boolean }) {
 /* ---- Scroll reveal ---- */
 function Reveal({ children, className = '', delay = 0, style }: { children: React.ReactNode; className?: string; delay?: number; style?: React.CSSProperties }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || visible) return;
     let done = false;
     const check = () => {
       if (done || !el) return;
       if (el.getBoundingClientRect().top < window.innerHeight * 0.92) {
         done = true;
-        setTimeout(() => el.classList.add('in'), delay);
+        setTimeout(() => setVisible(true), delay);
         window.removeEventListener('scroll', check);
       }
     };
     check();
     window.addEventListener('scroll', check, { passive: true });
     return () => window.removeEventListener('scroll', check);
-  }, [delay]);
-  return <div ref={ref} className={('reveal ' + className).trim()} style={style}>{children}</div>;
+  }, [delay, visible]);
+  return <div ref={ref} className={('reveal ' + (visible ? 'in ' : '') + className).trim()} style={style}>{children}</div>;
 }
 
 /* ---- Section heading ---- */

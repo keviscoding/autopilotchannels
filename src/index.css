@@ -4,3 +4,11 @@ html { scroll-behavior: smooth; }
 body { margin: 0; overflow-x: hidden; }
 img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .container { padding: 0 20px; }
+  .ba { gap: 14px; }
+  .steps { gap: 16px; }
+}
