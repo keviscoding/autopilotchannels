@@ -1,249 +1,542 @@
-const testimonialVideos = [
-  { name: 'Theo', result: 'went from 0 to Monetized', url: 'https://www.youtube.com/embed/yOWLd09wWDM' },
-  { name: 'Fahad', result: 'went from 0 to Monetized in 30 days', url: 'https://www.youtube.com/embed/oxBIrQxAsVs' },
-  { name: 'Anton', result: 'went from 0 to 100K subs in 30 days', url: 'https://www.youtube.com/embed/z83xvrZG8fE' },
-  { name: 'Pluto', result: 'went from 0 to $5.4K/month in 90 days', url: 'https://www.youtube.com/embed/8vrwgWtYaP0' },
-  { name: 'Sasha', result: 'got Monetized in 17 days & made $3K in its first month', url: 'https://www.youtube.com/embed/1cC40iO-xuo' },
+import { useEffect, useRef, useState } from 'react';
+
+/* ---- Lucide icon helper ---- */
+function Icon({ name }: { name: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (el && (window as any).lucide) {
+      el.innerHTML = '';
+      const i = document.createElement('i');
+      i.setAttribute('data-lucide', name);
+      el.appendChild(i);
+      (window as any).lucide.createIcons();
+    }
+  }, [name]);
+  return <span ref={ref} style={{ display: 'inline-flex', lineHeight: 0 }} />;
+}
+
+/* ---- Logo ---- */
+function Logo({ light }: { light?: boolean }) {
+  const lead = light ? '#5FD49E' : '#15875B';
+  const trail = light ? '#2A9E6E' : '#8FCFAE';
+  return (
+    <a href="#top" className={'logo' + (light ? ' logo--light' : '')} aria-label="HeadStart Channels home">
+      <svg className="logo__mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M16 22 L28 32 L16 42" stroke={trail} strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M32 18 L48 32 L32 46" stroke={lead} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span className="logo__word"><b>HeadStart</b> <span>Channels</span></span>
+    </a>
+  );
+}
+
+/* ---- Scroll reveal ---- */
+function Reveal({ children, className = '', delay = 0, style }: { children: React.ReactNode; className?: string; delay?: number; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let done = false;
+    const check = () => {
+      if (done || !el) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) {
+        done = true;
+        setTimeout(() => el.classList.add('in'), delay);
+        window.removeEventListener('scroll', check);
+      }
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, [delay]);
+  return <div ref={ref} className={('reveal ' + className).trim()} style={style}>{children}</div>;
+}
+
+/* ---- Section heading ---- */
+function SectionHead({ eyebrow, title, lead }: { eyebrow?: string; title: string; lead?: string }) {
+  return (
+    <Reveal className="center" style={{ maxWidth: 720, margin: '0 auto' }}>
+      {eyebrow && <span className="eyebrow">{eyebrow}</span>}
+      <h2 className="section-title">{title}</h2>
+      {lead && <p className="section-lead">{lead}</p>}
+    </Reveal>
+  );
+}
+
+/* ---- Countdown hook ---- */
+const COHORT_DEADLINE = new Date('2026-06-30T23:59:59Z');
+const SPOTS_TOTAL = 50;
+const SPOTS_LEFT = 17;
+
+function useCountdown(target: Date) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const diff = Math.max(0, target.getTime() - now);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return { ended: diff === 0, d, h, m, s };
+}
+
+/* ---- Testimonial data (real students from ViewMastery) ---- */
+const videoTestimonials = [
+  { name: 'Theo', result: 'Went from zero to fully monetised', url: 'https://www.youtube.com/embed/yOWLd09wWDM' },
+  { name: 'Fahad', result: 'Monetised in 30 days', url: 'https://www.youtube.com/embed/oxBIrQxAsVs' },
+  { name: 'Anton', result: '0 to 100K subscribers in 30 days', url: 'https://www.youtube.com/embed/z83xvrZG8fE' },
+  { name: 'Pluto', result: '$0 to $5,400/month in 90 days', url: 'https://www.youtube.com/embed/8vrwgWtYaP0' },
+  { name: 'Sasha', result: 'Monetised in 17 days, $3K first month', url: 'https://www.youtube.com/embed/1cC40iO-xuo' },
 ];
 
-const testimonialImages = [
-  { src: '/yoav-ai-sora.jpg', alt: 'Yoav — All AI generated with Sora' },
-  { src: '/momo-monetized.jpg', alt: 'Momo — Monetized in 4 videos' },
-  { src: '/momo-results.jpg', alt: 'Momo — Results' },
-  { src: '/nhan-viewhunt.jpg', alt: 'Nhan — Followed the system' },
-  { src: '/robin-viewhunt.jpg', alt: 'Robin — Followed the system' },
-  { src: '/abd-viewhunt.jpg', alt: 'Abd — Followed the system' },
+const screenshotTestimonials = [
+  { src: '/momo-monetized.jpg', alt: 'Momo — Monetised in 4 videos' },
+  { src: '/nhan-viewhunt.jpg', alt: 'Nhan — Following the system' },
+  { src: '/robin-viewhunt.jpg', alt: 'Robin — Following the system' },
+  { src: '/abd-viewhunt.jpg', alt: 'Abd — Following the system' },
 ];
 
-const LandingPage = () => {
-  const scrollToCTA = () => {
-    document.getElementById('get-started')?.scrollIntoView({ behavior: 'smooth' });
+/* ==================================================================
+   PAGE
+   ================================================================== */
+export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Hero */}
-      <section className="px-5 pt-20 pb-16 md:pt-28 md:pb-24">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-sm font-semibold uppercase tracking-wide text-brand-600 mb-4">
-            Skip the grind. Start earning.
-          </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900 mb-6">
-            Get a YouTube Channel That's{' '}
-            <span className="text-brand-600">Already Making Money</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-10">
-            Instead of grinding for a year before you earn a penny, start with a pre-monetised channel and a dead-simple plan to grow it. No filming yourself. No tech skills. No guesswork.
-          </p>
-          <button
-            onClick={scrollToCTA}
-            className="inline-block bg-brand-600 hover:bg-brand-700 text-white font-semibold text-lg px-8 py-4 rounded-lg transition-colors duration-200"
-          >
-            Get Your Channel
-          </button>
+    <>
+      {/* ──── NAV ──── */}
+      <nav className={'nav' + (scrolled ? ' nav--scrolled' : '')}>
+        <div className="container nav__inner">
+          <Logo />
+          <div className="nav__cta">
+            <div className="nav__links">
+              <a href="#how">How it works</a>
+              <a href="#results">Results</a>
+              <a href="#faq">FAQ</a>
+            </div>
+            <button className="btn btn--primary" onClick={() => scrollTo('pricing')}>
+              Claim your channel
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* ──── HERO ──── */}
+      <header className="hero" id="top">
+        <div className="hero__glow" />
+        <div className="container hero__inner">
+          <Reveal>
+            <span className="pill-tag"><Icon name="sparkles" /> A calmer way to start on YouTube</span>
+          </Reveal>
+          <Reveal delay={60}>
+            <h1>Skip the two-year grind. Start with a channel that <em>already earns</em>.</h1>
+          </Reveal>
+          <Reveal delay={120}>
+            <p className="hero__sub">
+              We hand you a YouTube channel that already meets the earning requirements — plus a plain-English, 
+              step-by-step plan to grow it. No filming yourself. No tech skills needed. You start at the part where it works.
+            </p>
+          </Reveal>
+          <Reveal delay={180} className="hero__ctarow">
+            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('pricing')}>
+              Claim your head-start channel <Icon name="arrow-right" />
+            </button>
+            <button className="btn btn--ghost" onClick={() => scrollTo('vsl')}>
+              <Icon name="play-circle" /> Watch how it works
+            </button>
+          </Reveal>
+          <Reveal delay={220}>
+            <div className="trust">
+              <span className="trust__item"><Icon name="shield-check" /> 14-day money-back guarantee</span>
+              <span className="trust__item"><Icon name="video-off" /> No filming yourself</span>
+              <span className="trust__item"><Icon name="user-round-check" /> Built for total beginners</span>
+            </div>
+          </Reveal>
+        </div>
+      </header>
+
+      {/* ──── VSL ──── */}
+      <section className="section section--sand section--tight" id="vsl">
+        <div className="container">
+          <SectionHead
+            eyebrow="See it for yourself"
+            title="A real person showing you real channels"
+            lead="No slides, no hype. Just actual channels, how the head start works, and exactly what you'd be getting. Plain English, no jargon."
+          />
+          <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
+            <div className="vsl" style={{ aspectRatio: '16/9', background: 'var(--dark-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="vsl__play"><Icon name="play" /></div>
+              <span className="vsl__label"><Icon name="user-round" /> Your founder, on camera — no hiding</span>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="px-5 py-16 bg-gray-50">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-900">
-            The problem nobody talks about
-          </h2>
-          <div className="space-y-4 text-gray-600 text-lg leading-relaxed">
-            <p>
-              Everyone says YouTube is the dream — passive income, freedom, be your own boss. What they don't say is how brutal the <strong className="text-gray-900">beginning</strong> is.
-            </p>
-            <p>
-              You post into the void for months. The algorithm ignores you. You can't even get <em>paid</em> until you hit thresholds that feel impossibly far away. Most people give up long before they ever see a penny.
-            </p>
-            <p>
-              <strong className="text-gray-900">HeadStartChannels removes that entire chapter.</strong> You start at the part where it already works.
-            </p>
+      {/* ──── HOW IT WORKS ──── */}
+      <section className="section" id="how">
+        <div className="container">
+          <SectionHead
+            eyebrow="How it works"
+            title="Three simple steps. No tech degree required."
+            lead="If you can follow a recipe, you can do this. Here's the whole thing, start to finish."
+          />
+          <div className="steps">
+            {[
+              { n: '01', ic: 'gift', h: 'Get your pre-monetised channel', p: "We hand you a channel that already meets YouTube's earning requirements. It's yours — from day one, it can earn ad revenue." },
+              { n: '02', ic: 'map', h: 'Follow the day-one playbook', p: "We tell you exactly what to upload, step by step. Pick a topic you actually like from our list of proven niches that make money." },
+              { n: '03', ic: 'trending-up', h: 'Post, grow, and get support', p: "Keep it simple, stay consistent, and ask for help whenever you're stuck. You're never doing this alone." },
+            ].map((s, i) => (
+              <Reveal className="step" key={s.n} delay={i * 90}>
+                <span className="step__num">{s.n}</span>
+                <div className="step__ic"><Icon name={s.ic} /></div>
+                <h3>{s.h}</h3>
+                <p>{s.p}</p>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="px-5 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900">
-            How it works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
-              <h3 className="text-lg font-semibold mb-2">Pick your niche</h3>
-              <p className="text-gray-600">Choose from a curated list of proven, profitable niches that work for faceless channels.</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
-              <h3 className="text-lg font-semibold mb-2">Get your channel</h3>
-              <p className="text-gray-600">Receive a pre-monetised YouTube channel that's already past the hardest hurdle — ready to earn from day one.</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
-              <h3 className="text-lg font-semibold mb-2">Follow the plan</h3>
-              <p className="text-gray-600">A simple, step-by-step playbook tells you exactly what to upload and when. No experience needed.</p>
-            </div>
+      {/* ──── EMPATHY / BEFORE-AFTER ──── */}
+      <section className="section section--sand">
+        <div className="container">
+          <SectionHead
+            eyebrow="Why this is different"
+            title="We remove the whole first chapter"
+            lead="You've heard the truth about YouTube: it takes a year or two of posting into the void before you earn anything. Most people quit long before that point. You start after it."
+          />
+          <div className="ba">
+            <Reveal className="ba__card ba__before">
+              <p className="ba__tag">The usual way</p>
+              <h3 className="ba__head">Year one: posting into the void</h3>
+              <ul>
+                <li><Icon name="x" /> 1–2 years before you earn a penny</li>
+                <li><Icon name="x" /> Guessing what to make, completely alone</li>
+                <li><Icon name="x" /> Most people quit before it ever works</li>
+                <li><Icon name="x" /> Learning confusing tech as you go</li>
+              </ul>
+            </Reveal>
+            <div className="ba__arrow"><Icon name="arrow-right" /></div>
+            <Reveal className="ba__card ba__after" delay={120}>
+              <p className="ba__tag">The head start</p>
+              <h3 className="ba__head">Day one: it already earns</h3>
+              <ul>
+                <li><Icon name="check" /> A channel that already makes money</li>
+                <li><Icon name="check" /> A clear plan for exactly what to post</li>
+                <li><Icon name="check" /> Proven niches, picked and tested for you</li>
+                <li><Icon name="check" /> Real support whenever you get stuck</li>
+              </ul>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* What you get */}
-      <section className="px-5 py-16 bg-gray-50">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-900">
-            What's included
-          </h2>
-          <ul className="space-y-5 text-lg text-gray-700">
-            <li className="flex items-start gap-3">
-              <span className="text-brand-600 font-bold text-xl mt-0.5">✓</span>
-              <span><strong className="text-gray-900">A pre-monetised YouTube channel</strong> — already past the requirements, already eligible to earn ad revenue.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-brand-600 font-bold text-xl mt-0.5">✓</span>
-              <span><strong className="text-gray-900">Your niche, your choice</strong> — pick from a vetted list of niches proven to generate income with faceless content.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-brand-600 font-bold text-xl mt-0.5">✓</span>
-              <span><strong className="text-gray-900">Day-one playbook</strong> — step-by-step plan for what to upload, how to stay consistent, and how to grow. Plain English, no jargon.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-brand-600 font-bold text-xl mt-0.5">✓</span>
-              <span><strong className="text-gray-900">Templates & onboarding</strong> — never stare at a blank screen. Everything's laid out so you can start immediately.</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-brand-600 font-bold text-xl mt-0.5">✓</span>
-              <span><strong className="text-gray-900">Private community (optional)</strong> — a paid group of people doing exactly this, for accountability, Q&A, and support.</span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      {/* Social proof - videos */}
-      <section className="px-5 py-16">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 text-gray-900">
-            Real people, real results
-          </h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            These aren't actors. They're ordinary people who followed the system.
-          </p>
-          <div className="space-y-10">
-            {testimonialVideos.map((t) => (
-              <div key={t.name}>
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">
-                  {t.name} {t.result}
-                </h3>
-                <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+      {/* ──── PROOF / RESULTS ──── */}
+      <section className="section" id="results">
+        <div className="container">
+          <SectionHead
+            eyebrow="Real results"
+            title="Real people. Real channels. Nothing staged."
+            lead="We don't hide behind a logo. Here are real results from ordinary people who followed the system — with their permission."
+          />
+          <div className="proof-grid">
+            {videoTestimonials.slice(0, 4).map((t, i) => (
+              <Reveal className="proof-card" key={t.name} delay={(i % 2) * 90}>
+                <div style={{ aspectRatio: '16/10', borderBottom: '1px solid var(--line)' }}>
                   <iframe
                     src={t.url}
                     title={`${t.name} testimonial`}
-                    className="w-full h-full"
+                    style={{ width: '100%', height: '100%', border: 'none' }}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 </div>
-              </div>
+                <div className="proof-card__body">
+                  <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
+                  <h4>{t.name}</h4>
+                  <p>{t.result}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal className="disclaimer">
+            <Icon name="info" />
+            <span>These are real customer results shared with permission. They are not typical and not a guarantee — your results depend on your effort and other factors.</span>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ──── MORE RESULTS (screenshots + remaining videos) ──── */}
+      <section className="section section--sand">
+        <div className="container">
+          <SectionHead
+            eyebrow="More wins"
+            title="From people who started exactly where you are"
+          />
+          {/* Sasha video */}
+          <Reveal className="frame" style={{ maxWidth: 680, margin: '36px auto 0' }}>
+            <div style={{ aspectRatio: '16/9' }}>
+              <iframe
+                src={videoTestimonials[4].url}
+                title={`${videoTestimonials[4].name} testimonial`}
+                style={{ width: '100%', height: '100%', border: 'none' }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </Reveal>
+          <p style={{ textAlign: 'center', marginTop: 12, fontSize: 15, color: 'var(--fg-muted)', fontWeight: 600 }}>
+            {videoTestimonials[4].name} — {videoTestimonials[4].result}
+          </p>
+
+          {/* Screenshot testimonials */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 18, marginTop: 48, maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
+            {screenshotTestimonials.map((img, i) => (
+              <Reveal key={img.src} delay={i * 60} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--line)', background: '#fff' }}>
+                <img src={img.src} alt={img.alt} loading="lazy" />
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Social proof - screenshots */}
-      <section className="px-5 py-16 bg-gray-50">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-900">
-            More student wins
-          </h2>
-          <div className="space-y-6">
-            {testimonialImages.map((img) => (
-              <div key={img.src} className="rounded-lg overflow-hidden border border-gray-200 bg-white">
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-auto"
-                  loading="lazy"
-                />
+      {/* ──── OFFER STACK ──── */}
+      <section className="section" id="inside">
+        <div className="container">
+          <SectionHead
+            eyebrow="What's inside"
+            title="Everything you need to start ahead"
+            lead="No upsell maze, no hidden extras. Here's the whole package — laid out plainly, so you can see exactly what your $500 gets you."
+          />
+          <Reveal className="offer">
+            {[
+              { ic: 'tv', h: 'Your pre-monetised channel', p: "Already earning-ready from day one — it's yours to keep.", v: '$1,500' },
+              { ic: 'map', h: 'The day-one playbook', p: 'The exact step-by-step plan, written in plain English.', v: '$300' },
+              { ic: 'list-checks', h: 'Done-for-you niche menu', p: 'A vetted list of proven money-making topics to choose from.', v: '$200' },
+              { ic: 'layout-template', h: 'Title, thumbnail & script templates', p: "So you're never staring at a blank page wondering what to do.", v: '$150' },
+              { ic: 'compass', h: 'Simple onboarding walkthrough', p: 'We set you up and show you the ropes, step by step.', v: '$100' },
+              { ic: 'calendar-check', h: 'Your 30-day quick-start', p: 'Exactly what to do in your first month — no guessing.', v: '$100' },
+            ].map((r) => (
+              <div className="offer__row" key={r.h}>
+                <span className="offer__ic"><Icon name={r.ic} /></span>
+                <span className="offer__txt"><strong>{r.h}</strong><span>{r.p}</span></span>
+                <span className="offer__val"><s>{r.v}</s></span>
               </div>
             ))}
+            <div className="offer__row offer__row--bump">
+              <span className="offer__ic"><Icon name="users" /></span>
+              <span className="offer__txt">
+                <span className="offer__bumptag">Optional upgrade</span>
+                <strong>The Inner Circle community</strong>
+                <span>A private group of people doing this for real — ask questions, stay accountable, get unstuck.</span>
+              </span>
+              <span className="offer__val">Add-on</span>
+            </div>
+            <div className="offer__total">
+              <span className="l">Real value of the core package</span>
+              <span className="r"><s>$2,350</s> $500</span>
+            </div>
+          </Reveal>
+          <Reveal className="center" style={{ marginTop: 30 }}>
+            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('pricing')}>
+              Claim your head-start channel <Icon name="arrow-right" />
+            </button>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ──── COMMUNITY ──── */}
+      <section className="section section--tight">
+        <div className="container">
+          <Reveal className="community">
+            <div>
+              <span className="eyebrow">Optional next step</span>
+              <h3>You're never stuck on your own</h3>
+              <p>
+                Once you're set up, you can join <strong style={{ color: '#fff' }}>The Inner Circle</strong> — 
+                a private community of ordinary people doing exactly this. Ask questions, get unstuck, and 
+                stay accountable with people a few steps ahead of you.
+              </p>
+              <div className="community__opt"><Icon name="info" /> Completely optional — add it now or later.</div>
+            </div>
+            <div>
+              <div className="community__faces">
+                {[0, 1, 2, 3, 4].map((f) => <span className="f" key={f}><Icon name="user" /></span>)}
+              </div>
+              <p style={{ marginTop: 16, fontSize: 15 }}>Members helping members — every day.</p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ──── PRICING ──── */}
+      <section className="section section--sand" id="pricing">
+        <div className="container">
+          <SectionHead
+            eyebrow="Your investment"
+            title="Less than the years you'd spend grinding for free"
+            lead="Other programmes charge this much for information alone — with no channel. You get the channel, the plan, and the support. One simple price."
+          />
+          <PricingBlock onCta={() => scrollTo('pricing')} />
+        </div>
+      </section>
+
+      {/* ──── FAQ ──── */}
+      <section className="section" id="faq">
+        <div className="container">
+          <SectionHead eyebrow="Honest answers" title="Your questions, answered plainly" />
+          <div className="faq">
+            {[
+              { q: 'Is this a scam?', a: "Fair question — you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support. We show our own channels on camera, we use our real names, and you're protected by a 14-day money-back guarantee." },
+              { q: "How is the channel already making money?", a: "The channel already meets YouTube's Partner Programme requirements — meaning it's eligible to earn from ads the moment you start posting. You're not starting from zero." },
+              { q: 'Do I have to be on camera?', a: 'No. These are faceless channels. You never have to film yourself or show your face. Everything is done behind the scenes.' },
+              { q: 'Do I need tech skills or experience?', a: "Not at all. This is built for total beginners — people who've never made a video before. If you can follow simple written steps, you can do this." },
+              { q: 'How much time does it take each week?', a: "Most people spend a few hours a week — often fitting it around a full-time job or family. It's designed to work around your life, not the other way around." },
+              { q: 'What if it doesn\'t work for me?', a: "You're covered by our 14-day money-back guarantee. If we don't deliver a working, earning channel, you get your money back. The risk sits with us, not you." },
+              { q: 'What exactly do I get for $500?', a: "Your pre-monetised channel, the day-one playbook, the niche menu, title/thumbnail/script templates, a simple onboarding walkthrough, and a 30-day quick-start plan. The Inner Circle community is available as an optional add-on." },
+              { q: "Why $500 and not more (or less)?", a: "Other courses charge this for information alone. You're getting a real asset — a channel that would take most people a year or more to build to this point — plus the full plan and support to grow it. It's priced fairly because we want this to be accessible to ordinary people." },
+            ].map((it, i) => {
+              const isOpen = faqOpen === i;
+              return (
+                <Reveal className={'faq__item' + (isOpen ? ' faq__item--open' : '')} key={i} delay={Math.min(i, 4) * 40}>
+                  <button className="faq__q" onClick={() => setFaqOpen(isOpen ? -1 : i)} aria-expanded={isOpen}>
+                    <h4>{it.q}</h4>
+                    <span className="ic"><Icon name={isOpen ? 'minus' : 'plus'} /></span>
+                  </button>
+                  <div className="faq__a"><p>{it.a}</p></div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* About the founder */}
-      <section className="px-5 py-16">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-900">
-            Who's behind this
-          </h2>
-          <div className="text-lg text-gray-600 leading-relaxed space-y-4">
+      {/* ──── FINAL CTA / MISSION ──── */}
+      <section className="section section--sand final">
+        <div className="container container--narrow">
+          <Reveal><span className="pill-tag" style={{ marginBottom: 4 }}><Icon name="flag" /> Our mission</span></Reveal>
+          <Reveal delay={60}>
+            <h2>We're on a mission to make <b>1,000 ordinary people</b> profitable creators.</h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <p>There's a spot in this cohort with your name on it. Ready to start ahead?</p>
+          </Reveal>
+          <Reveal delay={160}>
+            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('pricing')}>
+              Claim your head-start channel <Icon name="arrow-right" />
+            </button>
+            <div className="trust" style={{ marginTop: 22 }}>
+              <span className="trust__item"><Icon name="shield-check" /> 14-day money-back guarantee</span>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ──── FOOTER ──── */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer__top">
+            <div>
+              <Logo light />
+              <p className="footer__tag">Skip the grind. Start with a YouTube channel that already earns — and a simple plan to grow it.</p>
+            </div>
+            <nav className="footer__links" aria-label="Legal">
+              <a href="/terms">Terms of Service</a>
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/earnings-disclaimer">Earnings Disclaimer</a>
+              <a href="mailto:kei@headstartchannels.com">Contact</a>
+            </nav>
+          </div>
+          <div className="footer__legal">
+            <p><strong>Creativetube Ltd</strong>, registered in England & Wales.</p>
             <p>
-              <strong className="text-gray-900">Kei</strong> has spent years inside the mechanics of what actually makes YouTube channels work. He runs real faceless channels across different niches, reverse-engineers viral patterns, and has coached real beginners to their first profitable channels.
+              We make no guarantee of income. Any figures shown are examples of our own or customers'
+              results and are not typical. Your results depend on your effort, consistency, and factors
+              outside our control. This is not financial advice. &copy; 2026 Creativetube Ltd.
             </p>
-            <p>
-              This isn't theory — it's the distilled, simplified version of a system that already has a track record. HeadStartChannels exists because he watched too many good people quit during the hardest part of the journey, and decided to remove that part entirely.
-            </p>
-            <p className="text-gray-500 text-base">
-              Operated by CreativeTube Ltd (UK).
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission */}
-      <section className="px-5 py-16 bg-brand-50">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
-            The mission
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-700 leading-relaxed font-medium">
-            Turn 1,000 ordinary people into profitable YouTubers — before GTA 6 even drops.
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section id="get-started" className="px-5 py-20">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-            Ready to skip the grind?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Get your pre-monetised channel and start earning from day one. One payment, no subscriptions, no hidden fees.
-          </p>
-          <div className="mb-6">
-            <span className="text-4xl font-extrabold text-gray-900">$500</span>
-            <span className="text-gray-500 ml-2">one-time</span>
-          </div>
-          <a
-            href="https://headstartchannels.com/apply"
-            className="inline-block bg-brand-600 hover:bg-brand-700 text-white font-semibold text-lg px-10 py-4 rounded-lg transition-colors duration-200"
-          >
-            Get Started
-          </a>
-          <p className="text-sm text-gray-500 mt-4">
-            Questions? Email <a href="mailto:kei@headstartchannels.com" className="underline hover:text-gray-700">kei@headstartchannels.com</a>
-          </p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="px-5 py-8 border-t border-gray-200">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
-            © 2026 HeadStartChannels · CreativeTube Ltd
-          </p>
-          <div className="flex gap-6 text-sm text-gray-500">
-            <a href="/terms" className="hover:text-gray-700">Terms</a>
-            <a href="/privacy" className="hover:text-gray-700">Privacy</a>
-            <a href="mailto:kei@headstartchannels.com" className="hover:text-gray-700">Contact</a>
           </div>
         </div>
       </footer>
+    </>
+  );
+}
+
+/* ──── PRICING BLOCK (extracted for readability) ──── */
+function PricingBlock({ onCta }: { onCta: () => void }) {
+  const { ended, d, h, m, s } = useCountdown(COHORT_DEADLINE);
+  const pct = Math.round(((SPOTS_TOTAL - SPOTS_LEFT) / SPOTS_TOTAL) * 100);
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  return (
+    <div className="price-wrap">
+      <Reveal className="scarcity">
+        <div className="scarcity__top">
+          <span className="a">Founding cohort</span>
+          <span className="b"><b>{SPOTS_LEFT}</b> of {SPOTS_TOTAL} channels left</span>
+        </div>
+        <div className="meter"><div className="meter__fill" style={{ width: pct + '%' }} /></div>
+        <div className="scarcity__note">
+          <Icon name="info" />
+          {ended
+            ? 'This cohort has closed — the price has now risen for the next round.'
+            : 'Founding price holds until this cohort closes. Then it rises — and stays risen.'}
+        </div>
+        {!ended && (
+          <div className="countdown">
+            <div className="countdown__seg"><b>{pad(d)}</b><span>days</span></div>
+            <div className="countdown__seg"><b>{pad(h)}</b><span>hrs</span></div>
+            <div className="countdown__seg"><b>{pad(m)}</b><span>min</span></div>
+            <div className="countdown__seg"><b>{pad(s)}</b><span>sec</span></div>
+          </div>
+        )}
+      </Reveal>
+
+      <Reveal className="price-card" delay={80}>
+        <div className="price-card__head">
+          <div className="k">Founding price · one-time</div>
+          <div className="n"><s>$997</s>$500</div>
+          <div className="sub">No subscription. No hidden fees. The channel is yours to keep.</div>
+        </div>
+        <div className="price-card__body">
+          <ul className="price-card__list">
+            {[
+              'Your pre-monetised channel — yours to keep',
+              'The day-one playbook (plain English)',
+              'Done-for-you niche menu',
+              'Title, thumbnail & script templates',
+              'Onboarding walkthrough + 30-day quick-start',
+            ].map((item) => (
+              <li key={item}><Icon name="check-circle-2" /> {item}</li>
+            ))}
+          </ul>
+          <button className="btn btn--primary btn--block btn--lg" onClick={onCta}>
+            Claim your head-start channel <Icon name="arrow-right" />
+          </button>
+        </div>
+      </Reveal>
+
+      <Reveal className="guarantee-badge" delay={120}>
+        <span className="guarantee-badge__ic"><Icon name="shield-check" /></span>
+        <span>
+          <b>Our 14-day promise</b>
+          <span>If we don't deliver a working, earning channel, you get your money back. No questions, no hassle.</span>
+        </span>
+      </Reveal>
     </div>
   );
-};
-
-export default LandingPage;
+}

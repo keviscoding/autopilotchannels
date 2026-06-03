@@ -1,0 +1,178 @@
+/* =====================================================================
+   HeadStartChannels — Design Tokens: Color + Typography
+   ---------------------------------------------------------------------
+   Brand: calm · premium · trustworthy · warm · human (anti-"guru").
+   Audience: wary, non-techy, older-skewing beginners. High contrast,
+   large type, generous whitespace. NEVER neon green / gold / dollar-signs.
+
+   Fonts are loaded from Google Fonts (see usage note in README).
+   Add this to the <head> of any page that consumes these tokens:
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   ===================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------
+     1. CORE PALETTE  (raw values — reference via semantic vars below)
+     --------------------------------------------------------------- */
+
+  /* Warm neutral canvas + ink ----------------------------------- */
+  --paper:        #FAF8F3;   /* warm off-white — default page canvas   */
+  --sand:         #F2EDE4;   /* warmer alt-section background           */
+  --sand-deep:    #EAE3D6;   /* deepest warm neutral block              */
+  --white:        #FFFFFF;   /* card / surface                          */
+
+  --ink-900:      #16221F;   /* strongest text, warm near-black         */
+  --ink-700:      #2C3A35;   /* headings on light                       */
+  --ink-500:      #55615B;   /* secondary / body-dim text               */
+  --ink-400:      #7E8A84;   /* muted, captions, meta                   */
+  --ink-300:      #A8B0AB;   /* disabled text, placeholder              */
+
+  --line:         #E7E1D6;   /* default hairline border on paper        */
+  --line-strong:  #D7CFC0;   /* stronger border / divider               */
+
+  /* Primary — natural forest-emerald "growth / go" green --------- */
+  --green-900:    #0A3A28;
+  --green-800:    #0D573B;
+  --green-700:    #0F6E49;   /* CTA hover / pressed                     */
+  --green-600:    #15875B;   /* PRIMARY brand green — CTAs              */
+  --green-500:    #2A9E6E;
+  --green-300:    #8FCFAE;
+  --green-100:    #D2EBDD;
+  --green-50:     #E8F4ED;   /* tint backgrounds, badges                */
+
+  /* Secondary — warm clay-coral (friendliness, used sparingly) ---- */
+  --coral-700:    #C4542F;
+  --coral-600:    #DC6B41;   /* warm accent                             */
+  --coral-400:    #EB9272;
+  --coral-100:    #F8E4DA;
+  --coral-50:     #FCF1EB;   /* tint background                         */
+
+  /* Calm semantic support --------------------------------------- */
+  --info:         #2E6F9E;   /* trust blue — links, info notes          */
+  --info-50:      #E7F0F6;
+  --warn:         #B7791F;   /* amber — soft warnings, scarcity meter   */
+  --warn-50:      #FBF1DD;
+  --danger:       #C0492F;   /* errors only                             */
+  --danger-50:    #F9E7E2;
+  --success:      var(--green-600);
+
+  /* Dark surfaces (footer, occasional inverted block / VSL frame) - */
+  --dark-bg:      #11201B;   /* deep evergreen-slate                    */
+  --dark-surface: #1A2C25;
+  --dark-line:    #2C3F37;
+  --dark-text:    #F3F1EA;
+  --dark-dim:     #9DAAA2;
+
+  /* ---------------------------------------------------------------
+     2. SEMANTIC COLOR ROLES  (use THESE in components)
+     --------------------------------------------------------------- */
+  --bg:           var(--paper);
+  --bg-alt:       var(--sand);
+  --bg-deep:      var(--sand-deep);
+  --surface:      var(--white);
+  --surface-tint: var(--green-50);
+
+  --fg:           var(--ink-900);   /* primary text                     */
+  --fg-strong:    var(--ink-900);
+  --fg-heading:   var(--ink-700);
+  --fg-muted:     var(--ink-500);
+  --fg-subtle:    var(--ink-400);
+  --fg-disabled:  var(--ink-300);
+  --fg-on-accent: #FFFFFF;          /* text on green / coral            */
+
+  --border:       var(--line);
+  --border-strong:var(--line-strong);
+
+  --accent:       var(--green-600);
+  --accent-hover: var(--green-700);
+  --accent-press: var(--green-800);
+  --accent-soft:  var(--green-50);
+  --accent-2:     var(--coral-600);
+  --accent-2-soft:var(--coral-50);
+
+  --link:         var(--green-700);
+  --focus-ring:   color-mix(in oklch, var(--green-600) 45%, transparent);
+
+  /* ---------------------------------------------------------------
+     3. TYPOGRAPHY
+     --------------------------------------------------------------- */
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    "Hanken Grotesk", ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-mono:    ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, monospace;
+
+  /* Fluid type scale — large & roomy. min @360px → max @1280px.
+     Body never below 18px; this audience must never squint. */
+  --fs-display:   clamp(2.85rem, 1.6rem + 5.6vw, 5rem);    /* 45.6 → 80  */
+  --fs-h1:        clamp(2.3rem, 1.4rem + 4vw, 3.5rem);     /* 36.8 → 56  */
+  --fs-h2:        clamp(1.85rem, 1.3rem + 2.4vw, 2.75rem); /* 29.6 → 44  */
+  --fs-h3:        clamp(1.4rem, 1.15rem + 1.1vw, 1.875rem);/* 22.4 → 30  */
+  --fs-h4:        clamp(1.2rem, 1.08rem + 0.5vw, 1.375rem);/* 19.2 → 22  */
+  --fs-lead:      clamp(1.2rem, 1.05rem + 0.7vw, 1.5rem);  /* 19.2 → 24  */
+  --fs-body:      1.125rem;   /* 18px base body                          */
+  --fs-body-lg:   1.25rem;    /* 20px — long-form reading                */
+  --fs-small:     1rem;       /* 16px — meta, captions (still legible)   */
+  --fs-eyebrow:   0.8125rem;  /* 13px — uppercase eyebrow labels         */
+
+  --lh-tight:     1.05;       /* display headlines                       */
+  --lh-snug:      1.18;       /* headings                                */
+  --lh-normal:    1.4;        /* sub-headings / leads                    */
+  --lh-relaxed:   1.65;       /* body copy — roomy for older readers     */
+
+  --tracking-display: -0.02em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0em;
+  --tracking-eyebrow: 0.12em;
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-black:    800;
+
+  /* Comfortable reading measure */
+  --measure:      62ch;
+  --measure-tight:46ch;
+}
+
+/* =====================================================================
+   ELEMENT DEFAULTS  (opt-in: load this file, get sensible base type)
+   ===================================================================== */
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  font-weight: var(--weight-regular);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--fg-heading);
+  font-weight: var(--weight-bold);
+  margin: 0 0 0.4em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-h1); line-height: var(--lh-snug); letter-spacing: var(--tracking-display); color: var(--fg-strong); }
+h2 { font-size: var(--fs-h2); line-height: var(--lh-snug); letter-spacing: var(--tracking-tight); }
+h3 { font-size: var(--fs-h3); line-height: var(--lh-normal); letter-spacing: var(--tracking-tight); }
+h4 { font-size: var(--fs-h4); line-height: var(--lh-normal); }
+
+p  { margin: 0 0 1em; max-width: var(--measure); text-wrap: pretty; }
+
+a  { color: var(--link); text-underline-offset: 0.18em; }
+
+small, .text-small { font-size: var(--fs-small); }
+
+/* Utility type classes ------------------------------------------------ */
+.display   { font-family: var(--font-display); font-size: var(--fs-display); line-height: var(--lh-tight); letter-spacing: var(--tracking-display); font-weight: var(--weight-black); color: var(--fg-strong); text-wrap: balance; }
+.lead      { font-size: var(--fs-lead); line-height: var(--lh-normal); color: var(--fg-muted); font-weight: var(--weight-regular); max-width: var(--measure); }
+.eyebrow   { font-size: var(--fs-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; font-weight: var(--weight-bold); color: var(--accent); }
+.body-lg   { font-size: var(--fs-body-lg); line-height: var(--lh-relaxed); }
+.muted     { color: var(--fg-muted); }
+.subtle    { color: var(--fg-subtle); }
