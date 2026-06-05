@@ -253,8 +253,8 @@ export default function LandingPage() {
         <div className="container">
           <SectionHead
             eyebrow="Real results"
-            title="Real people. Real channels. Nothing staged."
-            lead="We don't hide behind a logo. Here are real results from ordinary people who followed the system, with their permission."
+            title="What our students are doing right now"
+            lead="Same system, different niches. Here's what happens when beginners follow the plan."
           />
           <div className="proof-grid">
             {proofCards.map((t, i) => (
