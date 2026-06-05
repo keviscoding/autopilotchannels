@@ -396,7 +396,7 @@ export default function LandingPage() {
             <button className="btn btn--primary btn--lg" onClick={() => goToCheckout()}>
               Claim your head-start channel <Icon name="arrow-right" />
             </button>
-            <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center' }}>
+            <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center', maxWidth: 'none', margin: '14px auto 0' }}>
               Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
             </p>
           </Reveal>
