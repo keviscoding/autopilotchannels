@@ -95,10 +95,11 @@ const proofCards = [
 const moreResults = [
   { name: 'Sasha', result: '1.4M views, $2,151 in 20 days', src: '/sasha-revenue.jpeg', aspect: 'landscape' },
   { name: 'Pinoxy', result: '67M views, $7,573 in 28 days', src: '/pinoxy-revenue.png', aspect: 'landscape' },
-  { name: 'Mike', result: '85.5M views, $16,427 revenue (UK)', src: '/mike-revenue.png', aspect: 'portrait' },
   { name: 'Theo', result: 'From zero to $43,000/month', src: '/theo-43k.png', aspect: 'portrait' },
   { name: 'Bara', result: 'Got the Silver Play Button', src: '/bara-playbutton.jpeg', aspect: 'portrait' },
 ];
+
+const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/hayes-content-strategy-call';
 
 /* ==================================================================
    PAGE
@@ -283,8 +284,27 @@ export default function LandingPage() {
             eyebrow="More wins"
             title="From people who started exactly where you are"
           />
-          {/* Landscape results - full width cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 48, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
+          {/* Mike - playable video */}
+          <Reveal className="proof-card" style={{ maxWidth: 380, margin: '48px auto 0' }}>
+            <div style={{ borderBottom: '1px solid var(--line)' }}>
+              <video
+                src="/mike-stats.mp4"
+                poster="/mike-revenue.png"
+                controls
+                playsInline
+                preload="metadata"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+            </div>
+            <div className="proof-card__body">
+              <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
+              <h4>Mike (UK)</h4>
+              <p>85.5M views, $16,427 revenue in 28 days</p>
+            </div>
+          </Reveal>
+
+          {/* Landscape results */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 32, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
             {moreResults.filter(r => r.aspect === 'landscape').map((item, i) => (
               <Reveal key={item.src} delay={i * 60} className="proof-card">
                 <div style={{ borderBottom: '1px solid var(--line)' }}>
@@ -298,8 +318,8 @@ export default function LandingPage() {
               </Reveal>
             ))}
           </div>
-          {/* Portrait results - 3 across */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22, marginTop: 22, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
+          {/* Portrait results */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 22, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
             {moreResults.filter(r => r.aspect === 'portrait').map((item, i) => (
               <Reveal key={item.src} delay={i * 60} className="proof-card">
                 <div style={{ borderBottom: '1px solid var(--line)' }}>
@@ -455,7 +475,7 @@ export default function LandingPage() {
               <span className="trust__item"><Icon name="shield-check" /> 14-day money-back guarantee</span>
             </div>
             <p style={{ marginTop: 18, fontSize: 14, color: 'var(--fg-subtle)' }}>
-              Not sure yet? <a href="#book-call" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
+              Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
             </p>
           </Reveal>
         </div>
@@ -541,6 +561,9 @@ function PricingBlock({ onCta }: { onCta: () => void }) {
           <button className="btn btn--primary btn--block btn--lg" onClick={onCta}>
             Claim your head-start channel <Icon name="arrow-right" />
           </button>
+          <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center' }}>
+            Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
+          </p>
         </div>
       </Reveal>
 
