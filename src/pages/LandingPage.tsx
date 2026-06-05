@@ -84,20 +84,19 @@ function useCountdown(target: Date) {
   return { ended: diff === 0, d, h, m, s };
 }
 
-/* ---- Testimonial data (real students from ViewMastery) ---- */
-const videoTestimonials = [
-  { name: 'Theo', result: 'Went from zero to fully monetised', url: 'https://www.youtube.com/embed/yOWLd09wWDM' },
-  { name: 'Fahad', result: 'Monetised in 30 days', url: 'https://www.youtube.com/embed/oxBIrQxAsVs' },
-  { name: 'Anton', result: '0 to 100K subscribers in 30 days', url: 'https://www.youtube.com/embed/z83xvrZG8fE' },
-  { name: 'Pluto', result: '$0 to $5,400/month in 90 days', url: 'https://www.youtube.com/embed/8vrwgWtYaP0' },
-  { name: 'Sasha', result: 'Monetised in 17 days, $3K first month', url: 'https://www.youtube.com/embed/1cC40iO-xuo' },
+/* ---- Testimonial data ---- */
+const proofCards = [
+  { name: 'Theo', result: 'Zero to monetised, now $43K/month', src: '/theo-dashboard.jpeg', aspect: 'landscape' },
+  { name: 'Fahad', result: 'Monetised in 29 days', src: '/fahad-29days.jpeg', aspect: 'landscape' },
+  { name: 'Anton', result: '100K subscribers in 30 days', src: '/anton-100k.jpeg', aspect: 'landscape' },
+  { name: 'Pluto', result: '149M views, +38.7K subs in 28 days', src: '/pluto-149m.jpeg', aspect: 'landscape' },
 ];
 
-const screenshotTestimonials = [
-  { src: '/momo-monetized.jpg', alt: 'Momo — Monetised in 4 videos' },
-  { src: '/nhan-viewhunt.jpg', alt: 'Nhan — Following the system' },
-  { src: '/robin-viewhunt.jpg', alt: 'Robin — Following the system' },
-  { src: '/abd-viewhunt.jpg', alt: 'Abd — Following the system' },
+const moreResults = [
+  { name: 'Sasha', result: '1.4M views, $2,151 in 20 days', src: '/sasha-revenue.jpeg', aspect: 'landscape' },
+  { name: 'Pinoxy', result: '67M views, $7,573 in 28 days', src: '/pinoxy-revenue.png', aspect: 'landscape' },
+  { name: 'Theo', result: 'From zero to $43,000/month', src: '/theo-43k.png', aspect: 'portrait' },
+  { name: 'Bara', result: 'Got the Silver Play Button', src: '/bara-playbutton.jpeg', aspect: 'portrait' },
 ];
 
 /* ==================================================================
@@ -149,7 +148,7 @@ export default function LandingPage() {
           </Reveal>
           <Reveal delay={120}>
             <p className="hero__sub">
-              We hand you a YouTube channel that already meets the earning requirements — plus a plain-English, 
+              We hand you a YouTube channel that already meets the earning requirements - plus a plain-English, 
               step-by-step plan to grow it. No filming yourself. No tech skills needed. You start at the part where it works.
             </p>
           </Reveal>
@@ -182,7 +181,7 @@ export default function LandingPage() {
           <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
             <div className="vsl" style={{ aspectRatio: '16/9', background: 'var(--dark-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div className="vsl__play"><Icon name="play" /></div>
-              <span className="vsl__label"><Icon name="user-round" /> Your founder, on camera — no hiding</span>
+              <span className="vsl__label"><Icon name="user-round" /> Your founder, on camera - no hiding</span>
             </div>
           </Reveal>
         </div>
@@ -198,7 +197,7 @@ export default function LandingPage() {
           />
           <div className="steps">
             {[
-              { n: '01', ic: 'gift', h: 'Get your pre-monetised channel', p: "We hand you a channel that already meets YouTube's earning requirements. It's yours — from day one, it can earn ad revenue." },
+              { n: '01', ic: 'gift', h: 'Get your pre-monetised channel', p: "We hand you a channel that already meets YouTube's earning requirements. It's yours - from day one, it can earn ad revenue." },
               { n: '02', ic: 'map', h: 'Follow the day-one playbook', p: "We tell you exactly what to upload, step by step. Pick a topic you actually like from our list of proven niches that make money." },
               { n: '03', ic: 'trending-up', h: 'Post, grow, and get support', p: "Keep it simple, stay consistent, and ask for help whenever you're stuck. You're never doing this alone." },
             ].map((s, i) => (
@@ -253,19 +252,13 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="Real results"
             title="Real people. Real channels. Nothing staged."
-            lead="We don't hide behind a logo. Here are real results from ordinary people who followed the system — with their permission."
+            lead="We don't hide behind a logo. Here are real results from ordinary people who followed the system, with their permission."
           />
           <div className="proof-grid">
-            {videoTestimonials.slice(0, 4).map((t, i) => (
-              <Reveal className="proof-card" key={t.name} delay={(i % 2) * 90}>
-                <div style={{ aspectRatio: '16/10', borderBottom: '1px solid var(--line)' }}>
-                  <iframe
-                    src={t.url}
-                    title={`${t.name} testimonial`}
-                    style={{ width: '100%', height: '100%', border: 'none' }}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+            {proofCards.map((t, i) => (
+              <Reveal className="proof-card" key={t.name + i} delay={(i % 2) * 90}>
+                <div style={{ borderBottom: '1px solid var(--line)' }}>
+                  <img src={t.src} alt={`${t.name} results`} style={{ width: '100%', height: 'auto', display: 'block' }} loading="lazy" />
                 </div>
                 <div className="proof-card__body">
                   <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
@@ -277,39 +270,34 @@ export default function LandingPage() {
           </div>
           <Reveal className="disclaimer">
             <Icon name="info" />
-            <span>These are real customer results shared with permission. They are not typical and not a guarantee — your results depend on your effort and other factors.</span>
+            <span>These are real customer results shared with permission. They are not typical and not a guarantee. Your results depend on your effort and other factors.</span>
           </Reveal>
         </div>
       </section>
 
-      {/* ──── MORE RESULTS (screenshots + remaining videos) ──── */}
+      {/* ──── MORE RESULTS ──── */}
       <section className="section section--sand">
         <div className="container">
           <SectionHead
             eyebrow="More wins"
             title="From people who started exactly where you are"
           />
-          {/* Sasha video */}
-          <Reveal className="frame" style={{ maxWidth: 680, margin: '36px auto 0' }}>
-            <div style={{ aspectRatio: '16/9' }}>
-              <iframe
-                src={videoTestimonials[4].url}
-                title={`${videoTestimonials[4].name} testimonial`}
-                style={{ width: '100%', height: '100%', border: 'none' }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </Reveal>
-          <p style={{ textAlign: 'center', marginTop: 12, fontSize: 15, color: 'var(--fg-muted)', fontWeight: 600 }}>
-            {videoTestimonials[4].name} — {videoTestimonials[4].result}
-          </p>
-
-          {/* Screenshot testimonials */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 18, marginTop: 48, maxWidth: 760, marginLeft: 'auto', marginRight: 'auto' }}>
-            {screenshotTestimonials.map((img, i) => (
-              <Reveal key={img.src} delay={i * 60} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--line)', background: '#fff' }}>
-                <img src={img.src} alt={img.alt} loading="lazy" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 48, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
+            {moreResults.map((item, i) => (
+              <Reveal key={item.src} delay={i * 60} className="proof-card">
+                <div style={{ borderBottom: '1px solid var(--line)' }}>
+                  <img
+                    src={item.src}
+                    alt={`${item.name} results`}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                    loading="lazy"
+                  />
+                </div>
+                <div className="proof-card__body">
+                  <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
+                  <h4>{item.name}</h4>
+                  <p>{item.result}</p>
+                </div>
               </Reveal>
             ))}
           </div>
@@ -322,16 +310,16 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="What's inside"
             title="Everything you need to start ahead"
-            lead="No upsell maze, no hidden extras. Here's the whole package — laid out plainly, so you can see exactly what your $500 gets you."
+            lead="No upsell maze, no hidden extras. Here's the whole package - laid out plainly, so you can see exactly what your $500 gets you."
           />
           <Reveal className="offer">
             {[
-              { ic: 'tv', h: 'Your pre-monetised channel', p: "Already earning-ready from day one — it's yours to keep.", v: '$1,500' },
+              { ic: 'tv', h: 'Your pre-monetised channel', p: "Already earning-ready from day one - it's yours to keep.", v: '$1,500' },
               { ic: 'map', h: 'The day-one playbook', p: 'The exact step-by-step plan, written in plain English.', v: '$300' },
               { ic: 'list-checks', h: 'Done-for-you niche menu', p: 'A vetted list of proven money-making topics to choose from.', v: '$200' },
               { ic: 'layout-template', h: 'Title, thumbnail & script templates', p: "So you're never staring at a blank page wondering what to do.", v: '$150' },
               { ic: 'compass', h: 'Simple onboarding walkthrough', p: 'We set you up and show you the ropes, step by step.', v: '$100' },
-              { ic: 'calendar-check', h: 'Your 30-day quick-start', p: 'Exactly what to do in your first month — no guessing.', v: '$100' },
+              { ic: 'calendar-check', h: 'Your 30-day quick-start', p: 'Exactly what to do in your first month - no guessing.', v: '$100' },
             ].map((r) => (
               <div className="offer__row" key={r.h}>
                 <span className="offer__ic"><Icon name={r.ic} /></span>
@@ -344,7 +332,7 @@ export default function LandingPage() {
               <span className="offer__txt">
                 <span className="offer__bumptag">Optional upgrade</span>
                 <strong>The Inner Circle community</strong>
-                <span>A private group of people doing this for real — ask questions, stay accountable, get unstuck.</span>
+                <span>A private group of people doing this for real - ask questions, stay accountable, get unstuck.</span>
               </span>
               <span className="offer__val">Add-on</span>
             </div>
@@ -369,17 +357,17 @@ export default function LandingPage() {
               <span className="eyebrow">Optional next step</span>
               <h3>You're never stuck on your own</h3>
               <p>
-                Once you're set up, you can join <strong style={{ color: '#fff' }}>The Inner Circle</strong> — 
+                Once you're set up, you can join <strong style={{ color: '#fff' }}>The Inner Circle</strong> - 
                 a private community of ordinary people doing exactly this. Ask questions, get unstuck, and 
                 stay accountable with people a few steps ahead of you.
               </p>
-              <div className="community__opt"><Icon name="info" /> Completely optional — add it now or later.</div>
+              <div className="community__opt"><Icon name="info" /> Completely optional - add it now or later.</div>
             </div>
             <div>
               <div className="community__faces">
                 {[0, 1, 2, 3, 4].map((f) => <span className="f" key={f}><Icon name="user" /></span>)}
               </div>
-              <p style={{ marginTop: 16, fontSize: 15 }}>Members helping members — every day.</p>
+              <p style={{ marginTop: 16, fontSize: 15 }}>Members helping members - every day.</p>
             </div>
           </Reveal>
         </div>
@@ -391,7 +379,7 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="Your investment"
             title="Less than the years you'd spend grinding for free"
-            lead="Other programmes charge this much for information alone — with no channel. You get the channel, the plan, and the support. One simple price."
+            lead="Other programmes charge this much for information alone - with no channel. You get the channel, the plan, and the support. One simple price."
           />
           <PricingBlock onCta={() => scrollTo('pricing')} />
         </div>
@@ -403,14 +391,14 @@ export default function LandingPage() {
           <SectionHead eyebrow="Honest answers" title="Your questions, answered plainly" />
           <div className="faq">
             {[
-              { q: 'Is this a scam?', a: "Fair question — you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support. We show our own channels on camera, we use our real names, and you're protected by a 14-day money-back guarantee." },
-              { q: "How is the channel already making money?", a: "The channel already meets YouTube's Partner Programme requirements — meaning it's eligible to earn from ads the moment you start posting. You're not starting from zero." },
+              { q: 'Is this a scam?', a: "Fair question - you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support. We show our own channels on camera, we use our real names, and you're protected by a 14-day money-back guarantee." },
+              { q: "How is the channel already making money?", a: "The channel already meets YouTube's Partner Programme requirements - meaning it's eligible to earn from ads the moment you start posting. You're not starting from zero." },
               { q: 'Do I have to be on camera?', a: 'No. These are faceless channels. You never have to film yourself or show your face. Everything is done behind the scenes.' },
-              { q: 'Do I need tech skills or experience?', a: "Not at all. This is built for total beginners — people who've never made a video before. If you can follow simple written steps, you can do this." },
-              { q: 'How much time does it take each week?', a: "Most people spend a few hours a week — often fitting it around a full-time job or family. It's designed to work around your life, not the other way around." },
+              { q: 'Do I need tech skills or experience?', a: "Not at all. This is built for total beginners - people who've never made a video before. If you can follow simple written steps, you can do this." },
+              { q: 'How much time does it take each week?', a: "Most people spend a few hours a week - often fitting it around a full-time job or family. It's designed to work around your life, not the other way around." },
               { q: 'What if it doesn\'t work for me?', a: "You're covered by our 14-day money-back guarantee. If we don't deliver a working, earning channel, you get your money back. The risk sits with us, not you." },
               { q: 'What exactly do I get for $500?', a: "Your pre-monetised channel, the day-one playbook, the niche menu, title/thumbnail/script templates, a simple onboarding walkthrough, and a 30-day quick-start plan. The Inner Circle community is available as an optional add-on." },
-              { q: "Why $500 and not more (or less)?", a: "Other courses charge this for information alone. You're getting a real asset — a channel that would take most people a year or more to build to this point — plus the full plan and support to grow it. It's priced fairly because we want this to be accessible to ordinary people." },
+              { q: "Why $500 and not more (or less)?", a: "Other courses charge this for information alone. You're getting a real asset - a channel that would take most people a year or more to build to this point - plus the full plan and support to grow it. It's priced fairly because we want this to be accessible to ordinary people." },
             ].map((it, i) => {
               const isOpen = faqOpen === i;
               return (
@@ -454,7 +442,7 @@ export default function LandingPage() {
           <div className="footer__top">
             <div>
               <Logo light />
-              <p className="footer__tag">Skip the grind. Start with a YouTube channel that already earns — and a simple plan to grow it.</p>
+              <p className="footer__tag">Skip the grind. Start with a YouTube channel that already earns - and a simple plan to grow it.</p>
             </div>
             <nav className="footer__links" aria-label="Legal">
               <a href="/terms">Terms of Service</a>
@@ -494,8 +482,8 @@ function PricingBlock({ onCta }: { onCta: () => void }) {
         <div className="scarcity__note">
           <Icon name="info" />
           {ended
-            ? 'This cohort has closed — the price has now risen for the next round.'
-            : 'Founding price holds until this cohort closes. Then it rises — and stays risen.'}
+            ? 'This cohort has closed - the price has now risen for the next round.'
+            : 'Founding price holds until this cohort closes. Then it rises - and stays risen.'}
         </div>
         {!ended && (
           <div className="countdown">
@@ -516,7 +504,7 @@ function PricingBlock({ onCta }: { onCta: () => void }) {
         <div className="price-card__body">
           <ul className="price-card__list">
             {[
-              'Your pre-monetised channel — yours to keep',
+              'Your pre-monetised channel - yours to keep',
               'The day-one playbook (plain English)',
               'Done-for-you niche menu',
               'Title, thumbnail & script templates',
