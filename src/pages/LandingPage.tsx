@@ -150,7 +150,7 @@ export default function LandingPage() {
               <a href="#results">Results</a>
               <a href="#faq">FAQ</a>
             </div>
-            <button className="btn btn--primary" onClick={goToCheckout}>
+            <button className="btn btn--primary" onClick={() => scrollTo('inside')}>
               Claim your channel
             </button>
           </div>
@@ -174,7 +174,7 @@ export default function LandingPage() {
             </p>
           </Reveal>
           <Reveal delay={180} className="hero__ctarow">
-            <button className="btn btn--primary btn--lg" onClick={goToCheckout}>
+            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('inside')}>
               Claim your head-start channel <Icon name="arrow-right" />
             </button>
             <button className="btn btn--ghost" onClick={() => scrollTo('vsl')}>
@@ -396,6 +396,9 @@ export default function LandingPage() {
             <button className="btn btn--primary btn--lg" onClick={() => goToCheckout()}>
               Claim your head-start channel <Icon name="arrow-right" />
             </button>
+            <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center' }}>
+              Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
+            </p>
           </Reveal>
         </div>
       </section>
