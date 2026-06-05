@@ -99,7 +99,7 @@ const moreResults = [
   { name: 'Bara', result: 'Got the Silver Play Button', src: '/bara-playbutton.jpeg', aspect: 'portrait' },
 ];
 
-const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/hayes-content-strategy-call';
+const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/headstart-content-strategy-call';
 
 /* ==================================================================
    PAGE
