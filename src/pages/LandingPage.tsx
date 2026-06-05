@@ -197,7 +197,7 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="Watch this first"
             title="I'll show you exactly how it works"
-            lead="One video. A real monetised channel, the strategy behind it, and what your first month looks like."
+            lead="One video. A real monetised channel, the strategy behind it, and what your first month could look like if you start off the right way."
           />
           <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
             <div
