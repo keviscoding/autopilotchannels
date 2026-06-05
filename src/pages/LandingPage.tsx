@@ -100,6 +100,7 @@ const moreResults = [
 ];
 
 const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/headstart-content-strategy-call';
+const CHECKOUT_URL = 'https://whop.com/checkout/22ICWBAYdl9r0WM4eJ-pP48-t6Zp-4E1K-D8ckF3ZxDn9u/';
 
 /* ==================================================================
    PAGE
@@ -115,8 +116,26 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.textContent = `
+      (function (v, i, d, a, l, y, t, c, s) {
+        y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl+'Script'],vlf=v[c][vl+'Loaded'],ve='Embed';
+        if(!vsl){vsl=function(u,cb){if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}i.getElementsByTagName("head")[0].appendChild(s);};}
+        vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
+      })(window, document, 'Vidalytics', 'vidalytics_embed_Tjy4NmnGY26ZsvRR', 'https://fast.vidalytics.com/embeds/tlH3XS0p/Tjy4NmnGY26ZsvRR/');
+    `;
+    document.head.appendChild(script);
+    return () => { if (script.parentNode) script.parentNode.removeChild(script); };
+  }, []);
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const goToCheckout = () => {
+    window.open(CHECKOUT_URL, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -131,7 +150,7 @@ export default function LandingPage() {
               <a href="#results">Results</a>
               <a href="#faq">FAQ</a>
             </div>
-            <button className="btn btn--primary" onClick={() => scrollTo('pricing')}>
+            <button className="btn btn--primary" onClick={goToCheckout}>
               Claim your channel
             </button>
           </div>
@@ -155,7 +174,7 @@ export default function LandingPage() {
             </p>
           </Reveal>
           <Reveal delay={180} className="hero__ctarow">
-            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('pricing')}>
+            <button className="btn btn--primary btn--lg" onClick={goToCheckout}>
               Claim your head-start channel <Icon name="arrow-right" />
             </button>
             <button className="btn btn--ghost" onClick={() => scrollTo('vsl')}>
@@ -176,15 +195,15 @@ export default function LandingPage() {
       <section className="section section--sand section--tight" id="vsl">
         <div className="container">
           <SectionHead
-            eyebrow="See it for yourself"
-            title="A real person showing you real channels"
-            lead="No slides, no hype. Just actual channels, how the head start works, and exactly what you'd be getting. Plain English, no jargon."
+            eyebrow="Watch this first"
+            title="I'll show you exactly how it works"
+            lead="One video. A real monetised channel, the strategy behind it, and what your first month looks like."
           />
           <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
-            <div className="vsl" style={{ aspectRatio: '16/9', background: 'var(--dark-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div className="vsl__play"><Icon name="play" /></div>
-              <span className="vsl__label"><Icon name="user-round" /> Your founder, on camera - no hiding</span>
-            </div>
+            <div
+              id="vidalytics_embed_Tjy4NmnGY26ZsvRR"
+              style={{ width: '100%', position: 'relative', paddingTop: '66.67%' }}
+            />
           </Reveal>
         </div>
       </section>
@@ -374,7 +393,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
-            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('pricing')}>
+            <button className="btn btn--primary btn--lg" onClick={() => goToCheckout()}>
               Claim your head-start channel <Icon name="arrow-right" />
             </button>
           </Reveal>
@@ -423,7 +442,7 @@ export default function LandingPage() {
             title="Less than the years you'd spend grinding for free"
             lead="Other programmes charge this much for information alone - with no channel. You get the channel, the plan, and the support. One simple price."
           />
-          <PricingBlock onCta={() => scrollTo('pricing')} />
+          <PricingBlock onCta={() => goToCheckout()} />
         </div>
       </section>
 
@@ -468,7 +487,7 @@ export default function LandingPage() {
             <p>There's a spot in this cohort with your name on it. Ready to start ahead?</p>
           </Reveal>
           <Reveal delay={160}>
-            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('pricing')}>
+            <button className="btn btn--primary btn--lg" onClick={() => goToCheckout()}>
               Claim your head-start channel <Icon name="arrow-right" />
             </button>
             <div className="trust" style={{ marginTop: 22 }}>
