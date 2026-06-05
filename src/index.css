@@ -11,4 +11,7 @@ button { font-family: inherit; cursor: pointer; }
   .container { padding: 0 20px; }
   .ba { gap: 14px; }
   .steps { gap: 16px; }
+  .btn--lg { font-size: 17px; padding: 18px 24px; white-space: normal; text-align: center; }
+  .proof-grid { grid-template-columns: 1fr !important; }
+  .community { grid-template-columns: 1fr !important; }
 }

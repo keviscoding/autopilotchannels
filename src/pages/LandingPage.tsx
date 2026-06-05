@@ -95,6 +95,7 @@ const proofCards = [
 const moreResults = [
   { name: 'Sasha', result: '1.4M views, $2,151 in 20 days', src: '/sasha-revenue.jpeg', aspect: 'landscape' },
   { name: 'Pinoxy', result: '67M views, $7,573 in 28 days', src: '/pinoxy-revenue.png', aspect: 'landscape' },
+  { name: 'Mike', result: '85.5M views, $16,427 revenue (UK)', src: '/mike-revenue.png', aspect: 'portrait' },
   { name: 'Theo', result: 'From zero to $43,000/month', src: '/theo-43k.png', aspect: 'portrait' },
   { name: 'Bara', result: 'Got the Silver Play Button', src: '/bara-playbutton.jpeg', aspect: 'portrait' },
 ];
@@ -282,16 +283,27 @@ export default function LandingPage() {
             eyebrow="More wins"
             title="From people who started exactly where you are"
           />
+          {/* Landscape results - full width cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 48, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
-            {moreResults.map((item, i) => (
+            {moreResults.filter(r => r.aspect === 'landscape').map((item, i) => (
               <Reveal key={item.src} delay={i * 60} className="proof-card">
                 <div style={{ borderBottom: '1px solid var(--line)' }}>
-                  <img
-                    src={item.src}
-                    alt={`${item.name} results`}
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                    loading="lazy"
-                  />
+                  <img src={item.src} alt={`${item.name} results`} style={{ width: '100%', height: 'auto', display: 'block' }} loading="lazy" />
+                </div>
+                <div className="proof-card__body">
+                  <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
+                  <h4>{item.name}</h4>
+                  <p>{item.result}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          {/* Portrait results - 3 across */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 22, marginTop: 22, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
+            {moreResults.filter(r => r.aspect === 'portrait').map((item, i) => (
+              <Reveal key={item.src} delay={i * 60} className="proof-card">
+                <div style={{ borderBottom: '1px solid var(--line)' }}>
+                  <img src={item.src} alt={`${item.name} results`} style={{ width: '100%', height: 'auto', display: 'block' }} loading="lazy" />
                 </div>
                 <div className="proof-card__body">
                   <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
@@ -365,7 +377,17 @@ export default function LandingPage() {
             </div>
             <div>
               <div className="community__faces">
-                {[0, 1, 2, 3, 4].map((f) => <span className="f" key={f}><Icon name="user" /></span>)}
+                {[
+                  'https://i.pravatar.cc/104?img=12',
+                  'https://i.pravatar.cc/104?img=32',
+                  'https://i.pravatar.cc/104?img=25',
+                  'https://i.pravatar.cc/104?img=53',
+                  'https://i.pravatar.cc/104?img=68',
+                ].map((src, f) => (
+                  <span className="f" key={f} style={{ overflow: 'hidden' }}>
+                    <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '999px' }} />
+                  </span>
+                ))}
               </div>
               <p style={{ marginTop: 16, fontSize: 15 }}>Members helping members - every day.</p>
             </div>
@@ -432,6 +454,9 @@ export default function LandingPage() {
             <div className="trust" style={{ marginTop: 22 }}>
               <span className="trust__item"><Icon name="shield-check" /> 14-day money-back guarantee</span>
             </div>
+            <p style={{ marginTop: 18, fontSize: 14, color: 'var(--fg-subtle)' }}>
+              Not sure yet? <a href="#book-call" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
+            </p>
           </Reveal>
         </div>
       </section>
