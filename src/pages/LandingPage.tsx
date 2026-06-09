@@ -65,24 +65,8 @@ function SectionHead({ eyebrow, title, lead }: { eyebrow?: string; title: string
   );
 }
 
-/* ---- Countdown hook ---- */
-const COHORT_DEADLINE = new Date('2026-06-30T23:59:59Z');
 const SPOTS_TOTAL = 50;
 const SPOTS_LEFT = 17;
-
-function useCountdown(target: Date) {
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  const diff = Math.max(0, target.getTime() - now);
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  return { ended: diff === 0, d, h, m, s };
-}
 
 /* ---- Testimonial data ---- */
 const proofCards = [
@@ -100,7 +84,6 @@ const moreResults = [
 ];
 
 const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/headstart-content-strategy-call';
-const CHECKOUT_URL = 'https://whop.com/checkout/22ICWBAYdl9r0WM4eJ-pP48-t6Zp-4E1K-D8ckF3ZxDn9u/';
 
 /* ==================================================================
    PAGE
@@ -134,9 +117,6 @@ export default function LandingPage() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const goToCheckout = () => {
-    window.open(CHECKOUT_URL, '_blank', 'noopener,noreferrer');
-  };
 
   return (
     <>
@@ -151,7 +131,7 @@ export default function LandingPage() {
               <a href="#faq">FAQ</a>
             </div>
             <button className="btn btn--primary" onClick={() => scrollTo('inside')}>
-              Claim your channel
+              Apply now
             </button>
           </div>
         </div>
@@ -361,21 +341,20 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="What's inside"
             title="Everything you need to start ahead"
-            lead="No upsell maze, no hidden extras. Here's the whole package - laid out plainly, so you can see exactly what your $500 gets you."
+            lead="No upsell maze, no hidden extras. Here's what you get when you're accepted."
           />
           <Reveal className="offer">
             {[
-              { ic: 'tv', h: 'Your pre-monetised channel', p: "Already earning-ready from day one - it's yours to keep.", v: '$1,500' },
-              { ic: 'map', h: 'The day-one playbook', p: 'The exact step-by-step plan, written in plain English.', v: '$300' },
-              { ic: 'list-checks', h: 'Done-for-you niche menu', p: 'A vetted list of proven money-making topics to choose from.', v: '$200' },
-              { ic: 'layout-template', h: 'Title, thumbnail & script templates', p: "So you're never staring at a blank page wondering what to do.", v: '$150' },
-              { ic: 'compass', h: 'Simple onboarding walkthrough', p: 'We set you up and show you the ropes, step by step.', v: '$100' },
-              { ic: 'calendar-check', h: 'Your 30-day quick-start', p: 'Exactly what to do in your first month - no guessing.', v: '$100' },
+              { ic: 'tv', h: 'Your pre-monetised channel', p: "Already earning-ready from day one - it's yours to keep." },
+              { ic: 'map', h: 'The day-one playbook', p: 'The exact step-by-step plan, written in plain English.' },
+              { ic: 'list-checks', h: 'Done-for-you niche menu', p: 'A vetted list of proven money-making topics to choose from.' },
+              { ic: 'layout-template', h: 'Title, thumbnail & script templates', p: "So you're never staring at a blank page wondering what to do." },
+              { ic: 'compass', h: 'Simple onboarding walkthrough', p: 'We set you up and show you the ropes, step by step.' },
+              { ic: 'calendar-check', h: 'Your 30-day quick-start', p: 'Exactly what to do in your first month - no guessing.' },
             ].map((r) => (
               <div className="offer__row" key={r.h}>
                 <span className="offer__ic"><Icon name={r.ic} /></span>
                 <span className="offer__txt"><strong>{r.h}</strong><span>{r.p}</span></span>
-                <span className="offer__val"><s>{r.v}</s></span>
               </div>
             ))}
             <div className="offer__row offer__row--bump">
@@ -388,16 +367,16 @@ export default function LandingPage() {
               <span className="offer__val">Add-on</span>
             </div>
             <div className="offer__total">
-              <span className="l">Real value of the core package</span>
-              <span className="r"><s>$2,350</s> $500</span>
+              <span className="l">Limited channels available</span>
+              <span className="r">Apply below</span>
             </div>
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
-            <button className="btn btn--primary btn--lg" onClick={() => goToCheckout()}>
-              Claim your head-start channel <Icon name="arrow-right" />
-            </button>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+              Apply for your channel <Icon name="arrow-right" />
+            </a>
             <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center', maxWidth: 'none', margin: '14px auto 0' }}>
-              Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
+              We only have a limited number of channels. Book a call to see if you qualify.
             </p>
           </Reveal>
         </div>
@@ -437,15 +416,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ──── PRICING ──── */}
+      {/* ──── APPLY ──── */}
       <section className="section section--sand" id="pricing">
         <div className="container">
           <SectionHead
-            eyebrow="Your investment"
-            title="Less than the years you'd spend grinding for free"
-            lead="Other programmes charge this much for information alone - with no channel. You get the channel, the plan, and the support. One simple price."
+            eyebrow="Limited availability"
+            title="We only have a finite number of channels"
+            lead="Not everyone gets one. Book a call with our team to find out if you're the right fit, pick your niche, and secure your channel before they're gone."
           />
-          <PricingBlock onCta={() => goToCheckout()} />
+          <Reveal className="center" style={{ marginTop: 36 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, marginBottom: 24 }}>
+              <Icon name="users" />
+              <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink-900)' }}>{SPOTS_LEFT} of {SPOTS_TOTAL} channels remaining</span>
+            </div>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+              Book your call <Icon name="arrow-right" />
+            </a>
+            <p style={{ marginTop: 16, fontSize: 15, color: 'var(--fg-muted)', maxWidth: 'none', margin: '16px auto 0' }}>
+              A ~15-minute conversation to see if HeadStartChannels is right for you.
+            </p>
+          </Reveal>
+          <Reveal className="guarantee-badge" delay={80}>
+            <span className="guarantee-badge__ic"><Icon name="shield-check" /></span>
+            <span>
+              <b>Our 14-day promise</b>
+              <span>If we don't deliver a working, earning channel, you get your money back. No questions, no hassle.</span>
+            </span>
+          </Reveal>
         </div>
       </section>
 
@@ -461,8 +458,8 @@ export default function LandingPage() {
               { q: 'Do I need tech skills or experience?', a: "Not at all. This is built for total beginners - people who've never made a video before. If you can follow simple written steps, you can do this." },
               { q: 'How much time does it take each week?', a: "Most people spend a few hours a week - often fitting it around a full-time job or family. It's designed to work around your life, not the other way around." },
               { q: 'What if it doesn\'t work for me?', a: "You're covered by our 14-day money-back guarantee. If we don't deliver a working, earning channel, you get your money back. The risk sits with us, not you." },
-              { q: 'What exactly do I get for $500?', a: "Your pre-monetised channel, the day-one playbook, the niche menu, title/thumbnail/script templates, a simple onboarding walkthrough, and a 30-day quick-start plan. The Inner Circle community is available as an optional add-on." },
-              { q: "Why $500 and not more (or less)?", a: "Other courses charge this for information alone. You're getting a real asset - a channel that would take most people a year or more to build to this point - plus the full plan and support to grow it. It's priced fairly because we want this to be accessible to ordinary people." },
+              { q: 'What exactly do I get?', a: "Your pre-monetised channel, the day-one playbook, the niche menu, title/thumbnail/script templates, a simple onboarding walkthrough, and a 30-day quick-start plan. The Inner Circle community is available as an optional add-on. We'll walk you through everything on the call." },
+              { q: 'How do I know if I qualify?', a: "Book a call with our team. We'll ask a few questions about where you're at, what you're looking for, and whether one of our available niches fits you. Not everyone's a match, and that's fine - we'd rather be honest than waste your time." },
             ].map((it, i) => {
               const isOpen = faqOpen === i;
               return (
@@ -487,18 +484,15 @@ export default function LandingPage() {
             <h2>We're on a mission to make <b>1,000 ordinary people</b> profitable creators.</h2>
           </Reveal>
           <Reveal delay={120}>
-            <p>There's a spot in this cohort with your name on it. Ready to start ahead?</p>
+            <p>There's a spot in this round with your name on it. Ready to start ahead?</p>
           </Reveal>
           <Reveal delay={160}>
-            <button className="btn btn--primary btn--lg" onClick={() => goToCheckout()}>
-              Claim your head-start channel <Icon name="arrow-right" />
-            </button>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+              Apply for your channel <Icon name="arrow-right" />
+            </a>
             <div className="trust" style={{ marginTop: 22 }}>
               <span className="trust__item"><Icon name="shield-check" /> 14-day money-back guarantee</span>
             </div>
-            <p style={{ marginTop: 18, fontSize: 14, color: 'var(--fg-subtle)' }}>
-              Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
-            </p>
           </Reveal>
         </div>
       </section>
@@ -532,70 +526,3 @@ export default function LandingPage() {
   );
 }
 
-/* ──── PRICING BLOCK (extracted for readability) ──── */
-function PricingBlock({ onCta }: { onCta: () => void }) {
-  const { ended, d, h, m, s } = useCountdown(COHORT_DEADLINE);
-  const pct = Math.round(((SPOTS_TOTAL - SPOTS_LEFT) / SPOTS_TOTAL) * 100);
-  const pad = (n: number) => String(n).padStart(2, '0');
-
-  return (
-    <div className="price-wrap">
-      <Reveal className="scarcity">
-        <div className="scarcity__top">
-          <span className="a">Founding cohort</span>
-          <span className="b"><b>{SPOTS_LEFT}</b> of {SPOTS_TOTAL} channels left</span>
-        </div>
-        <div className="meter"><div className="meter__fill" style={{ width: pct + '%' }} /></div>
-        <div className="scarcity__note">
-          <Icon name="info" />
-          {ended
-            ? 'This cohort has closed - the price has now risen for the next round.'
-            : 'Founding price holds until this cohort closes. Then it rises - and stays risen.'}
-        </div>
-        {!ended && (
-          <div className="countdown">
-            <div className="countdown__seg"><b>{pad(d)}</b><span>days</span></div>
-            <div className="countdown__seg"><b>{pad(h)}</b><span>hrs</span></div>
-            <div className="countdown__seg"><b>{pad(m)}</b><span>min</span></div>
-            <div className="countdown__seg"><b>{pad(s)}</b><span>sec</span></div>
-          </div>
-        )}
-      </Reveal>
-
-      <Reveal className="price-card" delay={80}>
-        <div className="price-card__head">
-          <div className="k">Founding price · one-time</div>
-          <div className="n"><s>$997</s>$500</div>
-          <div className="sub">No subscription. No hidden fees. The channel is yours to keep.</div>
-        </div>
-        <div className="price-card__body">
-          <ul className="price-card__list">
-            {[
-              'Your pre-monetised channel - yours to keep',
-              'The day-one playbook (plain English)',
-              'Done-for-you niche menu',
-              'Title, thumbnail & script templates',
-              'Onboarding walkthrough + 30-day quick-start',
-            ].map((item) => (
-              <li key={item}><Icon name="check-circle-2" /> {item}</li>
-            ))}
-          </ul>
-          <button className="btn btn--primary btn--block btn--lg" onClick={onCta}>
-            Claim your head-start channel <Icon name="arrow-right" />
-          </button>
-          <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center' }}>
-            Not sure yet? <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--link)', fontWeight: 600 }}>Book a quick call</a> to see if it's the right fit.
-          </p>
-        </div>
-      </Reveal>
-
-      <Reveal className="guarantee-badge" delay={120}>
-        <span className="guarantee-badge__ic"><Icon name="shield-check" /></span>
-        <span>
-          <b>Our 14-day promise</b>
-          <span>If we don't deliver a working, earning channel, you get your money back. No questions, no hassle.</span>
-        </span>
-      </Reveal>
-    </div>
-  );
-}
