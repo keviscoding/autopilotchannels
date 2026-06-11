@@ -108,6 +108,40 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 11.3 — Attention decays without re-hooks; re-hooks pull it back up. */
+export function ReHookCurve() {
+  return (
+    <svg viewBox="0 0 640 250" width="100%" role="img" aria-label="Attention decays steadily without re-hooks, but climbs back at each section with them">
+      <line x1={40} y1={20} x2={40} y2={200} stroke={LINE} strokeWidth={1.5} />
+      <line x1={40} y1={200} x2={610} y2={200} stroke={LINE} strokeWidth={1.5} />
+      {/* section boundaries */}
+      {[180, 330, 480].map((x) => <line key={x} x1={x} y1={30} x2={x} y2={200} stroke={LINE} strokeWidth={1} strokeDasharray="3 4" />)}
+      {/* no re-hook: steady decay */}
+      <path d="M40 60 L180 110 L330 150 L480 178 L600 192" fill="none" stroke={CORAL} strokeWidth={3} strokeLinecap="round" strokeDasharray="6 5" />
+      <text x={510} y={188} fontSize="12.5" fill={CORAL} fontFamily="Hanken Grotesk, sans-serif">no re-hook</text>
+      {/* re-hooked: dips then climbs at each seam */}
+      <path d="M40 60 L160 95 L180 60 L310 95 L330 58 L460 92 L480 55 L600 78" fill="none" stroke={GREEN} strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+      <text x={120} y={44} fontSize="12.5" fontWeight="700" fill={GREEN} fontFamily="Hanken Grotesk, sans-serif">re-hooked at each seam</text>
+      <text x={325} y={224} textAnchor="middle" fontSize="13" fill={INK} fontFamily="Hanken Grotesk, sans-serif">Each dashed line is a new subject. With a fresh hook there, attention climbs instead of bleeding out.</text>
+    </svg>
+  );
+}
+
+/* 12.1 — Monotone drifts; dynamic delivery holds. */
+export function VoiceDynamics() {
+  return (
+    <svg viewBox="0 0 640 200" width="100%" role="img" aria-label="A flat monotone line versus a dynamic, varied delivery">
+      <text x={40} y={50} fontSize="13.5" fontWeight="700" fill={CORAL} fontFamily="Hanken Grotesk, sans-serif">Monotone</text>
+      <path d="M150 60 L600 60" fill="none" stroke={CORAL} strokeWidth={3} strokeLinecap="round" />
+      <text x={375} y={84} textAnchor="middle" fontSize="12" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">same energy throughout, attention drifts</text>
+
+      <text x={40} y={140} fontSize="13.5" fontWeight="700" fill={GREEN} fontFamily="Hanken Grotesk, sans-serif">Dynamic</text>
+      <path d="M150 140 Q190 105 230 140 T310 140 Q350 100 390 150 Q430 175 470 130 T560 140 L600 138" fill="none" stroke={GREEN} strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+      <text x={375} y={184} textAnchor="middle" fontSize="12" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">loud to emphasise, soft to make them lean in</text>
+    </svg>
+  );
+}
+
 /* 10.2 — The repeating outlier is the demand signal. */
 export function TopicOutlier() {
   // heights: most average, a few of one topic spike

@@ -9,6 +9,8 @@ import Module07 from './Module07';
 import Module08 from './Module08';
 import Module09 from './Module09';
 import Module10 from './Module10';
+import Module11 from './Module11';
+import Module12 from './Module12';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -28,8 +30,8 @@ export const modules: ModuleEntry[] = [
   { id: 'team', number: 8, title: 'Building and managing your team', component: Module08 },
   { id: 'team-automation', number: 9, title: 'Running the team', component: Module09 },
   { id: 'topic-selection', number: 10, title: 'Choosing topics that are already proven', component: Module10 },
-  { id: 'scripts', number: 11, title: 'Crafting effective scripts' },
-  { id: 'voice-overs', number: 12, title: 'Perfecting voice overs' },
+  { id: 'scripts', number: 11, title: 'Scripts: structure, hook, and re-hook', component: Module11 },
+  { id: 'voice-overs', number: 12, title: 'Voice overs: directing attention with sound', component: Module12 },
   { id: 'editing', number: 13, title: 'Mastering video editing' },
   { id: 'storytelling', number: 14, title: 'The art of storytelling' },
   { id: 'thumbnails', number: 15, title: 'Designing thumbnails that get clicked' },
