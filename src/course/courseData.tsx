@@ -1,6 +1,8 @@
 import type { ComponentType } from 'react';
 import Module01 from './Module01';
 import Module02 from './Module02';
+import Module03 from './Module03';
+import Module04 from './Module04';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -12,8 +14,8 @@ export interface ModuleEntry {
 export const modules: ModuleEntry[] = [
   { id: 'introduction', number: 1, title: 'How the game is actually shaped', component: Module01 },
   { id: 'profitable-niches', number: 2, title: 'Reading the market', component: Module02 },
-  { id: 'evaluating-niches', number: 3, title: 'Evaluating and starting niches' },
-  { id: 'testing', number: 4, title: 'Testing channels and niches' },
+  { id: 'evaluating-niches', number: 3, title: 'Protecting the asset, and committing', component: Module03 },
+  { id: 'testing', number: 4, title: 'Testing without fooling yourself', component: Module04 },
   { id: 'content-formats', number: 5, title: 'Leveraging content formats' },
   { id: 'goals-research', number: 6, title: 'Goal setting and research' },
   { id: 'channel-setup', number: 7, title: 'Setting up your channel' },

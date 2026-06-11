@@ -108,6 +108,53 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 4.1 — CTR can't tell these apart. View velocity can. */
+export function ViewVelocity() {
+  return (
+    <svg viewBox="0 0 640 280" width="100%" role="img" aria-label="Two videos with the same click rate but different view velocity">
+      {/* left: still rising */}
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        <line x1={40} y1={40} x2={40} y2={210} stroke={LINE} strokeWidth={1.5} />
+        <line x1={40} y1={210} x2={290} y2={210} stroke={LINE} strokeWidth={1.5} />
+        <path d="M40 200 L90 190 L140 170 L190 138 L240 92 L285 48" fill="none" stroke={GREEN} strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+        <text x={165} y={30} textAnchor="middle" fontSize="14" fontWeight="700" fill={GREEN}>Still climbing: leave it</text>
+        <text x={165} y={234} textAnchor="middle" fontSize="13" fill={INK_MUTED}>CTR: 14%</text>
+      </g>
+      {/* right: flat-lined */}
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        <line x1={350} y1={40} x2={350} y2={210} stroke={LINE} strokeWidth={1.5} />
+        <line x1={350} y1={210} x2={600} y2={210} stroke={LINE} strokeWidth={1.5} />
+        <path d="M350 150 L400 120 L450 108 L500 104 L550 103 L595 103" fill="none" stroke={CORAL} strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+        <text x={475} y={30} textAnchor="middle" fontSize="14" fontWeight="700" fill={CORAL}>Flat-lined: swap it</text>
+        <text x={475} y={234} textAnchor="middle" fontSize="13" fill={INK_MUTED}>CTR: 14%</text>
+      </g>
+      <text x={320} y={262} textAnchor="middle" fontSize="13" fill={INK}>Same click rate. Only the slope of the view graph tells you which video is alive.</text>
+    </svg>
+  );
+}
+
+/* 3.1 — What keeps a channel monetised vs what kills it. */
+export function MonetizationSafety() {
+  const Col = ({ x, title, color, items, mark }: { x: number; title: string; color: string; items: string[]; mark: string }) => (
+    <g fontFamily="Hanken Grotesk, sans-serif">
+      <rect x={x} y={20} width={280} height={236} rx={16} fill="#fff" stroke={color} strokeWidth={1.5} />
+      <text x={x + 24} y={54} fontSize="16" fontWeight="700" fill={color}>{title}</text>
+      {items.map((it, i) => (
+        <g key={i}>
+          <text x={x + 24} y={92 + i * 38} fontSize="15" fontWeight="700" fill={color}>{mark}</text>
+          <text x={x + 44} y={92 + i * 38} fontSize="14" fill={INK}>{it}</text>
+        </g>
+      ))}
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 640 280" width="100%" role="img" aria-label="What keeps a channel monetised versus what gets it demonetised">
+      <Col x={20} title="Keeps it monetised" color={GREEN} mark="+" items={['Your own voiceover', 'Real reactions and emotion', 'Context added to any clips', 'Reads as a human, not a bot']} />
+      <Col x={340} title="Gets it killed" color={CORAL} mark="–" items={['Raw reused / copyrighted clips', 'No voiceover (quote / motivation)', 'Physical violence, war footage', 'Reads as low-effort or bot-made']} />
+    </svg>
+  );
+}
+
 /* 2.2 — Unsaturated vs saturated, side by side. */
 export function SaturationCompare() {
   const Col = ({ x, title, color, items, mark }: { x: number; title: string; color: string; items: string[]; mark: string }) => (
