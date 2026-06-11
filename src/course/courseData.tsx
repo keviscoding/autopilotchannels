@@ -8,6 +8,7 @@ import Module06 from './Module06';
 import Module07 from './Module07';
 import Module08 from './Module08';
 import Module09 from './Module09';
+import Module10 from './Module10';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -26,7 +27,7 @@ export const modules: ModuleEntry[] = [
   { id: 'channel-setup', number: 7, title: 'Setting up the channel', component: Module07 },
   { id: 'team', number: 8, title: 'Building and managing your team', component: Module08 },
   { id: 'team-automation', number: 9, title: 'Running the team', component: Module09 },
-  { id: 'topic-selection', number: 10, title: 'Mastering topic selection' },
+  { id: 'topic-selection', number: 10, title: 'Choosing topics that are already proven', component: Module10 },
   { id: 'scripts', number: 11, title: 'Crafting effective scripts' },
   { id: 'voice-overs', number: 12, title: 'Perfecting voice overs' },
   { id: 'editing', number: 13, title: 'Mastering video editing' },

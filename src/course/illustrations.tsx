@@ -108,6 +108,28 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 10.2 — The repeating outlier is the demand signal. */
+export function TopicOutlier() {
+  // heights: most average, a few of one topic spike
+  const bars = [60, 50, 200, 55, 65, 190, 48, 70, 205, 58];
+  const outlier = [false, false, true, false, false, true, false, false, true, false];
+  return (
+    <svg viewBox="0 0 640 260" width="100%" role="img" aria-label="One topic spikes every time it appears on a channel, while the rest stay flat">
+      <line x1={40} y1={30} x2={40} y2={220} stroke={LINE} strokeWidth={1.5} />
+      <line x1={40} y1={220} x2={610} y2={220} stroke={LINE} strokeWidth={1.5} />
+      {bars.map((h, i) => {
+        const x = 60 + i * 54;
+        return (
+          <rect key={i} x={x} y={220 - h} width={36} height={h} rx={6}
+                fill={outlier[i] ? GREEN : SAND} stroke={outlier[i] ? GREEN : LINE} strokeWidth={1.5} />
+        );
+      })}
+      <text x={168} y={36} fontSize="13" fontWeight="700" fill={GREEN} fontFamily="Hanken Grotesk, sans-serif">same topic, every time</text>
+      <text x={325} y={248} textAnchor="middle" fontSize="13" fill={INK} fontFamily="Hanken Grotesk, sans-serif">A channel's videos. The repeating spike is what the audience actually wants.</text>
+    </svg>
+  );
+}
+
 /* 9.1 — The simple production pipeline. */
 export function ProductionPipeline() {
   const stages = ['Topic', 'Script', 'Voice', 'Edit', 'Thumbnail', 'Review', 'Publish'];
