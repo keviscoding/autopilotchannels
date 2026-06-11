@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import Module01 from './Module01';
+import Module02 from './Module02';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -10,7 +11,7 @@ export interface ModuleEntry {
 
 export const modules: ModuleEntry[] = [
   { id: 'introduction', number: 1, title: 'How the game is actually shaped', component: Module01 },
-  { id: 'profitable-niches', number: 2, title: 'Discovering profitable niches' },
+  { id: 'profitable-niches', number: 2, title: 'Reading the market', component: Module02 },
   { id: 'evaluating-niches', number: 3, title: 'Evaluating and starting niches' },
   { id: 'testing', number: 4, title: 'Testing channels and niches' },
   { id: 'content-formats', number: 5, title: 'Leveraging content formats' },

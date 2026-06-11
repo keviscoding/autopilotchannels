@@ -85,6 +85,109 @@ export function MultiplicativeDiagram() {
   );
 }
 
+/* 2.1 — Demand outruns supply: the gap you hunt. */
+export function SupplyDemandGap() {
+  return (
+    <svg viewBox="0 0 640 300" width="100%" role="img" aria-label="Demand taller than supply; the gap between them is the opportunity">
+      {/* demand bar */}
+      <rect x={120} y={40} width={120} height={200} rx={10} fill={GREEN} />
+      <text x={180} y={26} textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="Hanken Grotesk, sans-serif">Demand</text>
+      <text x={180} y={150} textAnchor="middle" fontSize="13" fill="#fff" fontFamily="Hanken Grotesk, sans-serif">what viewers</text>
+      <text x={180} y={168} textAnchor="middle" fontSize="13" fill="#fff" fontFamily="Hanken Grotesk, sans-serif">want to watch</text>
+      {/* supply bar */}
+      <rect x={400} y={160} width={120} height={80} rx={10} fill={INK} />
+      <text x={460} y={146} textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="Hanken Grotesk, sans-serif">Supply</text>
+      <text x={460} y={205} textAnchor="middle" fontSize="13" fill="#fff" fontFamily="Hanken Grotesk, sans-serif">videos serving it</text>
+      {/* the gap bracket */}
+      <line x1={300} y1={40} x2={300} y2={160} stroke={CORAL} strokeWidth={2} strokeDasharray="5 5" />
+      <text x={316} y={104} fontSize="15" fontWeight="700" fill={CORAL} fontFamily="Hanken Grotesk, sans-serif">the gap</text>
+      <text x={316} y={124} fontSize="12.5" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">where a new channel</text>
+      <text x={316} y={140} fontSize="12.5" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">can blow up fast</text>
+      <line x1={120} y1={240} x2={520} y2={240} stroke={LINE} strokeWidth={1.5} />
+    </svg>
+  );
+}
+
+/* 2.2 — Unsaturated vs saturated, side by side. */
+export function SaturationCompare() {
+  const Col = ({ x, title, color, items, mark }: { x: number; title: string; color: string; items: string[]; mark: string }) => (
+    <g fontFamily="Hanken Grotesk, sans-serif">
+      <rect x={x} y={20} width={280} height={236} rx={16} fill="#fff" stroke={color} strokeWidth={1.5} />
+      <text x={x + 24} y={54} fontSize="16" fontWeight="700" fill={color}>{title}</text>
+      {items.map((it, i) => (
+        <g key={i}>
+          <text x={x + 24} y={92 + i * 38} fontSize="15" fontWeight="700" fill={color}>{mark}</text>
+          <text x={x + 44} y={92 + i * 38} fontSize="14.5" fill={INK}>{it}</text>
+        </g>
+      ))}
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 640 280" width="100%" role="img" aria-label="Signs of an open niche versus a crowded one">
+      <Col x={20} title="Room to enter" color={GREEN} mark="+" items={['New channels (under 3 months)', 'Ugly thumbnails still winning', 'Few big established players', 'Bad quality pulls big views']} />
+      <Col x={340} title="Already crowded" color={CORAL} mark="–" items={['Competitors 2 to 3 years old', 'High polish needed to compete', '10+ big channels, same format', 'New channels stay buried']} />
+    </svg>
+  );
+}
+
+/* 2.3 — Revenue is a formula, not a vibe. */
+export function RevenueFormula() {
+  return (
+    <svg viewBox="0 0 640 220" width="100%" role="img" aria-label="Monthly views divided by 1000, times RPM, equals monthly revenue">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        <rect x={20} y={40} width={150} height={56} rx={10} fill="#fff" stroke={LINE} strokeWidth={1.5} />
+        <text x={95} y={64} textAnchor="middle" fontSize="12.5" fill={INK_MUTED}>Monthly views ÷ 1,000</text>
+        <text x={95} y={84} textAnchor="middle" fontSize="15" fontWeight="700" fill={INK}>3,100</text>
+
+        <text x={185} y={74} textAnchor="middle" fontSize="20" fill={INK_MUTED}>×</text>
+
+        <rect x={200} y={40} width={120} height={56} rx={10} fill="#fff" stroke={LINE} strokeWidth={1.5} />
+        <text x={260} y={64} textAnchor="middle" fontSize="12.5" fill={INK_MUTED}>RPM</text>
+        <text x={260} y={84} textAnchor="middle" fontSize="15" fontWeight="700" fill={INK}>$6</text>
+
+        <text x={335} y={74} textAnchor="middle" fontSize="20" fill={INK_MUTED}>=</text>
+
+        <rect x={350} y={40} width={200} height={56} rx={10} fill={GREEN_SOFT} stroke={GREEN} strokeWidth={1.5} />
+        <text x={450} y={64} textAnchor="middle" fontSize="12.5" fill={GREEN}>Monthly revenue</text>
+        <text x={450} y={84} textAnchor="middle" fontSize="16" fontWeight="800" fill={GREEN}>$18,600</text>
+
+        <text x={20} y={150} fontSize="14.5" fill={INK}>Gate 1: is the channel actually monetised? A viral video on an</text>
+        <text x={20} y={172} fontSize="14.5" fill={INK}>unmonetised channel earns nothing.</text>
+        <text x={20} y={196} fontSize="14.5" fill={INK_MUTED}>Gate 2: does the biggest channel clear ~$20k/mo, and the niche beat $10k?</text>
+      </g>
+    </svg>
+  );
+}
+
+/* 2.4 — The moat runs both ways. */
+export function MoatMatrix() {
+  return (
+    <svg viewBox="0 0 640 320" width="100%" role="img" aria-label="Pick niches that are easy for you to make and hard for others to copy">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {/* quadrant grid */}
+        <rect x={140} y={40} width={220} height={110} fill={SAND} stroke={LINE} strokeWidth={1.5} />
+        <rect x={360} y={40} width={220} height={110} fill={GREEN_SOFT} stroke={GREEN} strokeWidth={2} />
+        <rect x={140} y={150} width={220} height={110} fill="#FCEAE2" stroke={LINE} strokeWidth={1.5} />
+        <rect x={360} y={150} width={220} height={110} fill={SAND} stroke={LINE} strokeWidth={1.5} />
+
+        <text x={250} y={95} textAnchor="middle" fontSize="13" fill={INK_MUTED}>Hard for you,</text>
+        <text x={250} y={112} textAnchor="middle" fontSize="13" fill={INK_MUTED}>hard to copy</text>
+        <text x={470} y={92} textAnchor="middle" fontSize="13.5" fontWeight="700" fill={GREEN}>Easy for you,</text>
+        <text x={470} y={110} textAnchor="middle" fontSize="13.5" fontWeight="700" fill={GREEN}>hard to copy</text>
+        <text x={470} y={130} textAnchor="middle" fontSize="12" fill={GREEN}>the target</text>
+        <text x={250} y={205} textAnchor="middle" fontSize="13" fill={CORAL}>Hard for you,</text>
+        <text x={250} y={222} textAnchor="middle" fontSize="13" fill={CORAL}>easy to copy</text>
+        <text x={470} y={205} textAnchor="middle" fontSize="13" fill={INK_MUTED}>Easy for you,</text>
+        <text x={470} y={222} textAnchor="middle" fontSize="13" fill={INK_MUTED}>easy to copy (floods)</text>
+
+        {/* axis labels */}
+        <text x={360} y={290} textAnchor="middle" fontSize="13" fontWeight="700" fill={INK}>Cheaper for you to produce →</text>
+        <text x={128} y={150} textAnchor="middle" fontSize="13" fontWeight="700" fill={INK} transform="rotate(-90 128 150)">Harder to copy →</text>
+      </g>
+    </svg>
+  );
+}
+
 /* 1.3 — The back-loaded curve. Flat, then vertical. */
 export function FlatPartDiagram() {
   // curve points: flat then exponential
