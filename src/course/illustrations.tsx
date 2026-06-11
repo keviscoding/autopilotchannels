@@ -144,7 +144,7 @@ export function HiringSources() {
     <svg viewBox="0 0 640 260" width="100%" role="img" aria-label="Where to hire each role and what to watch for">
       <g fontFamily="Hanken Grotesk, sans-serif">
         {['Platform', 'Best for', 'Watch out for'].map((c, i) => (
-          <text key={c} x={cx[i] + 4} y={34} fontSize="13" fontWeight="700" fill={GREEN}>{c}</text>
+          <text key={c} x={cx[i] + 4} y={34} fontSize="13" fontWeight="700" fill={GREEN} style={{ textTransform: 'uppercase' }}>{c}</text>
         ))}
         <line x1={20} y1={46} x2={620} y2={46} stroke={LINE} strokeWidth={1.5} />
         {rows.map((r, ri) => (
@@ -198,7 +198,7 @@ export function FormatComparison() {
     <svg viewBox="0 0 640 280" width="100%" role="img" aria-label="The four content formats compared by cost, moat, and best use">
       <g fontFamily="Hanken Grotesk, sans-serif">
         {cols.map((c, i) => (
-          <text key={c} x={cx[i] + 4} y={36} fontSize="13" fontWeight="700" fill={GREEN} textTransform="uppercase">{c}</text>
+          <text key={c} x={cx[i] + 4} y={36} fontSize="13" fontWeight="700" fill={GREEN} style={{ textTransform: 'uppercase' }}>{c}</text>
         ))}
         <line x1={20} y1={48} x2={620} y2={48} stroke={LINE} strokeWidth={1.5} />
         {rows.map((r, ri) => (
