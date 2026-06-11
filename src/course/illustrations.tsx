@@ -108,6 +108,81 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 9.1 — The simple production pipeline. */
+export function ProductionPipeline() {
+  const stages = ['Topic', 'Script', 'Voice', 'Edit', 'Thumbnail', 'Review', 'Publish'];
+  return (
+    <svg viewBox="0 0 640 180" width="100%" role="img" aria-label="A card moves left to right through seven simple stages">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {stages.map((s, i) => {
+          const x = 16 + i * 88;
+          const last = i === stages.length - 1;
+          return (
+            <g key={s}>
+              <rect x={x} y={70} width={74} height={44} rx={10} fill={last ? GREEN : '#fff'} stroke={last ? GREEN : LINE} strokeWidth={1.5} />
+              <text x={x + 37} y={97} textAnchor="middle" fontSize="13" fontWeight={last ? '700' : '600'} fill={last ? '#fff' : INK}>{s}</text>
+              {!last && <text x={x + 84} y={97} textAnchor="middle" fontSize="15" fill={INK_MUTED}>→</text>}
+            </g>
+          );
+        })}
+        <text x={320} y={150} textAnchor="middle" fontSize="13.5" fill={INK}>One card per video. Each person finishes, attaches their work, and the next is pinged.</text>
+      </g>
+    </svg>
+  );
+}
+
+/* 8.2 — Where to hire what. */
+export function HiringSources() {
+  const rows = [
+    ['Upwork', 'General, lower budget', 'Move comms off-platform'],
+    ['Twitter', 'High-end editors, thumbnails', 'Needs a real profile to trust'],
+    ['Fiverr', 'Voiceover, specific talent', 'Avoid for editors'],
+    ['Discord', 'Editors, thumbnail artists', 'DM in niche communities'],
+  ];
+  const cx = [20, 170, 380];
+  return (
+    <svg viewBox="0 0 640 260" width="100%" role="img" aria-label="Where to hire each role and what to watch for">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {['Platform', 'Best for', 'Watch out for'].map((c, i) => (
+          <text key={c} x={cx[i] + 4} y={34} fontSize="13" fontWeight="700" fill={GREEN}>{c}</text>
+        ))}
+        <line x1={20} y1={46} x2={620} y2={46} stroke={LINE} strokeWidth={1.5} />
+        {rows.map((r, ri) => (
+          <g key={ri}>
+            {r.map((cell, ci) => (
+              <text key={ci} x={cx[ci] + 4} y={82 + ri * 48} fontSize={ci === 0 ? '15.5' : '14'}
+                    fontWeight={ci === 0 ? '700' : '400'} fill={ci === 0 ? INK : INK_MUTED}>{cell}</text>
+            ))}
+            {ri < rows.length - 1 && <line x1={20} y1={98 + ri * 48} x2={620} y2={98 + ri * 48} stroke={LINE} strokeWidth={1} />}
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/* 8.3 — Judge the work, not the words. */
+export function HiringSignal() {
+  const Col = ({ x, title, color, items, mark }: { x: number; title: string; color: string; items: string[]; mark: string }) => (
+    <g fontFamily="Hanken Grotesk, sans-serif">
+      <rect x={x} y={20} width={280} height={210} rx={16} fill="#fff" stroke={color} strokeWidth={1.5} />
+      <text x={x + 24} y={54} fontSize="16" fontWeight="700" fill={color}>{title}</text>
+      {items.map((it, i) => (
+        <g key={i}>
+          <text x={x + 24} y={92 + i * 36} fontSize="15" fontWeight="700" fill={color}>{mark}</text>
+          <text x={x + 44} y={92 + i * 36} fontSize="14" fill={INK}>{it}</text>
+        </g>
+      ))}
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 640 254" width="100%" role="img" aria-label="What to ignore versus what to judge when hiring">
+      <Col x={20} title="Ignore" color={CORAL} mark="–" items={['The proposal essay', '"I love writing" fluff', 'Claimed credits (unverified)', 'Length of the pitch']} />
+      <Col x={340} title="Judge" color={GREEN} mark="+" items={['Did they do the test task', 'Their actual samples', 'How fast they respond', 'Their hook, not their promise']} />
+    </svg>
+  );
+}
+
 /* 5.1 — The four formats compared. */
 export function FormatComparison() {
   const rows = [

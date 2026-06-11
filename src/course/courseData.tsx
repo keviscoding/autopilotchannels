@@ -6,6 +6,8 @@ import Module04 from './Module04';
 import Module05 from './Module05';
 import Module06 from './Module06';
 import Module07 from './Module07';
+import Module08 from './Module08';
+import Module09 from './Module09';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -22,8 +24,8 @@ export const modules: ModuleEntry[] = [
   { id: 'content-formats', number: 5, title: 'Formats are how you beat saturation', component: Module05 },
   { id: 'goals-research', number: 6, title: 'Goals, the why, and reconnaissance', component: Module06 },
   { id: 'channel-setup', number: 7, title: 'Setting up the channel', component: Module07 },
-  { id: 'team', number: 8, title: 'Building and managing your team' },
-  { id: 'team-automation', number: 9, title: 'Team automation and communication' },
+  { id: 'team', number: 8, title: 'Building and managing your team', component: Module08 },
+  { id: 'team-automation', number: 9, title: 'Running the team', component: Module09 },
   { id: 'topic-selection', number: 10, title: 'Mastering topic selection' },
   { id: 'scripts', number: 11, title: 'Crafting effective scripts' },
   { id: 'voice-overs', number: 12, title: 'Perfecting voice overs' },
