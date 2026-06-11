@@ -3,6 +3,9 @@ import Module01 from './Module01';
 import Module02 from './Module02';
 import Module03 from './Module03';
 import Module04 from './Module04';
+import Module05 from './Module05';
+import Module06 from './Module06';
+import Module07 from './Module07';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -16,9 +19,9 @@ export const modules: ModuleEntry[] = [
   { id: 'profitable-niches', number: 2, title: 'Reading the market', component: Module02 },
   { id: 'evaluating-niches', number: 3, title: 'Protecting the asset, and committing', component: Module03 },
   { id: 'testing', number: 4, title: 'Testing without fooling yourself', component: Module04 },
-  { id: 'content-formats', number: 5, title: 'Leveraging content formats' },
-  { id: 'goals-research', number: 6, title: 'Goal setting and research' },
-  { id: 'channel-setup', number: 7, title: 'Setting up your channel' },
+  { id: 'content-formats', number: 5, title: 'Formats are how you beat saturation', component: Module05 },
+  { id: 'goals-research', number: 6, title: 'Goals, the why, and reconnaissance', component: Module06 },
+  { id: 'channel-setup', number: 7, title: 'Setting up the channel', component: Module07 },
   { id: 'team', number: 8, title: 'Building and managing your team' },
   { id: 'team-automation', number: 9, title: 'Team automation and communication' },
   { id: 'topic-selection', number: 10, title: 'Mastering topic selection' },

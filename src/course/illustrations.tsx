@@ -108,6 +108,86 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 5.1 — The four formats compared. */
+export function FormatComparison() {
+  const rows = [
+    ['Compilation', 'Med ($150+)', 'Branding + voice', 'Big fan base, lots of clips'],
+    ['Documentary', 'High', 'Niche + quality', 'Niche down to one fan base'],
+    ['Animation', 'Very high', 'Cost itself', 'High RPM, advanced only'],
+    ['Explainer', 'Low', 'Speed only', 'Be first to the trend'],
+  ];
+  const cols = ['Format', 'Cost', 'Moat', 'Best when'];
+  const cx = [20, 170, 300, 440];
+  const cw = [150, 130, 140, 180];
+  return (
+    <svg viewBox="0 0 640 280" width="100%" role="img" aria-label="The four content formats compared by cost, moat, and best use">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {cols.map((c, i) => (
+          <text key={c} x={cx[i] + 4} y={36} fontSize="13" fontWeight="700" fill={GREEN} textTransform="uppercase">{c}</text>
+        ))}
+        <line x1={20} y1={48} x2={620} y2={48} stroke={LINE} strokeWidth={1.5} />
+        {rows.map((r, ri) => (
+          <g key={ri}>
+            {r.map((cell, ci) => (
+              <text key={ci} x={cx[ci] + 4} y={84 + ri * 50} fontSize={ci === 0 ? '15.5' : '14'}
+                    fontWeight={ci === 0 ? '700' : '400'} fill={ci === 0 ? INK : INK_MUTED}>{cell}</text>
+            ))}
+            {ri < rows.length - 1 && <line x1={20} y1={100 + ri * 50} x2={620} y2={100 + ri * 50} stroke={LINE} strokeWidth={1} />}
+          </g>
+        ))}
+        <rect x={cx[0]} y={1} width={cw[0]} height={1} fill="none" />
+      </g>
+    </svg>
+  );
+}
+
+/* 6.1 — Back-calculate inputs from the target. */
+export function BackCalculation() {
+  const Box = ({ x, top, mid, bot, accent }: { x: number; top: string; mid: string; bot: string; accent?: boolean }) => (
+    <g fontFamily="Hanken Grotesk, sans-serif">
+      <rect x={x} y={70} width={150} height={80} rx={12} fill={accent ? GREEN_SOFT : '#fff'} stroke={accent ? GREEN : LINE} strokeWidth={1.5} />
+      <text x={x + 75} y={96} textAnchor="middle" fontSize="12" fill={INK_MUTED}>{top}</text>
+      <text x={x + 75} y={120} textAnchor="middle" fontSize="17" fontWeight="800" fill={accent ? GREEN : INK} fontFamily="Bricolage Grotesque, sans-serif">{mid}</text>
+      <text x={x + 75} y={138} textAnchor="middle" fontSize="11.5" fill={INK_MUTED}>{bot}</text>
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 640 220" width="100%" role="img" aria-label="Working backward from a revenue target to the views and uploads needed">
+      <Box x={20} top="Target" mid="$10k/mo" bot="net revenue" accent />
+      <text x={185} y={114} textAnchor="middle" fontSize="22" fill={INK_MUTED}>→</text>
+      <Box x={205} top="÷ RPM ($6) × 1000" mid="~1.67M" bot="views / month" />
+      <text x={370} y={114} textAnchor="middle" fontSize="22" fill={INK_MUTED}>→</text>
+      <Box x={390} top="÷ views per video" mid="the number" bot="of uploads to plan" />
+      <text x={320} y={186} textAnchor="middle" fontSize="13.5" fill={INK}>A number can be reverse-engineered into a plan. A wish can't.</text>
+    </svg>
+  );
+}
+
+/* 7.3 — Account security: isolate the owner. */
+export function AccountSecurity() {
+  return (
+    <svg viewBox="0 0 640 240" width="100%" role="img" aria-label="Channel owned by a logged-out creation account, managed by your daily email">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        <rect x={40} y={40} width={200} height={70} rx={12} fill={GREEN_SOFT} stroke={GREEN} strokeWidth={1.5} />
+        <text x={140} y={68} textAnchor="middle" fontSize="14.5" fontWeight="700" fill={GREEN}>Creation account</text>
+        <text x={140} y={88} textAnchor="middle" fontSize="12.5" fill={INK_MUTED}>owns it, then logged out</text>
+
+        <rect x={400} y={40} width={200} height={70} rx={12} fill="#fff" stroke={LINE} strokeWidth={1.5} />
+        <text x={500} y={68} textAnchor="middle" fontSize="14.5" fontWeight="700" fill={INK}>Your daily email</text>
+        <text x={500} y={88} textAnchor="middle" fontSize="12.5" fill={INK_MUTED}>Manager access only</text>
+
+        <line x1={240} y1={75} x2={400} y2={75} stroke={LINE} strokeWidth={1.5} />
+        <text x={320} y={66} textAnchor="middle" fontSize="12" fill={INK_MUTED}>invites as manager</text>
+
+        <rect x={400} y={150} width={200} height={56} rx={12} fill="#FCEAE2" stroke={CORAL} strokeWidth={1.5} />
+        <text x={500} y={174} textAnchor="middle" fontSize="13.5" fontWeight="700" fill={CORAL}>Hacker hits this</text>
+        <text x={500} y={192} textAnchor="middle" fontSize="12" fill={INK_MUTED}>reaches a manager, not the owner</text>
+        <line x1={500} y1={150} x2={500} y2={110} stroke={CORAL} strokeWidth={1.5} strokeDasharray="4 4" />
+      </g>
+    </svg>
+  );
+}
+
 /* 4.1 — CTR can't tell these apart. View velocity can. */
 export function ViewVelocity() {
   return (
