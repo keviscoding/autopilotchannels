@@ -108,6 +108,53 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 13.1 — The retention graph drops hardest at the start. */
+export function RetentionDrop() {
+  return (
+    <svg viewBox="0 0 640 250" width="100%" role="img" aria-label="Audience retention falls steeply in the first seconds, then levels off">
+      <line x1={50} y1={20} x2={50} y2={200} stroke={LINE} strokeWidth={1.5} />
+      <line x1={50} y1={200} x2={610} y2={200} stroke={LINE} strokeWidth={1.5} />
+      <text x={42} y={36} textAnchor="end" fontSize="12" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">100%</text>
+      <text x={325} y={228} textAnchor="middle" fontSize="12" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">Time into the video</text>
+      {/* effort zone */}
+      <rect x={50} y={20} width={120} height={180} fill={GREEN_SOFT} opacity={0.7} />
+      <text x={110} y={120} textAnchor="middle" fontSize="12.5" fontWeight="700" fill={GREEN} fontFamily="Hanken Grotesk, sans-serif">80% of your</text>
+      <text x={110} y={138} textAnchor="middle" fontSize="12.5" fontWeight="700" fill={GREEN} fontFamily="Hanken Grotesk, sans-serif">effort here</text>
+      {/* steep early drop then level */}
+      <path d="M50 28 C70 70 110 120 170 140 C260 168 420 178 610 184" fill="none" stroke={CORAL} strokeWidth={3.5} strokeLinecap="round" />
+      <text x={400} y={165} fontSize="12.5" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">survive the first 30s and most of them stay</text>
+    </svg>
+  );
+}
+
+/* 14.4 — Storytelling causes virality through satisfaction. */
+export function StoryToVirality() {
+  const steps = [
+    ['Character grows', 'toward a clear goal'],
+    ['Viewer is satisfied', 'they got the payoff'],
+    ['Algorithm reads it', 'satisfaction signals'],
+    ['Pushed wider', 'to more viewers'],
+  ];
+  return (
+    <svg viewBox="0 0 640 150" width="100%" role="img" aria-label="Character growth leads to satisfaction, which the algorithm reads and rewards with reach">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {steps.map((s, i) => {
+          const x = 12 + i * 158;
+          const last = i === steps.length - 1;
+          return (
+            <g key={i}>
+              <rect x={x} y={45} width={140} height={62} rx={12} fill={last ? GREEN : '#fff'} stroke={last ? GREEN : LINE} strokeWidth={1.5} />
+              <text x={x + 70} y={73} textAnchor="middle" fontSize="13.5" fontWeight="700" fill={last ? '#fff' : INK}>{s[0]}</text>
+              <text x={x + 70} y={91} textAnchor="middle" fontSize="11.5" fill={last ? GREEN_SOFT : INK_MUTED}>{s[1]}</text>
+              {!last && <text x={x + 150} y={80} textAnchor="middle" fontSize="18" fill={INK_MUTED}>→</text>}
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+  );
+}
+
 /* 11.3 — Attention decays without re-hooks; re-hooks pull it back up. */
 export function ReHookCurve() {
   return (
