@@ -17,6 +17,10 @@ import Module15 from './Module15';
 import Module16 from './Module16';
 import Module17 from './Module17';
 import Module18 from './Module18';
+import Module19 from './Module19';
+import Module20 from './Module20';
+import Module21 from './Module21';
+import Module22 from './Module22';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -44,8 +48,8 @@ export const modules: ModuleEntry[] = [
   { id: 'titles', number: 16, title: 'Crafting compelling titles', component: Module16 },
   { id: 'optimizing', number: 17, title: 'Optimizing and publishing', component: Module17 },
   { id: 'algorithm', number: 18, title: 'Understanding the algorithm', component: Module18 },
-  { id: 'shorts', number: 19, title: 'Shorts and community posts' },
-  { id: 'finances', number: 20, title: 'Managing finances and admin' },
-  { id: 'copyright', number: 21, title: "Navigating YouTube's copyright system" },
-  { id: 'self-learning', number: 22, title: 'Teaching yourself from here' },
+  { id: 'shorts', number: 19, title: 'Shorts and community posts', component: Module19 },
+  { id: 'finances', number: 20, title: 'Managing finances and admin', component: Module20 },
+  { id: 'copyright', number: 21, title: "Navigating YouTube's copyright system", component: Module21 },
+  { id: 'self-learning', number: 22, title: 'Teaching yourself from here', component: Module22 },
 ];

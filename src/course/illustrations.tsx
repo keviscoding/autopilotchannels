@@ -108,6 +108,64 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 20.1 — Payment rails compared. */
+export function PaymentRails() {
+  const rows = [
+    ['Wise', 'Default, ~80% of payments', 'Occasional bugs / slowness'],
+    ['PayPal', 'Instant, huge user base', 'Can freeze funds 180 days; high FX'],
+    ['Remitly', 'Backup where others are blocked', 'More personal than business'],
+  ];
+  const cx = [20, 150, 380];
+  return (
+    <svg viewBox="0 0 640 200" width="100%" role="img" aria-label="Three payment rails compared by use and risk">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {['Rail', 'Use for', 'Watch out for'].map((c, i) => (
+          <text key={c} x={cx[i] + 4} y={34} fontSize="13" fontWeight="700" fill={GREEN}>{c}</text>
+        ))}
+        <line x1={20} y1={46} x2={620} y2={46} stroke={LINE} strokeWidth={1.5} />
+        {rows.map((r, ri) => (
+          <g key={ri}>
+            {r.map((cell, ci) => (
+              <text key={ci} x={cx[ci] + 4} y={82 + ri * 46} fontSize={ci === 0 ? '15.5' : '13.5'}
+                    fontWeight={ci === 0 ? '700' : '400'} fill={ci === 0 ? INK : INK_MUTED}>{cell}</text>
+            ))}
+            {ri < rows.length - 1 && <line x1={20} y1={98 + ri * 46} x2={620} y2={98 + ri * 46} stroke={LINE} strokeWidth={1} />}
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/* 21.3 — Alternate clips with your own footage to break the fingerprint. */
+export function FairUseAlternation() {
+  const segs = [
+    ['clip', 10, CORAL], ['your footage', 15, GREEN], ['clip', 10, CORAL], ['your footage', 15, GREEN],
+  ] as const;
+  let x = 40;
+  const total = segs.reduce((a, s) => a + s[1], 0);
+  const usable = 560;
+  return (
+    <svg viewBox="0 0 640 150" width="100%" role="img" aria-label="Short copyrighted clips alternating with longer original footage">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {segs.map((s, i) => {
+          const w = (s[1] / total) * usable;
+          const rect = (
+            <g key={i}>
+              <rect x={x} y={50} width={w - 4} height={46} rx={8} fill={s[2] === GREEN ? GREEN_SOFT : '#FCEAE2'} stroke={s[2]} strokeWidth={1.5} />
+              <text x={x + (w - 4) / 2} y={70} textAnchor="middle" fontSize="12" fontWeight="700" fill={s[2] === GREEN ? GREEN : CORAL}>{s[0]}</text>
+              <text x={x + (w - 4) / 2} y={86} textAnchor="middle" fontSize="11" fill={INK_MUTED}>{s[1]}s</text>
+            </g>
+          );
+          x += w;
+          return rect;
+        })}
+        <text x={320} y={126} textAnchor="middle" fontSize="13" fill={INK}>Cut away to your own footage. Don't just talk over the clip while it keeps playing.</text>
+      </g>
+    </svg>
+  );
+}
+
 /* 18.2 — The algorithm as rising-difficulty levels. */
 export function AlgorithmLevels() {
   const levels = [
