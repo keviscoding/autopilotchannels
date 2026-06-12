@@ -108,6 +108,107 @@ export function SupplyDemandGap() {
   );
 }
 
+/* 18.2 — The algorithm as rising-difficulty levels. */
+export function AlgorithmLevels() {
+  const levels = [
+    ['Level 1', '~100 hardcore fans', 'low bar'],
+    ['Level 2', 'a few thousand', 'higher bar'],
+    ['Level 3', 'tens of thousands', 'higher still'],
+    ['Viral', 'the broad, casual crowd', 'hardest bar'],
+  ];
+  return (
+    <svg viewBox="0 0 640 250" width="100%" role="img" aria-label="Each level reaches a wider, less engaged audience and raises the satisfaction bar a video must clear">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {levels.map((l, i) => {
+          const w = 150 + i * 110;
+          const x = 320 - w / 2;
+          const y = 180 - i * 46;
+          const last = i === levels.length - 1;
+          return (
+            <g key={i}>
+              <rect x={x} y={y} width={w} height={40} rx={8} fill={last ? GREEN : '#fff'} stroke={last ? GREEN : LINE} strokeWidth={1.5} />
+              <text x={320} y={y + 19} textAnchor="middle" fontSize="12.5" fontWeight="700" fill={last ? '#fff' : INK}>{l[0]}: {l[1]}</text>
+              <text x={320} y={y + 33} textAnchor="middle" fontSize="10.5" fill={last ? GREEN_SOFT : INK_MUTED}>{l[2]}</text>
+            </g>
+          );
+        })}
+        <text x={320} y={232} textAnchor="middle" fontSize="12.5" fill={INK}>Clear the bar and you rise a level. Miss it and the video dies, then retries from the bottom.</text>
+      </g>
+    </svg>
+  );
+}
+
+/* 17.2 — Place ads on cliffhangers, not in dead spots. */
+export function AdPlacement() {
+  return (
+    <svg viewBox="0 0 640 230" width="100%" role="img" aria-label="An ad in a dull moment loses the viewer; an ad before a payoff gets watched">
+      <line x1={40} y1={20} x2={40} y2={180} stroke={LINE} strokeWidth={1.5} />
+      <line x1={40} y1={180} x2={610} y2={180} stroke={LINE} strokeWidth={1.5} />
+      <text x={30} y={30} textAnchor="end" fontSize="11.5" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">interest</text>
+      {/* interest curve with a dip and a build to a peak */}
+      <path d="M40 90 Q120 60 200 150 Q260 175 320 150 Q400 120 470 50 L520 30" fill="none" stroke={INK} strokeWidth={3} strokeLinecap="round" />
+      {/* bad ad: in the trough */}
+      <line x1={235} y1={30} x2={235} y2={180} stroke={CORAL} strokeWidth={2} strokeDasharray="5 4" />
+      <circle cx={235} cy={163} r={5} fill={CORAL} />
+      <text x={235} y={205} textAnchor="middle" fontSize="12" fontWeight="700" fill={CORAL} fontFamily="Hanken Grotesk, sans-serif">ad in a dull spot</text>
+      <text x={235} y={220} textAnchor="middle" fontSize="11" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">they leave</text>
+      {/* good ad: just before the peak */}
+      <line x1={445} y1={20} x2={445} y2={180} stroke={GREEN} strokeWidth={2} strokeDasharray="5 4" />
+      <circle cx={445} cy={66} r={5} fill={GREEN} />
+      <text x={470} y={150} textAnchor="middle" fontSize="12" fontWeight="700" fill={GREEN} fontFamily="Hanken Grotesk, sans-serif">ad before the payoff</text>
+      <text x={470} y={166} textAnchor="middle" fontSize="11" fill={INK_MUTED} fontFamily="Hanken Grotesk, sans-serif">they wait through it</text>
+    </svg>
+  );
+}
+
+/* 15.2 — The thumbnail funnel. */
+export function ThumbnailFunnel() {
+  const steps = [
+    ['Attention', 'colour, faces, text'],
+    ['Recognition', 'instantly clear what it is'],
+    ['Curiosity gap', 'makes them wonder'],
+    ['Title closes it', 'adds the context'],
+  ];
+  return (
+    <svg viewBox="0 0 640 150" width="100%" role="img" aria-label="A viewer moves through attention, recognition, curiosity, then the title closes the click">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        {steps.map((s, i) => {
+          const x = 12 + i * 158;
+          const last = i === steps.length - 1;
+          return (
+            <g key={i}>
+              <rect x={x} y={45} width={140} height={62} rx={12} fill={last ? GREEN : '#fff'} stroke={last ? GREEN : LINE} strokeWidth={1.5} />
+              <text x={x + 70} y={73} textAnchor="middle" fontSize="14" fontWeight="700" fill={last ? '#fff' : INK}>{s[0]}</text>
+              <text x={x + 70} y={91} textAnchor="middle" fontSize="11" fill={last ? GREEN_SOFT : INK_MUTED}>{s[1]}</text>
+              {!last && <text x={x + 150} y={80} textAnchor="middle" fontSize="18" fill={INK_MUTED}>→</text>}
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+  );
+}
+
+/* 16.1 — Thumbnail brings them in, title sells. */
+export function ThumbnailTitleCombo() {
+  return (
+    <svg viewBox="0 0 640 170" width="100%" role="img" aria-label="The thumbnail brings the viewer in and the title sells the click">
+      <g fontFamily="Hanken Grotesk, sans-serif">
+        <rect x={40} y={40} width={230} height={90} rx={14} fill={GREEN_SOFT} stroke={GREEN} strokeWidth={1.5} />
+        <text x={155} y={78} textAnchor="middle" fontSize="16" fontWeight="700" fill={GREEN}>Thumbnail</text>
+        <text x={155} y={100} textAnchor="middle" fontSize="13" fill={INK_MUTED}>brings them in</text>
+
+        <text x={300} y={92} textAnchor="middle" fontSize="22" fill={INK_MUTED}>+</text>
+
+        <rect x={330} y={40} width={230} height={90} rx={14} fill="#fff" stroke={LINE} strokeWidth={1.5} />
+        <text x={445} y={78} textAnchor="middle" fontSize="16" fontWeight="700" fill={INK}>Title</text>
+        <text x={445} y={100} textAnchor="middle" fontSize="13" fill={INK_MUTED}>adds context, sells the click</text>
+        <text x={320} y={152} textAnchor="middle" fontSize="13" fill={INK}>Write the title against the finished thumbnail, never the other way round.</text>
+      </g>
+    </svg>
+  );
+}
+
 /* 13.1 — The retention graph drops hardest at the start. */
 export function RetentionDrop() {
   return (

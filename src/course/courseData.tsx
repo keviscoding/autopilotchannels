@@ -13,6 +13,10 @@ import Module11 from './Module11';
 import Module12 from './Module12';
 import Module13 from './Module13';
 import Module14 from './Module14';
+import Module15 from './Module15';
+import Module16 from './Module16';
+import Module17 from './Module17';
+import Module18 from './Module18';
 
 export interface ModuleEntry {
   id: string;          // url slug
@@ -36,10 +40,10 @@ export const modules: ModuleEntry[] = [
   { id: 'voice-overs', number: 12, title: 'Voice overs: directing attention with sound', component: Module12 },
   { id: 'editing', number: 13, title: 'Editing: where attention is won or lost', component: Module13 },
   { id: 'storytelling', number: 14, title: 'The art of storytelling', component: Module14 },
-  { id: 'thumbnails', number: 15, title: 'Designing thumbnails that get clicked' },
-  { id: 'titles', number: 16, title: 'Crafting compelling titles' },
-  { id: 'optimizing', number: 17, title: 'Optimizing and testing videos' },
-  { id: 'algorithm', number: 18, title: 'Understanding the algorithm' },
+  { id: 'thumbnails', number: 15, title: 'Designing thumbnails that get clicked', component: Module15 },
+  { id: 'titles', number: 16, title: 'Crafting compelling titles', component: Module16 },
+  { id: 'optimizing', number: 17, title: 'Optimizing and publishing', component: Module17 },
+  { id: 'algorithm', number: 18, title: 'Understanding the algorithm', component: Module18 },
   { id: 'shorts', number: 19, title: 'Shorts and community posts' },
   { id: 'finances', number: 20, title: 'Managing finances and admin' },
   { id: 'copyright', number: 21, title: "Navigating YouTube's copyright system" },
