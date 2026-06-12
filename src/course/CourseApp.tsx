@@ -55,7 +55,7 @@ export default function CourseApp() {
                       onClick={() => available && go(m.id)}
                       disabled={!available}
                     >
-                      <span className="course-nav__num">{String(m.number).padStart(2, '0')}</span>
+                      <span className="course-nav__num">{m.number === 0 ? '·' : String(m.number).padStart(2, '0')}</span>
                       <span className="course-nav__title">{m.title}</span>
                       {!available && <span className="course-nav__soon">Soon</span>}
                     </button>
