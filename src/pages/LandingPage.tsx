@@ -21,7 +21,12 @@ function Logo({ light }: { light?: boolean }) {
   const lead = light ? '#5FD49E' : '#15875B';
   const trail = light ? '#2A9E6E' : '#8FCFAE';
   return (
-    <a href="#top" className={'logo' + (light ? ' logo--light' : '')} aria-label="HeadStart Channels home">
+    <a
+      href="#top"
+      onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+      className={'logo' + (light ? ' logo--light' : '')}
+      aria-label="HeadStart Channels home"
+    >
       <svg className="logo__mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
         <path d="M16 22 L28 32 L16 42" stroke={trail} strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M32 18 L48 32 L32 46" stroke={lead} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
@@ -126,9 +131,9 @@ export default function LandingPage() {
           <Logo />
           <div className="nav__cta">
             <div className="nav__links">
-              <a href="#how">How it works</a>
-              <a href="#results">Results</a>
-              <a href="#faq">FAQ</a>
+              <a href="#how" onClick={(e) => { e.preventDefault(); scrollTo('how'); }}>How it works</a>
+              <a href="#results" onClick={(e) => { e.preventDefault(); scrollTo('results'); }}>Results</a>
+              <a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>FAQ</a>
             </div>
             <button className="btn btn--primary" onClick={() => scrollTo('inside')}>
               Apply now
