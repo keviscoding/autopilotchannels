@@ -112,7 +112,7 @@ export default function LandingPage() {
         y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl+'Script'],vlf=v[c][vl+'Loaded'],ve='Embed';
         if(!vsl){vsl=function(u,cb){if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}i.getElementsByTagName("head")[0].appendChild(s);};}
         vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
-      })(window, document, 'Vidalytics', 'vidalytics_embed_Tjy4NmnGY26ZsvRR', 'https://fast.vidalytics.com/embeds/tlH3XS0p/Tjy4NmnGY26ZsvRR/');
+      })(window, document, 'Vidalytics', 'vidalytics_embed_u5AH8DGqSt4nqIHd', 'https://fast.vidalytics.com/embeds/tlH3XS0p/u5AH8DGqSt4nqIHd/');
     `;
     document.head.appendChild(script);
     return () => { if (script.parentNode) script.parentNode.removeChild(script); };
@@ -180,14 +180,14 @@ export default function LandingPage() {
       <section className="section section--sand section--tight" id="vsl">
         <div className="container">
           <SectionHead
-            eyebrow="Watch this first"
-            title="I'll show you exactly how it works"
-            lead="One video. A real monetised channel, the strategy behind it, and what your first month could look like if you start off the right way."
+            eyebrow="How it works"
+            title="Watch the channel transfer, start to finish"
+            lead="A real walkthrough of how a pre-monetised channel gets handed over to you. No edits, no hype, just the actual process."
           />
           <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
             <div
-              id="vidalytics_embed_Tjy4NmnGY26ZsvRR"
-              style={{ width: '100%', position: 'relative', paddingTop: '66.67%' }}
+              id="vidalytics_embed_u5AH8DGqSt4nqIHd"
+              style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
             />
           </Reveal>
         </div>
