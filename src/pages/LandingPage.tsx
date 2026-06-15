@@ -444,8 +444,39 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ──── WHAT HAPPENS AFTER YOU BOOK ──── */}
+      <section className="section" id="after">
+        <div className="container">
+          <SectionHead
+            eyebrow="After you book"
+            title="How the channel becomes 100% yours"
+            lead="No shared passwords, no catch. Here's exactly how the handover works, and why we can't keep access once it's done."
+          />
+          <div className="steps">
+            {[
+              { n: '01', ic: 'user-round-check', h: 'We make you an owner', p: "Your channel is a YouTube Brand Account, not a personal one, so it transfers to your own Google account. We invite your email as an owner. You log in with your details, never ours." },
+              { n: '02', ic: 'upload', h: 'You post from day one', p: "The moment you accept, you can start uploading in the niche we picked with you. You don't wait around. That's also why the 14-day guarantee starts immediately." },
+              { n: '03', ic: 'lock', h: 'After 7 days, you remove us', p: "YouTube requires you to be an owner for 7 days before you can become the primary owner. On day 7 you do exactly that and remove us completely. From then, only you can ever access it." },
+            ].map((s, i) => (
+              <Reveal className="step" key={s.n} delay={i * 90}>
+                <span className="step__num">{s.n}</span>
+                <div className="step__ic"><Icon name={s.ic} /></div>
+                <h3>{s.h}</h3>
+                <p>{s.p}</p>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal className="center" style={{ marginTop: 28 }}>
+            <p style={{ fontSize: 15.5, color: 'var(--fg-muted)', maxWidth: '60ch', margin: '0 auto' }}>
+              Because it's a Brand Account, once we're removed there is no recovery email or backdoor we could use.
+              The channel is yours, permanently. You can watch the whole process in the video above.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ──── GUARANTEE ──── */}
-      <section className="section" id="guarantee">
+      <section className="section section--sand" id="guarantee">
         <div className="container container--narrow">
           <SectionHead
             eyebrow="Our guarantee"
@@ -471,17 +502,13 @@ export default function LandingPage() {
             <div style={{ padding: '28px 32px' }}>
               <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 18px', maxWidth: 'none' }}>
                 Here's the deal, in plain terms. When you get your channel, you start posting from day one in the
-                niche we pick together. If 14 days later you haven't earned your first $100, you email us and we
+                niche we pick together. If 14 days later you haven't earned your first $100, you message us and we
                 refund you in full. No forms, no hoops, no questions asked.
               </p>
-              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 18px', maxWidth: 'none' }}>
+              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: 0, maxWidth: 'none' }}>
                 All we ask is that you actually post. The guarantee is for people who do the simple work we lay
                 out, not for people who buy it and let it sit. That's the only condition, and it's the same thing
                 that makes the channel work in the first place.
-              </p>
-              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-900)', margin: 0, maxWidth: 'none', fontWeight: 600 }}>
-                You're not betting on a maybe. You're giving a proven system two weeks to show you it works, with
-                your money fully protected the entire time. If it doesn't deliver, that's our problem, not yours.
               </p>
             </div>
           </Reveal>
