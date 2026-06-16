@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Raw win screenshots (converted copies live in public/wins)
+FLIP THRU WINS/

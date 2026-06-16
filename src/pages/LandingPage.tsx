@@ -91,6 +91,93 @@ const moreResults = [
 const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/headstart-content-strategy-call';
 
 /* ==================================================================
+   WINS CAROUSEL
+   ================================================================== */
+const WIN_COUNT = 21;
+const wins = Array.from({ length: WIN_COUNT }, (_, i) => `/wins/win-${i + 1}.jpg`);
+
+function WinsCarousel() {
+  const [idx, setIdx] = useState(0);
+  const touchX = useRef<number | null>(null);
+
+  const go = (n: number) => setIdx(((n % WIN_COUNT) + WIN_COUNT) % WIN_COUNT);
+
+  const onTouchStart = (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchX.current == null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if (dx > 40) go(idx - 1);
+    else if (dx < -40) go(idx + 1);
+    touchX.current = null;
+  };
+
+  const arrowStyle = (side: 'left' | 'right'): React.CSSProperties => ({
+    position: 'absolute', top: '50%', [side]: 10, transform: 'translateY(-50%)',
+    width: 44, height: 44, borderRadius: 999, border: 'none', cursor: 'pointer',
+    background: 'rgba(255,255,255,.92)', color: 'var(--ink-900)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2,
+    boxShadow: '0 4px 14px rgba(0,0,0,.25)',
+  });
+
+  return (
+    <div style={{ maxWidth: 920, margin: '44px auto 0' }}>
+      <div style={{ position: 'relative' }}>
+        <button aria-label="Previous win" onClick={() => go(idx - 1)} style={arrowStyle('left')}>
+          <Icon name="chevron-left" />
+        </button>
+        <button aria-label="Next win" onClick={() => go(idx + 1)} style={arrowStyle('right')}>
+          <Icon name="chevron-right" />
+        </button>
+        <div
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          style={{
+            height: 'clamp(380px, 58vh, 520px)',
+            background: 'var(--dark-bg)',
+            borderRadius: 24,
+            border: '1px solid var(--line)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            boxShadow: '0 2px 6px rgba(22,34,31,.05), 0 24px 60px rgba(22,34,31,.10)',
+          }}
+        >
+          <img
+            src={wins[idx]}
+            alt={`Member win ${idx + 1}`}
+            loading="lazy"
+            style={{ maxWidth: '94%', maxHeight: '90%', objectFit: 'contain', borderRadius: 10 }}
+          />
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 6, marginTop: 22 }}>
+        {wins.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Go to win ${i + 1}`}
+            onClick={() => setIdx(i)}
+            style={{
+              width: i === idx ? 22 : 8,
+              height: 8,
+              borderRadius: 999,
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              background: i === idx ? 'var(--green-600)' : 'var(--line-strong)',
+              transition: 'width .2s ease, background .2s ease',
+            }}
+          />
+        ))}
+      </div>
+      <p style={{ textAlign: 'center', marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)' }}>
+        {idx + 1} of {WIN_COUNT}
+      </p>
+    </div>
+  );
+}
+
+/* ==================================================================
    PAGE
    ================================================================== */
 export default function LandingPage() {
@@ -340,8 +427,20 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ──── FLIP THROUGH WINS ──── */}
+      <section className="section" id="wins">
+        <div className="container">
+          <SectionHead
+            eyebrow="More proof"
+            title="Flip through the wins"
+            lead="Real screenshots from members: surging views, first payouts, and the messages right after. Swipe through, or use the arrows."
+          />
+          <WinsCarousel />
+        </div>
+      </section>
+
       {/* ──── OFFER STACK ──── */}
-      <section className="section" id="inside">
+      <section className="section section--sand" id="inside">
         <div className="container">
           <SectionHead
             eyebrow="What's inside"
