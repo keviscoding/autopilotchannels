@@ -132,6 +132,7 @@ function WinsCarousel() {
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           style={{
+            position: 'relative',
             height: 'clamp(380px, 58vh, 520px)',
             background: 'var(--dark-bg)',
             borderRadius: 24,
@@ -143,6 +144,24 @@ function WinsCarousel() {
             boxShadow: '0 2px 6px rgba(22,34,31,.05), 0 24px 60px rgba(22,34,31,.10)',
           }}
         >
+          <div
+            style={{
+              position: 'absolute', top: 14, left: 16, zIndex: 2,
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '7px 12px 7px 10px', borderRadius: 999,
+              background: 'rgba(17,32,27,.55)', backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <path d="M16 22 L28 32 L16 42" stroke="#2A9E6E" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M32 18 L48 32 L32 46" stroke="#5FD49E" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 14, letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
+              <b style={{ color: '#fff', fontWeight: 800 }}>HeadStart</b>
+              <span style={{ color: 'var(--dark-dim)', fontWeight: 500 }}> Channels</span>
+            </span>
+          </div>
           <img
             src={wins[idx]}
             alt={`Member win ${idx + 1}`}
