@@ -210,13 +210,14 @@ export default function LandingPage() {
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.textContent = `
+    const loader = (id: string) => `
       (function (v, i, d, a, l, y, t, c, s) {
         y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl+'Script'],vlf=v[c][vl+'Loaded'],ve='Embed';
         if(!vsl){vsl=function(u,cb){if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}i.getElementsByTagName("head")[0].appendChild(s);};}
         vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
-      })(window, document, 'Vidalytics', 'vidalytics_embed_u5AH8DGqSt4nqIHd', 'https://fast.vidalytics.com/embeds/tlH3XS0p/u5AH8DGqSt4nqIHd/');
+      })(window, document, 'Vidalytics', 'vidalytics_embed_' + '${id}', 'https://fast.vidalytics.com/embeds/tlH3XS0p/${id}/');
     `;
+    script.textContent = loader('CYJhLLxwdcaCAkap') + loader('u5AH8DGqSt4nqIHd');
     document.head.appendChild(script);
     return () => { if (script.parentNode) script.parentNode.removeChild(script); };
   }, []);
@@ -283,13 +284,12 @@ export default function LandingPage() {
       <section className="section section--sand section--tight" id="vsl">
         <div className="container">
           <SectionHead
-            eyebrow="How it works"
-            title="Watch the channel transfer, start to finish"
-            lead="A real walkthrough of how a pre-monetised channel gets handed over to you. No edits, no hype, just the actual process."
+            eyebrow="Watch this"
+            title="How it all works, in one video"
           />
           <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
             <div
-              id="vidalytics_embed_u5AH8DGqSt4nqIHd"
+              id="vidalytics_embed_CYJhLLxwdcaCAkap"
               style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
             />
           </Reveal>
@@ -561,8 +561,14 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="After you book"
             title="How the channel becomes 100% yours"
-            lead="The whole handover, step by step."
+            lead="The whole handover, step by step. Watch it, then read the breakdown."
           />
+          <Reveal className="frame" style={{ maxWidth: 820, margin: '40px auto 8px' }}>
+            <div
+              id="vidalytics_embed_u5AH8DGqSt4nqIHd"
+              style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
+            />
+          </Reveal>
           <div className="steps">
             {[
               { n: '01', ic: 'user-round-check', h: 'We make you an owner', p: "Your channel is a YouTube Brand Account, not a personal one, so it transfers to your own Google account. We invite your email as an owner. You log in with your details, never ours." },
@@ -577,11 +583,6 @@ export default function LandingPage() {
               </Reveal>
             ))}
           </div>
-          <Reveal className="center" style={{ marginTop: 28 }}>
-            <p style={{ fontSize: 15.5, color: 'var(--fg-muted)', maxWidth: '60ch', margin: '0 auto' }}>
-              You can watch the whole process in the video above.
-            </p>
-          </Reveal>
         </div>
       </section>
 
