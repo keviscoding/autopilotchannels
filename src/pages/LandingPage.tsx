@@ -189,9 +189,6 @@ function WinsCarousel() {
           />
         ))}
       </div>
-      <p style={{ textAlign: 'center', marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)' }}>
-        {idx + 1} of {WIN_COUNT}
-      </p>
     </div>
   );
 }
@@ -382,7 +379,7 @@ export default function LandingPage() {
           </div>
           <Reveal className="disclaimer">
             <Icon name="info" />
-            <span>These are real customer results shared with permission. They are not typical and not a guarantee. Your results depend on your effort and other factors.</span>
+            <span>Results shown are examples, not typical, and not a guarantee. What you earn depends on your effort and other factors.</span>
           </Reveal>
         </div>
       </section>
@@ -449,11 +446,7 @@ export default function LandingPage() {
       {/* ──── FLIP THROUGH WINS ──── */}
       <section className="section" id="wins">
         <div className="container">
-          <SectionHead
-            eyebrow="More proof"
-            title="Flip through the wins"
-            lead="Real screenshots from members: surging views, first payouts, and the messages right after. Swipe through, or use the arrows."
-          />
+          <SectionHead title="Flip through more wins" />
           <WinsCarousel />
         </div>
       </section>
@@ -568,7 +561,7 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="After you book"
             title="How the channel becomes 100% yours"
-            lead="No shared passwords, no catch. Here's exactly how the handover works, and why we can't keep access once it's done."
+            lead="The whole handover, step by step."
           />
           <div className="steps">
             {[
@@ -586,8 +579,7 @@ export default function LandingPage() {
           </div>
           <Reveal className="center" style={{ marginTop: 28 }}>
             <p style={{ fontSize: 15.5, color: 'var(--fg-muted)', maxWidth: '60ch', margin: '0 auto' }}>
-              Because it's a Brand Account, once we're removed there is no recovery email or backdoor we could use.
-              The channel is yours, permanently. You can watch the whole process in the video above.
+              You can watch the whole process in the video above.
             </p>
           </Reveal>
         </div>
