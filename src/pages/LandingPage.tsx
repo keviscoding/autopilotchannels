@@ -217,7 +217,7 @@ export default function LandingPage() {
         vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
       })(window, document, 'Vidalytics', 'vidalytics_embed_' + '${id}', 'https://fast.vidalytics.com/embeds/tlH3XS0p/${id}/');
     `;
-    script.textContent = loader('CYJhLLxwdcaCAkap') + loader('u5AH8DGqSt4nqIHd');
+    script.textContent = loader('fRpXzWP4uXGjFmhc') + loader('u5AH8DGqSt4nqIHd');
     document.head.appendChild(script);
     return () => { if (script.parentNode) script.parentNode.removeChild(script); };
   }, []);
@@ -289,7 +289,7 @@ export default function LandingPage() {
           />
           <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
             <div
-              id="vidalytics_embed_CYJhLLxwdcaCAkap"
+              id="vidalytics_embed_fRpXzWP4uXGjFmhc"
               style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
             />
           </Reveal>
