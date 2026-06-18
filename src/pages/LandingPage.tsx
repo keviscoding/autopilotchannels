@@ -251,15 +251,16 @@ export default function LandingPage() {
         <div className="hero__glow" />
         <div className="container hero__inner">
           <Reveal>
-            <span className="pill-tag"><Icon name="sparkles" /> A calmer way to start on YouTube</span>
+            <span className="pill-tag"><Icon name="sparkles" /> Nobody tells beginners this</span>
           </Reveal>
           <Reveal delay={60}>
-            <h1>Skip the two-year grind. Start with a channel that <em>already earns</em>.</h1>
+            <h1>Your videos aren't the problem. Your <em>trust score</em> is.</h1>
           </Reveal>
           <Reveal delay={120}>
             <p className="hero__sub">
-              We hand you a YouTube channel that already meets the earning requirements - plus a plain-English, 
-              step-by-step plan to grow it. No filming yourself. No tech skills needed. You start at the part where it works.
+              It's why you can post for months, do everything right, and still get nothing. We give you a channel
+              YouTube already trusts, a proven niche, and the exact steps to grow it. No filming, built for
+              beginners, refunded in full if you don't make $100 in 14 days.
             </p>
           </Reveal>
           <Reveal delay={180} className="hero__ctarow">
