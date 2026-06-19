@@ -256,20 +256,24 @@ export default function LandingPage() {
           </Reveal>
           <Reveal delay={120}>
             <p className="hero__sub">
-              It's why you can post for months, do everything right, and still get nothing. We give you a channel
-              YouTube already trusts, a proven niche, and the exact steps to grow it. No filming, built for
-              beginners, refunded in full if you don't make $100 in 14 days.
+              It's why you can post for months, do everything right, and earn nothing. Here's the fix, in the
+              video below.
             </p>
           </Reveal>
-          <Reveal delay={180} className="hero__ctarow">
+          <Reveal delay={160} className="hero__media" style={{ maxWidth: 760 }}>
+            <div className="frame">
+              <div
+                id="vidalytics_embed_fRpXzWP4uXGjFmhc"
+                style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={200} className="hero__ctarow">
             <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
-            <button className="btn btn--ghost" onClick={() => scrollTo('vsl')}>
-              <Icon name="play-circle" /> Watch how it works
-            </button>
           </Reveal>
-          <Reveal delay={220}>
+          <Reveal delay={240}>
             <div className="trust">
               <span className="trust__item"><Icon name="shield-check" /> Earn $100 in 14 days or full refund</span>
               <span className="trust__item"><Icon name="video-off" /> No filming yourself</span>
@@ -278,22 +282,6 @@ export default function LandingPage() {
           </Reveal>
         </div>
       </header>
-
-      {/* ──── VSL ──── */}
-      <section className="section section--sand section--tight" id="vsl">
-        <div className="container">
-          <SectionHead
-            eyebrow="Watch this"
-            title="How it all works, in one video"
-          />
-          <Reveal className="frame" style={{ maxWidth: 880, margin: '44px auto 0' }}>
-            <div
-              id="vidalytics_embed_fRpXzWP4uXGjFmhc"
-              style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
-            />
-          </Reveal>
-        </div>
-      </section>
 
       {/* ──── HOW IT WORKS ──── */}
       <section className="section" id="how">
