@@ -70,9 +70,6 @@ function SectionHead({ eyebrow, title, lead }: { eyebrow?: string; title: string
   );
 }
 
-const SPOTS_TOTAL = 50;
-const SPOTS_LEFT = 17;
-
 /* ---- Testimonial data ---- */
 const proofCards = [
   { name: 'Theo', result: 'Zero to monetised, now $43K/month', src: '/theo-dashboard.jpeg', aspect: 'landscape' },
@@ -265,7 +262,7 @@ export default function LandingPage() {
           </Reveal>
           <Reveal delay={180} className="hero__ctarow">
             <button className="btn btn--primary btn--lg" onClick={() => scrollTo('inside')}>
-              Claim your head-start channel <Icon name="arrow-right" />
+              Apply for your channel <Icon name="arrow-right" />
             </button>
             <button className="btn btn--ghost" onClick={() => scrollTo('vsl')}>
               <Icon name="play-circle" /> Watch how it works
@@ -539,18 +536,14 @@ export default function LandingPage() {
           <SectionHead
             eyebrow="Limited availability"
             title="We only have a finite number of channels"
-            lead="Not everyone gets one. Book a call with our team to find out if you're the right fit, pick your niche, and secure your channel before they're gone."
+            lead="Not everyone gets one. Apply, and we'll find out on a quick call whether you're the right fit, pick your niche, and get your channel set up."
           />
           <Reveal className="center" style={{ marginTop: 36 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, marginBottom: 24 }}>
-              <Icon name="users" />
-              <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink-900)' }}>{SPOTS_LEFT} of {SPOTS_TOTAL} channels remaining</span>
-            </div>
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
-              Book your call <Icon name="arrow-right" />
+              Apply for your channel <Icon name="arrow-right" />
             </a>
             <p style={{ marginTop: 16, fontSize: 15, color: 'var(--fg-muted)', maxWidth: 'none', margin: '16px auto 0' }}>
-              A ~15-minute conversation to see if HeadStartChannels is right for you.
+              A ~15-minute call to see if you qualify.
             </p>
           </Reveal>
         </div>
@@ -626,7 +619,7 @@ export default function LandingPage() {
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
-              Book your call <Icon name="arrow-right" />
+              Apply for your channel <Icon name="arrow-right" />
             </a>
           </Reveal>
         </div>
