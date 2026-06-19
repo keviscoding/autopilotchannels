@@ -18,7 +18,30 @@ function Check() {
   );
 }
 
+// Calendly redirects to this page with event details appended as query
+// params. With hash routing they can land after the '#', so read both.
+function getBookingDetails(): { when: string; firstName: string } {
+  if (typeof window === 'undefined') return { when: '', firstName: '' };
+  const hash = window.location.hash;
+  const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
+  const searchQ = window.location.search.startsWith('?') ? window.location.search.slice(1) : '';
+  const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
+  const start = params.get('event_start_time');
+  const name = params.get('invitee_full_name') || '';
+  let when = '';
+  if (start) {
+    const d = new Date(start);
+    if (!isNaN(d.getTime())) {
+      when = new Intl.DateTimeFormat(undefined, {
+        weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit',
+      }).format(d);
+    }
+  }
+  return { when, firstName: name.trim().split(' ')[0] || '' };
+}
+
 export default function Confirmed() {
+  const { when, firstName } = getBookingDetails();
   const items = [
     'Add the call to your calendar now so it doesn\'t slip',
     'Watch the video above',
@@ -45,11 +68,13 @@ export default function Confirmed() {
           fontSize: 'clamp(2.1rem, 1.4rem + 3vw, 3.25rem)', lineHeight: 1.08, letterSpacing: '-0.02em',
           color: 'var(--ink-900)', margin: '22px 0 0',
         }}>
-          You're booked. Here's what happens next.
+          You're booked{firstName ? `, ${firstName}` : ''}. Here's what happens next.
         </h1>
 
-        <p style={{ fontSize: 'var(--fs-lead)', lineHeight: 1.5, color: 'var(--fg-muted)', margin: '20px auto 0', maxWidth: '46ch' }}>
-          Your call is confirmed. Check your email for the details and calendar invite.
+        <p style={{ fontSize: 'var(--fs-lead)', lineHeight: 1.5, color: 'var(--fg-muted)', margin: '20px auto 0', maxWidth: '48ch' }}>
+          {when
+            ? `Your call is confirmed for ${when}. Check your email for the details and calendar invite.`
+            : 'Your call is confirmed. Check your email for the details and calendar invite.'}
         </p>
 
         <p style={{ fontSize: 19, fontWeight: 600, color: 'var(--ink-900)', margin: '40px auto 18px', maxWidth: '44ch' }}>

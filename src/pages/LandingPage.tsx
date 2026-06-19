@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { PopupButton } from '@typeform/embed-react';
+
+const TYPEFORM_ID = 'uNrHKe9G';
 
 /* ---- Lucide icon helper ---- */
 function Icon({ name }: { name: string }) {
@@ -84,8 +87,6 @@ const moreResults = [
   { name: 'Theo', result: 'From zero to $43,000/month', src: '/theo-43k.png', aspect: 'portrait' },
   { name: 'Bara', result: 'Got the Silver Play Button', src: '/bara-playbutton.jpeg', aspect: 'portrait' },
 ];
-
-const CALENDLY_URL = 'https://calendly.com/d/cxsk-96h-3d5/headstart-content-strategy-call';
 
 /* ==================================================================
    WINS CAROUSEL
@@ -236,9 +237,9 @@ export default function LandingPage() {
               <a href="#results" onClick={(e) => { e.preventDefault(); scrollTo('results'); }}>Results</a>
               <a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>FAQ</a>
             </div>
-            <button className="btn btn--primary" onClick={() => scrollTo('inside')}>
+            <PopupButton id={TYPEFORM_ID} className="btn btn--primary">
               Apply now
-            </button>
+            </PopupButton>
           </div>
         </div>
       </nav>
@@ -261,9 +262,9 @@ export default function LandingPage() {
             </p>
           </Reveal>
           <Reveal delay={180} className="hero__ctarow">
-            <button className="btn btn--primary btn--lg" onClick={() => scrollTo('inside')}>
+            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
-            </button>
+            </PopupButton>
             <button className="btn btn--ghost" onClick={() => scrollTo('vsl')}>
               <Icon name="play-circle" /> Watch how it works
             </button>
@@ -486,9 +487,9 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
-            </a>
+            </PopupButton>
             <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center', maxWidth: 'none', margin: '14px auto 0' }}>
               We only have a limited number of channels. Book a call to see if you qualify.
             </p>
@@ -539,9 +540,9 @@ export default function LandingPage() {
             lead="Not everyone gets one. Apply, and we'll find out on a quick call whether you're the right fit, pick your niche, and get your channel set up."
           />
           <Reveal className="center" style={{ marginTop: 36 }}>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
-            </a>
+            </PopupButton>
             <p style={{ marginTop: 16, fontSize: 15, color: 'var(--fg-muted)', maxWidth: 'none', margin: '16px auto 0' }}>
               A ~15-minute call to see if you qualify.
             </p>
@@ -618,9 +619,9 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
-            </a>
+            </PopupButton>
           </Reveal>
         </div>
       </section>
@@ -669,9 +670,9 @@ export default function LandingPage() {
             <p>There's a spot in this round with your name on it. Ready to start ahead?</p>
           </Reveal>
           <Reveal delay={160}>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
-            </a>
+            </PopupButton>
             <div className="trust" style={{ marginTop: 22 }}>
               <span className="trust__item"><Icon name="shield-check" /> Earn $100 in 14 days or full refund</span>
             </div>
