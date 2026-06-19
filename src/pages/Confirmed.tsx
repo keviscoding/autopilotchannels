@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 function Logo() {
   return (
     <a href="/" className="logo" aria-label="HeadStart Channels home" style={{ textDecoration: 'none' }}>
@@ -42,6 +44,15 @@ function getBookingDetails(): { when: string; firstName: string } {
 
 export default function Confirmed() {
   const { when, firstName } = getBookingDetails();
+
+  // The Typeform popup locks page scroll (overflow:hidden) while open and
+  // restores it on close. If it ends via a redirect, that lock can persist,
+  // so clear any leftover scroll-lock when this page loads.
+  useEffect(() => {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }, []);
+
   const items = [
     'Add the call to your calendar now so it doesn\'t slip',
     'Watch the video above',
