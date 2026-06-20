@@ -397,6 +397,25 @@ export default function LandingPage() {
             </div>
           </Reveal>
 
+          {/* Pamela - playable video */}
+          <Reveal className="proof-card" style={{ maxWidth: 560, margin: '24px auto 0' }}>
+            <div style={{ borderBottom: '1px solid var(--line)' }}>
+              <video
+                src="/pamela-stats.mp4"
+                poster="/pamela-poster.jpg"
+                controls
+                playsInline
+                preload="metadata"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+            </div>
+            <div className="proof-card__body">
+              <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
+              <h4>Pamela (Australia)</h4>
+              <p>$12,212.36 earned. She'd never posted a video in her life before this year, and films after she puts her kids to bed.</p>
+            </div>
+          </Reveal>
+
           {/* Landscape results */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 32, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
             {moreResults.filter(r => r.aspect === 'landscape').map((item, i) => (
