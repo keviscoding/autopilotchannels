@@ -412,7 +412,7 @@ export default function LandingPage() {
             <div className="proof-card__body">
               <span className="proof-card__label"><Icon name="badge-check" /> Customer result</span>
               <h4>Pamela (Australia)</h4>
-              <p>$12,212.36 earned. She'd never posted a video in her life before this year, and films after she puts her kids to bed.</p>
+              <p>Hit her first $10k/month. She'd never posted a video in her life before this year, and works on her channel after she puts her kids to bed.</p>
             </div>
           </Reveal>
 
