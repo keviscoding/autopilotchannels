@@ -53,6 +53,23 @@ export default function Confirmed() {
     document.documentElement.style.overflow = '';
   }, []);
 
+  // Load the re-edited transfer walkthrough (Vidalytics) so committed people
+  // watch it before the call and arrive already reassured on ownership.
+  useEffect(() => {
+    const id = 'Xs9145qvedPuS6ij';
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.textContent = `
+      (function (v, i, d, a, l, y, t, c, s) {
+        y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl+'Script'],vlf=v[c][vl+'Loaded'],ve='Embed';
+        if(!vsl){vsl=function(u,cb){if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}i.getElementsByTagName("head")[0].appendChild(s);};}
+        vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
+      })(window, document, 'Vidalytics', 'vidalytics_embed_${id}', 'https://fast.vidalytics.com/embeds/tlH3XS0p/${id}/');
+    `;
+    document.head.appendChild(script);
+    return () => { if (script.parentNode) script.parentNode.removeChild(script); };
+  }, []);
+
   const items = [
     'Add the call to your calendar now so it doesn\'t slip',
     'Watch the video above',
@@ -102,6 +119,21 @@ export default function Confirmed() {
               allowFullScreen
             />
           </div>
+        </div>
+
+        <p style={{ fontSize: 19, fontWeight: 600, color: 'var(--ink-900)', margin: '52px auto 6px', maxWidth: '46ch' }}>
+          And here's exactly how your channel becomes 100% yours.
+        </p>
+        <p style={{ fontSize: 16, color: 'var(--fg-muted)', margin: '0 auto 18px', maxWidth: '50ch', lineHeight: 1.55 }}>
+          The full transfer, start to finish. The key part: once it's done, we're completely locked out, and the
+          channel is irreversibly yours on your own account.
+        </p>
+
+        <div className="frame" style={{ maxWidth: 720, margin: '0 auto', borderRadius: 20, overflow: 'hidden' }}>
+          <div
+            id="vidalytics_embed_Xs9145qvedPuS6ij"
+            style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
+          />
         </div>
 
         <div style={{

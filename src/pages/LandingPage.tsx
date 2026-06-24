@@ -215,7 +215,7 @@ export default function LandingPage() {
         vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
       })(window, document, 'Vidalytics', 'vidalytics_embed_' + '${id}', 'https://fast.vidalytics.com/embeds/tlH3XS0p/${id}/');
     `;
-    script.textContent = loader('fRpXzWP4uXGjFmhc') + loader('u5AH8DGqSt4nqIHd');
+    script.textContent = loader('fRpXzWP4uXGjFmhc') + loader('Xs9145qvedPuS6ij');
     document.head.appendChild(script);
     return () => { if (script.parentNode) script.parentNode.removeChild(script); };
   }, []);
@@ -276,6 +276,7 @@ export default function LandingPage() {
           <Reveal delay={240}>
             <div className="trust">
               <span className="trust__item"><Icon name="shield-check" /> Earn $100 in 14 days or full refund</span>
+              <span className="trust__item"><Icon name="lock" /> Transfers 100% to you, we get locked out</span>
               <span className="trust__item"><Icon name="video-off" /> No filming yourself</span>
               <span className="trust__item"><Icon name="user-round-check" /> Built for total beginners</span>
             </div>
@@ -561,21 +562,47 @@ export default function LandingPage() {
       <section className="section" id="after">
         <div className="container">
           <SectionHead
-            eyebrow="After you book"
-            title="How the channel becomes 100% yours"
-            lead="The whole handover, step by step. Watch it, then read the breakdown."
+            eyebrow="The part people worry about"
+            title={'"What if I build it up, then you take it back?"'}
+            lead="It's the fair question, so here's the plain truth about who owns and controls the channel."
           />
-          <Reveal className="frame" style={{ maxWidth: 820, margin: '40px auto 8px' }}>
-            <div
-              id="vidalytics_embed_u5AH8DGqSt4nqIHd"
-              style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
-            />
+
+          {/* Load-bearing reassurance, carried by text so it lands whether or not they press play */}
+          <Reveal
+            style={{
+              maxWidth: 720,
+              margin: '40px auto 0',
+              background: '#fff',
+              border: '1.5px solid var(--green-300)',
+              borderRadius: 24,
+              overflow: 'hidden',
+              boxShadow: '0 6px 16px rgba(22,34,31,.08), 0 32px 70px rgba(13,87,59,.12)',
+            }}
+          >
+            <div style={{ background: 'var(--green-600)', color: '#fff', padding: '26px 32px', textAlign: 'center' }}>
+              <span style={{ display: 'inline-flex', marginBottom: 10 }}><Icon name="lock" /></span>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 24, margin: 0, color: '#fff', lineHeight: 1.25 }}>
+                Once it's transferred, we are completely locked out. It's irreversibly 100% yours.
+              </h3>
+            </div>
+            <div style={{ padding: '28px 32px' }}>
+              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 18px', maxWidth: 'none' }}>
+                The moment the transfer completes, we have zero access. We can't post, we can't change a thing, and
+                we can't take it back, even if we wanted to. The channel lives on your own Google account, under
+                your login, not ours.
+              </p>
+              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: 0, maxWidth: 'none' }}>
+                You don't have to take our word for it either. You can open your channel's permissions and see for
+                yourself that we've been removed. Everything you build from that point on stays yours, full stop.
+              </p>
+            </div>
           </Reveal>
+
           <div className="steps">
             {[
               { n: '01', ic: 'user-round-check', h: 'We make you an owner', p: "Your channel is a YouTube Brand Account, not a personal one, so it transfers to your own Google account. We invite your email as an owner. You log in with your details, never ours." },
               { n: '02', ic: 'upload', h: 'You post from day one', p: "The moment you accept, you can start uploading in the niche we picked with you. You don't wait around. That's also why the 14-day guarantee starts immediately." },
-              { n: '03', ic: 'lock', h: 'After 7 days, you remove us', p: "YouTube requires you to be an owner for 7 days before you can become the primary owner. On day 7 you do exactly that and remove us completely. From then, only you can ever access it." },
+              { n: '03', ic: 'lock', h: 'After 7 days, we are removed for good', p: "YouTube requires you to be an owner for 7 days before you can become the primary owner. On day 7 you make yourself primary owner and remove us completely. From then, only you can ever touch it. No backdoor, no lingering access." },
             ].map((s, i) => (
               <Reveal className="step" key={s.n} delay={i * 90}>
                 <span className="step__num">{s.n}</span>
@@ -585,6 +612,22 @@ export default function LandingPage() {
               </Reveal>
             ))}
           </div>
+
+          {/* Optional deeper-dive video for the skeptics who want to see it happen */}
+          <Reveal className="center" style={{ marginTop: 48 }}>
+            <p style={{ fontSize: 17, fontWeight: 600, color: 'var(--ink-900)', margin: '0 auto 6px', maxWidth: '46ch' }}>
+              Want to see it happen before you book?
+            </p>
+            <p style={{ fontSize: 16, color: 'var(--fg-muted)', margin: '0 auto 24px', maxWidth: '48ch', lineHeight: 1.55 }}>
+              Here's the full transfer walkthrough, start to finish, with nothing hidden.
+            </p>
+          </Reveal>
+          <Reveal className="frame" style={{ maxWidth: 820, margin: '0 auto' }}>
+            <div
+              id="vidalytics_embed_Xs9145qvedPuS6ij"
+              style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
+            />
+          </Reveal>
         </div>
       </section>
 
