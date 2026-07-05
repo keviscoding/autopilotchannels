@@ -275,7 +275,7 @@ export default function LandingPage() {
           </Reveal>
           <Reveal delay={240}>
             <div className="trust">
-              <span className="trust__item"><Icon name="shield-check" /> Earn $100 in 14 days or full refund</span>
+              <span className="trust__item"><Icon name="shield-check" /> First $100 in 14 days, or we keep working with you</span>
               <span className="trust__item"><Icon name="lock" /> Transfers 100% to you, we get locked out</span>
               <span className="trust__item"><Icon name="video-off" /> No filming yourself</span>
               <span className="trust__item"><Icon name="user-round-check" /> Built for total beginners</span>
@@ -636,7 +636,7 @@ export default function LandingPage() {
         <div className="container container--narrow">
           <SectionHead
             eyebrow="Our guarantee"
-            title="The risk is ours, not yours"
+            title="We don't stop until you've made your first $100"
           />
           <Reveal
             style={{
@@ -652,19 +652,23 @@ export default function LandingPage() {
             <div style={{ background: 'var(--green-600)', color: '#fff', padding: '28px 32px', textAlign: 'center' }}>
               <span style={{ display: 'inline-flex', marginBottom: 10 }}><Icon name="shield-check" /></span>
               <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 26, margin: 0, color: '#fff', lineHeight: 1.2 }}>
-                Earn your first $100 in 14 days, or get every penny back
+                Get your first $100 in 14 days, or we keep working with you until you do
               </h3>
             </div>
             <div style={{ padding: '28px 32px' }}>
               <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 18px', maxWidth: 'none' }}>
                 Here's the deal, in plain terms. When you get your channel, you start posting from day one in the
-                niche we pick together. If 14 days later you haven't earned your first $100, you message us and we
-                refund you in full. No forms, no hoops, no questions asked.
+                niche we pick together. If 14 days later you haven't earned your first $100, we don't disappear and
+                we don't leave you to figure it out. We stay in it with you until you get there.
+              </p>
+              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 18px', maxWidth: 'none' }}>
+                That means fresh video ideas, more proven angles to try, and personal reviews of your videos so we
+                can see exactly what to fix. We keep going, hands-on, until you've made your first $100. Most people
+                won't need it, but it's there if you do.
               </p>
               <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ink-700)', margin: 0, maxWidth: 'none' }}>
-                All we ask is that you actually post. The guarantee is for people who do the simple work we lay
-                out, not for people who buy it and let it sit. That's the only condition, and it's the same thing
-                that makes the channel work in the first place.
+                All we ask is that you keep posting. This is for people who do the simple work we lay out, not for
+                people who buy it and let it sit. As long as you keep showing up, so do we.
               </p>
             </div>
           </Reveal>
@@ -682,7 +686,7 @@ export default function LandingPage() {
           <SectionHead eyebrow="Honest answers" title="Your questions, answered plainly" />
           <div className="faq">
             {[
-              { q: 'Is this a scam?', a: "Fair question - you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support, and we show the actual channel transfer on camera so you can see exactly how it works. We use our real names and a real UK company. And you're protected by our guarantee: post from day one and if you haven't earned your first $100 in 14 days, you get a full refund, no questions asked. The risk sits with us." },
+              { q: 'Is this a scam?', a: "Fair question - you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support, and we show the actual channel transfer on camera so you can see exactly how it works. We use our real names and a real UK company. And you're backed by our guarantee: post from day one, and if you haven't earned your first $100 in 14 days, we keep working with you until you do - fresh video ideas and personal reviews of your videos until you get there. We don't walk away." },
               { q: "How is the channel already making money?", a: "The channel already meets YouTube's Partner Programme requirements - meaning it's eligible to earn from ads the moment you start posting. You're not starting from zero." },
               { q: "I don't have an AdSense account. Can I still start?", a: "Yes. You don't need an existing AdSense account to begin. We walk you through getting set up to receive payouts as part of onboarding, so not having one today isn't a blocker. It's one of the things we handle with you on the way in." },
               { q: 'How does transferring the channel work?', a: "It's a standard YouTube Brand Account transfer, and it's straightforward. We invite you, you accept, and the channel moves to you. We stay on as a manager for a short handover period, then after 7 days we're removed entirely. From that point the channel is fully yours, on your account, under your control." },
@@ -690,7 +694,7 @@ export default function LandingPage() {
               { q: 'Do I have to be on camera?', a: 'No. These are faceless channels. You never have to film yourself or show your face. Everything is done behind the scenes.' },
               { q: 'Do I need tech skills or experience?', a: "Not at all. This is built for total beginners - people who've never made a video before. If you can follow simple written steps, you can do this." },
               { q: 'How much time does it take each week?', a: "Most people spend a few hours a week - often fitting it around a full-time job or family. It's designed to work around your life, not the other way around." },
-              { q: 'What if it doesn\'t work for me?', a: "You're covered. Start posting from day one in the niche we pick with you, and if you haven't earned your first $100 within 14 days, you get a full refund, no questions asked. The only condition is that you actually post. The risk sits with us, not you." },
+              { q: 'What if it doesn\'t work for me?', a: "You're not left on your own. Start posting from day one in the niche we pick with you, and if you haven't earned your first $100 within 14 days, we keep going with you until you do - giving you fresh video ideas and reviewing your videos so we can fix what isn't landing. The only condition is that you keep posting. We stay in it with you until you win." },
               { q: 'What exactly do I get?', a: "Your pre-monetised channel, the day-one playbook, the niche menu, title/thumbnail/script templates, a simple onboarding walkthrough, and a 30-day quick-start plan. The Inner Circle community is available as an optional add-on. We'll walk you through everything on the call." },
               { q: 'How do I know if I qualify?', a: "Book a call with our team. We'll ask a few questions about where you're at, what you're looking for, and whether one of our available niches fits you. Not everyone's a match, and that's fine - we'd rather be honest than waste your time." },
             ].map((it, i) => {
@@ -724,7 +728,7 @@ export default function LandingPage() {
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
             <div className="trust" style={{ marginTop: 22 }}>
-              <span className="trust__item"><Icon name="shield-check" /> Earn $100 in 14 days or full refund</span>
+              <span className="trust__item"><Icon name="shield-check" /> First $100 in 14 days, or we keep working with you</span>
             </div>
           </Reveal>
         </div>
