@@ -686,7 +686,7 @@ export default function LandingPage() {
           <SectionHead eyebrow="Honest answers" title="Your questions, answered plainly" />
           <div className="faq">
             {[
-              { q: 'Is this a scam?', a: "Fair question - you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support, and we show the actual channel transfer on camera so you can see exactly how it works. We use our real names and a real UK company. And you're backed by our guarantee: post from day one, and if you haven't earned your first $100 in 14 days, we keep working with you until you do - fresh video ideas and personal reviews of your videos until you get there. We don't walk away." },
+              { q: 'Is this a scam?', a: "Fair question - you've probably been pitched a hundred things before. Here's the honest answer: you get a real channel, a real plan, and real support, and we show the actual channel transfer on camera so you can see exactly how it works. You're dealing with a real, established business, not an anonymous flip. And you're backed by our guarantee: post from day one, and if you haven't earned your first $100 in 14 days, we keep working with you until you do - fresh video ideas and personal reviews of your videos until you get there. We don't walk away." },
               { q: "How is the channel already making money?", a: "The channel already meets YouTube's Partner Programme requirements - meaning it's eligible to earn from ads the moment you start posting. You're not starting from zero." },
               { q: "I don't have an AdSense account. Can I still start?", a: "Yes. You don't need an existing AdSense account to begin. We walk you through getting set up to receive payouts as part of onboarding, so not having one today isn't a blocker. It's one of the things we handle with you on the way in." },
               { q: 'How does transferring the channel work?', a: "It's a standard YouTube Brand Account transfer, and it's straightforward. We invite you, you accept, and the channel moves to you. We stay on as a manager for a short handover period, then after 7 days we're removed entirely. From that point the channel is fully yours, on your account, under your control." },
@@ -746,15 +746,14 @@ export default function LandingPage() {
               <a href="/terms">Terms of Service</a>
               <a href="/privacy">Privacy Policy</a>
               <a href="/earnings-disclaimer">Earnings Disclaimer</a>
-              <a href="mailto:kei@headstartchannels.com">Contact</a>
+              <a href="mailto:support@headstartchannels.com">Contact</a>
             </nav>
           </div>
           <div className="footer__legal">
-            <p><strong>Creativetube Ltd</strong>, registered in England & Wales.</p>
             <p>
               We make no guarantee of income. Any figures shown are examples of our own or customers'
               results and are not typical. Your results depend on your effort, consistency, and factors
-              outside our control. This is not financial advice. &copy; 2026 Creativetube Ltd.
+              outside our control. This is not financial advice. &copy; 2026 HeadStart Channels.
             </p>
           </div>
         </div>

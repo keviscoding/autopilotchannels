@@ -52,7 +52,7 @@ export default function CourseGate({ children }: { children: ReactNode }) {
         {error && <p className="gate__error">That code isn't right. Check the email from your purchase.</p>}
         <button type="submit" className="btn btn--primary btn--block btn--lg">Unlock the course</button>
         <p className="gate__help">
-          Lost your code? <a href="mailto:kei@headstartchannels.com">Email us</a>.
+          Lost your code? <a href="mailto:support@headstartchannels.com">Email us</a>.
         </p>
       </form>
     </div>
