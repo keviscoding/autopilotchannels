@@ -192,11 +192,83 @@ function WinsCarousel() {
 }
 
 /* ==================================================================
+   ATTRIBUTION
+   Captures the per-video/ad code from the URL (?source=yt-proof-011,
+   plus any UTMs) and persists first- and last-touch so it survives
+   navigation and return visits. The result is passed to Typeform as
+   hidden fields, so every application record carries its source.
+   ================================================================== */
+const FIRST_TOUCH_KEY = 'hs_first_touch';
+const LAST_TOUCH_KEY = 'hs_last_touch';
+
+function readParam(params: URLSearchParams, keys: string[]): string {
+  for (const k of keys) {
+    const v = params.get(k);
+    if (v) return v;
+  }
+  return '';
+}
+
+function getAttribution(): Record<string, string> {
+  if (typeof window === 'undefined') return {};
+  // Params can sit in the querystring or after the hash (HashRouter).
+  const hash = window.location.hash;
+  const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
+  const searchQ = window.location.search.startsWith('?') ? window.location.search.slice(1) : '';
+  const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
+
+  const source = readParam(params, ['source', 'src', 'v', 'utm_content']);
+  const touch: Record<string, string> = {
+    source,
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_content: params.get('utm_content') || '',
+    referrer: document.referrer || '',
+    landing_page: window.location.href,
+    ts: new Date().toISOString(),
+  };
+
+  let firstSource = source;
+  try {
+    if (source) {
+      if (!localStorage.getItem(FIRST_TOUCH_KEY)) {
+        localStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(touch));
+      } else {
+        firstSource = JSON.parse(localStorage.getItem(FIRST_TOUCH_KEY) || '{}').source || source;
+      }
+      localStorage.setItem(LAST_TOUCH_KEY, JSON.stringify(touch));
+    } else {
+      // No fresh code this visit: fall back to what we stored earlier.
+      const last = JSON.parse(localStorage.getItem(LAST_TOUCH_KEY) || '{}');
+      const first = JSON.parse(localStorage.getItem(FIRST_TOUCH_KEY) || '{}');
+      Object.assign(touch, { ...last, referrer: touch.referrer, landing_page: touch.landing_page });
+      firstSource = first.source || last.source || '';
+    }
+  } catch {
+    // localStorage blocked (private mode) - fall through with in-memory values.
+  }
+
+  const hidden: Record<string, string> = {
+    source: touch.source || '',
+    first_source: firstSource || touch.source || '',
+    utm_source: touch.utm_source || '',
+    utm_medium: touch.utm_medium || '',
+    utm_campaign: touch.utm_campaign || '',
+    referrer: touch.referrer || '',
+    landing_page: touch.landing_page || '',
+  };
+  Object.keys(hidden).forEach((k) => { if (!hidden[k]) delete hidden[k]; });
+  return hidden;
+}
+
+/* ==================================================================
    PAGE
    ================================================================== */
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const [faqOpen, setFaqOpen] = useState(0);
+  const [attribution] = useState(getAttribution);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -237,7 +309,7 @@ export default function LandingPage() {
               <a href="#results" onClick={(e) => { e.preventDefault(); scrollTo('results'); }}>Results</a>
               <a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>FAQ</a>
             </div>
-            <PopupButton id={TYPEFORM_ID} className="btn btn--primary">
+            <PopupButton id={TYPEFORM_ID} hidden={attribution} className="btn btn--primary">
               Apply now
             </PopupButton>
           </div>
@@ -269,7 +341,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={200} className="hero__ctarow">
-            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} hidden={attribution} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
           </Reveal>
@@ -495,7 +567,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
-            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} hidden={attribution} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
             <p style={{ marginTop: 14, fontSize: 14, color: 'var(--fg-subtle)', textAlign: 'center', maxWidth: 'none', margin: '14px auto 0' }}>
@@ -548,7 +620,7 @@ export default function LandingPage() {
             lead="Not everyone gets one. Apply, and we'll find out on a quick call whether you're the right fit, pick your niche, and get your channel set up."
           />
           <Reveal className="center" style={{ marginTop: 36 }}>
-            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} hidden={attribution} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
             <p style={{ marginTop: 16, fontSize: 15, color: 'var(--fg-muted)', maxWidth: 'none', margin: '16px auto 0' }}>
@@ -673,7 +745,7 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal className="center" style={{ marginTop: 30 }}>
-            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} hidden={attribution} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
           </Reveal>
@@ -724,7 +796,7 @@ export default function LandingPage() {
             <p>There's a spot in this round with your name on it. Ready to start ahead?</p>
           </Reveal>
           <Reveal delay={160}>
-            <PopupButton id={TYPEFORM_ID} className="btn btn--primary btn--lg">
+            <PopupButton id={TYPEFORM_ID} hidden={attribution} className="btn btn--primary btn--lg">
               Apply for your channel <Icon name="arrow-right" />
             </PopupButton>
             <div className="trust" style={{ marginTop: 22 }}>
