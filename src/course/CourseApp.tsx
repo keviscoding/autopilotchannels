@@ -63,6 +63,11 @@ export default function CourseApp() {
                 );
               })}
             </ol>
+            <p className="course-nav__label" style={{ marginTop: 28 }}>Filming</p>
+            <a className="course-nav__item" href="/training" style={{ display: 'flex', textDecoration: 'none' }}>
+              <span className="course-nav__num">▸</span>
+              <span className="course-nav__title">Filming boards</span>
+            </a>
           </nav>
 
           {/* Content */}

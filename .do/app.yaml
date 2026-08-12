@@ -1,11 +1,59 @@
-name: headstartchannels
-region: lon
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+domains:
+- domain: headstartchannels.com
+  type: PRIMARY
+  zone: headstartchannels.com
+features:
+- buildpack-stack=ubuntu-22
+ingress:
+  rules:
+  - component:
+      name: film-board-gateway
+      preserve_path_prefix: true
+    match:
+      path:
+        prefix: /training
+  - component:
+      name: autopilotchannels
+    match:
+      path:
+        prefix: /
+name: headstartchannels-app
+region: sfo
 static_sites:
-  - name: headstartchannels-web
-    github:
-      repo: keviscoding/autopilotchannels
-      branch: main
-      deploy_on_push: true
-    build_command: npm run build
-    output_dir: /dist
-    catchall_document: index.html
+- build_command: npm run build
+  environment_slug: node-js
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: keviscoding/autopilotchannels
+  name: autopilotchannels
+  output_dir: dist
+  source_dir: /
+services:
+- name: film-board-gateway
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: keviscoding/autopilotchannels
+  source_dir: /film-board-gateway
+  environment_slug: node-js
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  health_check:
+    http_path: /gateway-health
+    initial_delay_seconds: 10
+    period_seconds: 20
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 5
+  envs:
+  - key: PORT
+    scope: RUN_TIME
+    value: "8080"
+  - key: FILM_BOARD_UPSTREAM
+    scope: RUN_TIME
+    value: "http://167.99.81.152:8770"
