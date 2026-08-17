@@ -71,9 +71,9 @@ export default function Confirmed() {
   }, []);
 
   const items = [
-    'Add the call to your calendar now so it doesn\'t slip',
-    'Watch the video above',
-    'Come with a rough idea of what kind of content interests you',
+    'Add the call to your calendar so it does not slip',
+    'Watch the transfer walkthrough below',
+    'Come ready to talk about an owned channel a team runs, not a course',
   ];
 
   return (
@@ -106,7 +106,7 @@ export default function Confirmed() {
         </p>
 
         <p style={{ fontSize: 19, fontWeight: 600, color: 'var(--ink-900)', margin: '40px auto 18px', maxWidth: '44ch' }}>
-          Before we talk, watch this. It'll make our call 10x more useful.
+          Before we talk, watch this. It will make the conversation useful.
         </p>
 
         <div className="frame" style={{ maxWidth: 720, margin: '0 auto', borderRadius: 20, overflow: 'hidden' }}>
@@ -158,7 +158,7 @@ export default function Confirmed() {
         </div>
 
         <p style={{ fontSize: 16, color: 'var(--fg-muted)', margin: '32px auto 0', maxWidth: '50ch', lineHeight: 1.55 }}>
-          This is a relaxed conversation to pick your niche and see if we're a fit. No pressure, no hard sell.
+          This is a conversation about whether a Channel Install is the right fit. You own it. A team produces. You post.
         </p>
       </div>
     </main>

@@ -5,6 +5,156 @@ body { margin: 0; overflow-x: hidden; }
 img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
 
+.faq__item--open .faq__a { max-height: 640px; }
+
+.scenes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 48px;
+}
+.scene {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px 26px;
+}
+.scene__ic {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--green-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.scene__ic svg { width: 24px; height: 24px; color: var(--green-700); }
+.scene h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink-900);
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+.scene p { font-size: 16px; color: var(--fg-muted); line-height: 1.6; margin: 0; }
+
+.case {
+  max-width: 680px;
+  margin: 48px auto 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 32px 34px;
+}
+.case__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.case__who { font-weight: 700; color: var(--ink-900); font-size: 16px; }
+.case__keep { font-size: 14px; font-weight: 700; color: var(--green-700); }
+.case__nums {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px 0 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 22px;
+}
+.case__nums b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--ink-900);
+  letter-spacing: -0.02em;
+}
+.case__nums span { font-size: 13px; color: var(--fg-muted); }
+.case p { font-size: 17px; line-height: 1.65; color: var(--ink-700); margin: 0; }
+
+.fit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 48px;
+}
+.fit__card {
+  border-radius: 20px;
+  padding: 28px 28px 18px;
+}
+.fit__yes { background: #fff; border: 1px solid var(--line); }
+.fit__no { background: #fff; border: 1px solid var(--line); }
+.fit__tag {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+  color: var(--fg-subtle);
+}
+.fit__yes .fit__tag { color: var(--green-700); }
+.fit ul { padding: 0; margin: 0; }
+.fit li {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  list-style: none;
+  color: var(--ink-700);
+}
+.fit li svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.fit__yes li svg { color: var(--green-600); }
+.fit__no li svg { color: var(--ink-300); }
+
+/* Hero: kept tight so the video lands inside the first screen */
+.hero { padding: clamp(24px, 3vw, 40px) 0 clamp(48px, 6vw, 76px); }
+.hero h1 { font-size: clamp(1.9rem, 4.1vw, 2.9rem); line-height: 1.1; margin-top: 14px; }
+.hero__sub { font-size: 17.5px; line-height: 1.55; max-width: 60ch; margin-top: 16px; }
+.hero__media { margin: 20px auto 0; }
+.hero__after { font-size: 17px; line-height: 1.6; color: var(--fg-muted); max-width: 62ch; margin: 26px auto 0; text-align: center; }
+
+.steptag {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--green-100);
+  border: 1px solid var(--green-300);
+  color: var(--green-800);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  padding: 10px 20px;
+  border-radius: 12px;
+  margin-top: 26px;
+}
+.steptag svg { width: 17px; height: 17px; }
+
+.tf-inline {
+  max-width: 760px;
+  margin: 20px auto 0;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--white);
+  box-shadow: 0 2px 6px rgba(22, 34, 31, .05), 0 24px 60px rgba(22, 34, 31, .10);
+}
+.tf-inline > div { height: 540px; }
+
+@media (max-width: 820px) {
+  .scenes { grid-template-columns: 1fr; }
+  .fit { grid-template-columns: 1fr; }
+  .case__nums { grid-template-columns: 1fr; gap: 12px; }
+  .tf-inline > div { height: 600px; }
+}
+
 @media (max-width: 480px) {
   .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
   .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
