@@ -598,7 +598,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="section" id="fit">
+      <section className="section section--sand" id="fit">
         <div className="container">
           <SectionHead
             eyebrow="Who we take"
@@ -627,21 +627,6 @@ export default function LandingPage() {
               </ul>
             </Reveal>
           </div>
-        </div>
-      </section>
-
-      <section className="section section--sand" id="kevis">
-        <div className="container container--narrow">
-          <SectionHead eyebrow="Who you'll be dealing with" title="Kevis" />
-          <Reveal>
-            <p style={{ fontSize: 18, lineHeight: 1.7, color: 'var(--ink-700)', margin: '28px auto 0', maxWidth: '56ch' }}>
-              Kevis has built these channels from scratch, on camera, where anyone thinking about buying
-              could watch him do it. The useful part isn't the highlight reel though. It's knowing what to
-              do when a channel stops growing, when the money gets squeezed, or when the person you hired
-              still needs you at midnight. That's the difference between somebody teaching YouTube and
-              somebody who runs it.
-            </p>
-          </Reveal>
         </div>
       </section>
 
