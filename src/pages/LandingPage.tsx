@@ -300,7 +300,7 @@ export default function LandingPage() {
         <div className="hero__glow" />
         <div className="container hero__inner">
           <Reveal>
-            <span className="pill-tag">For busy professionals and business owners with families</span>
+            <span className="pill-tag">For busy professionals and business owners</span>
           </Reveal>
           <Reveal delay={60}>
             <h1>We'll build you a profitable YouTube channel, <em>completely done for you</em></h1>
