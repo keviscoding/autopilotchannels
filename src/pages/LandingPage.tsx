@@ -59,6 +59,33 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
   return <div ref={ref} className={('reveal ' + (visible ? 'in ' : '') + className).trim()} style={style}>{children}</div>;
 }
 
+function YtClip({ id, title }: { id: string; title: string }) {
+  const [play, setPlay] = useState(false);
+  const [src, setSrc] = useState(`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`);
+  return (
+    <div className="ytclip">
+      {play ? (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      ) : (
+        <button type="button" className="ytclip__poster" onClick={() => setPlay(true)} aria-label={`Play ${title}`}>
+          <img
+            src={src}
+            alt=""
+            onError={() => setSrc(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)}
+          />
+          <span className="ytclip__play" aria-hidden="true" />
+        </button>
+      )}
+    </div>
+  );
+}
+
 function SectionHead({ eyebrow, title, lead }: { eyebrow?: string; title: string; lead?: string }) {
   return (
     <Reveal className="center" style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -75,6 +102,13 @@ const proofCards = [
   { name: 'Fahad', result: 'Monetised in 29 days', src: '/fahad-29days.jpeg' },
   { name: 'Anton', result: '100K subscribers in 30 days', src: '/anton-100k.jpeg' },
   { name: 'Pluto', result: '149M views and 38.7K new subscribers in 28 days', src: '/pluto-149m.jpeg' },
+];
+
+const videoStories = [
+  { id: 'JKAP6p9nnh8', name: 'Fahad', caption: 'From a few hundred views to 15 million' },
+  { id: 'YOALp81wuhU', name: 'Sasha', caption: '53, new to YouTube, monetised in 17 days' },
+  { id: 'q9mYCUKB5Vk', name: 'Pluto', caption: 'A job, a family, and a channel that pays' },
+  { id: 'PmCeZxdI2nI', name: 'Anton', caption: '100K subscribers in 30 days' },
 ];
 
 const moreResults = [
@@ -470,18 +504,8 @@ export default function LandingPage() {
               <span className="case__who">Noah · United States · works in IT</span>
               <span className="case__keep">Still in the 9 to 5</span>
             </div>
-            <div
-              className="frame"
-              style={{ borderRadius: 16, margin: '0 0 22px', position: 'relative', paddingTop: '56.25%' }}
-            >
-              <iframe
-                src="https://www.youtube.com/embed/0lMNtHqY3fU"
-                title="Noah on his channel"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
-              />
+            <div className="frame" style={{ borderRadius: 16, margin: '0 0 22px' }}>
+              <YtClip id="0lMNtHqY3fU" title="Noah on his channel" />
             </div>
             <p>
               $6,727.73 and 698.6K views in his last 28 days, on about fifteen to twenty minutes a day.
@@ -550,6 +574,19 @@ export default function LandingPage() {
               <p>Past $10k a month, working on the channel once her kids are in bed</p>
             </div>
           </Reveal>
+
+          <div className="yt-grid">
+            {videoStories.map((v, i) => (
+              <Reveal className="proof-card" key={v.id} delay={(i % 2) * 60}>
+                <YtClip id={v.id} title={`${v.name} on his channel`} />
+                <div className="proof-card__body">
+                  <span className="proof-card__label"><Icon name="badge-check" /> Client result</span>
+                  <h4>{v.name}</h4>
+                  <p>{v.caption}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 22, marginTop: 32, maxWidth: 960, marginLeft: 'auto', marginRight: 'auto' }}>
             {moreResults.filter(r => r.aspect === 'landscape').map((item, i) => (
