@@ -109,6 +109,7 @@ const videoStories = [
   { id: 'YOALp81wuhU', name: 'Sasha', caption: '53, new to YouTube, monetised in 17 days' },
   { id: 'q9mYCUKB5Vk', name: 'Pluto', caption: 'A job, a family, and a channel that pays' },
   { id: 'PmCeZxdI2nI', name: 'Anton', caption: '100K subscribers in 30 days' },
+  { id: 'nMcltSa9_vw', name: 'Rich', caption: '$329 a day from 30-second videos' },
 ];
 
 const moreResults = [
