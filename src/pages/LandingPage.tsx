@@ -86,6 +86,99 @@ function YtClip({ id, title }: { id: string; title: string }) {
   );
 }
 
+function PayCalculator() {
+  const [rpm, setRpm] = useState(8);
+  const [kViews, setKViews] = useState(20);
+  const [perDay, setPerDay] = useState(1);
+
+  const perVideo = kViews * rpm;
+  const monthly = perVideo * perDay * 30;
+  const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
+  const track = (v: number, min: number, max: number) => {
+    const pct = ((v - min) / (max - min)) * 100;
+    return { backgroundImage: `linear-gradient(90deg, var(--green-600) ${pct}%, var(--line) ${pct}%)` };
+  };
+
+  const fields = [
+    {
+      label: 'What advertisers pay per 1,000 views',
+      value: `$${rpm.toFixed(2)}`,
+      min: 2, max: 20, step: 0.5, current: rpm,
+      onChange: setRpm,
+      lo: '$2', hi: '$20',
+    },
+    {
+      label: 'Views a video settles at',
+      value: `${kViews}K`,
+      min: 5, max: 60, step: 1, current: kViews,
+      onChange: setKViews,
+      lo: '5K', hi: '60K',
+    },
+    {
+      label: 'Videos posted a day',
+      value: String(perDay),
+      min: 1, max: 3, step: 1, current: perDay,
+      onChange: setPerDay,
+      lo: '1', hi: '3',
+    },
+  ];
+
+  return (
+    <div className="calc">
+      <div className="calc__row">
+        <div className="calc__chip">
+          <span>Views</span>
+          <b>{kViews}K</b>
+        </div>
+        <span className="calc__op">&times;</span>
+        <div className="calc__chip">
+          <span>Per 1,000</span>
+          <b>${rpm.toFixed(2)}</b>
+        </div>
+        <span className="calc__op">=</span>
+        <div className="calc__chip calc__chip--out">
+          <span>Per video</span>
+          <b>{money(perVideo)}</b>
+        </div>
+      </div>
+
+      {fields.map((f) => (
+        <div className="calc__field" key={f.label}>
+          <header>
+            <h4>{f.label}</h4>
+            <b>{f.value}</b>
+          </header>
+          <input
+            className="calc__range"
+            type="range"
+            min={f.min}
+            max={f.max}
+            step={f.step}
+            value={f.current}
+            aria-label={f.label}
+            style={track(f.current, f.min, f.max)}
+            onChange={(e) => f.onChange(Number(e.target.value))}
+          />
+          <div className="calc__ends"><span>{f.lo}</span><span>{f.hi}</span></div>
+        </div>
+      ))}
+
+      <div className="calc__chart" aria-hidden="true">
+        {Array.from({ length: 30 }, (_, i) => (
+          <span className="calc__bar" key={i} style={{ height: `${((i + 1) / 30) * 100}%` }} />
+        ))}
+      </div>
+      <div className="calc__ends calc__ends--days"><span>Day 1</span><span>Day 15</span><span>Day 30</span></div>
+
+      <div className="calc__total">
+        <span>After 30 days</span>
+        <b>{money(monthly)}</b>
+        <i>{perDay === 1 ? 'one video a day' : `${perDay} videos a day`}, every day, at those numbers</i>
+      </div>
+    </div>
+  );
+}
+
 function SectionHead({ eyebrow, title, lead }: { eyebrow?: string; title: string; lead?: string }) {
   return (
     <Reveal className="center" style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -335,14 +428,14 @@ export default function LandingPage() {
         <div className="hero__glow" />
         <div className="container hero__inner">
           <Reveal>
-            <span className="pill-tag">For busy professionals and business owners</span>
+            <span className="pill-tag">For people who want a second income without a second job</span>
           </Reveal>
           <Reveal delay={60}>
             <h1>We'll build you a profitable YouTube channel, <em>completely done for you</em></h1>
           </Reveal>
           <Reveal delay={120}>
             <p className="hero__sub">
-              You own the channel. A team makes the videos. Your part is about twenty minutes a day.
+              You own the channel. A team makes the videos. Your part is twenty to thirty minutes a day.
             </p>
           </Reveal>
           <Reveal delay={150}>
@@ -372,15 +465,15 @@ export default function LandingPage() {
           </Reveal>
           <Reveal delay={260}>
             <p className="hero__micro" style={{ margin: '18px auto 0', justifyContent: 'center', textAlign: 'center', maxWidth: '46ch' }}>
-              We read every application. If what you're after is a course to work through in your spare
-              time, this won't be a fit.
+              We read every application. If you'd rather learn every part of this and run the whole
+              thing yourself, this won't be a fit.
             </p>
           </Reveal>
           <Reveal delay={240}>
             <div className="trust">
               <span className="trust__item"><Icon name="key-round" /> The channel is in your name</span>
               <span className="trust__item"><Icon name="users" /> A team is installed on it</span>
-              <span className="trust__item"><Icon name="clock" /> Around 15 to 20 minutes a day</span>
+              <span className="trust__item"><Icon name="clock" /> Twenty to thirty minutes a day</span>
             </div>
           </Reveal>
         </div>
@@ -389,26 +482,26 @@ export default function LandingPage() {
       <section className="section" id="recognize">
         <div className="container">
           <SectionHead
-            eyebrow="Sound familiar?"
-            title="You've already tried to get YouTube off your plate"
-            lead="Most people who come to us have been here at least once."
+            eyebrow="Where most people are when they apply"
+            title="You've worked out that the job isn't the whole plan"
+            lead="Almost everyone who applies is somewhere in here."
           />
           <div className="scenes">
             {[
               {
+                ic: 'clock',
+                h: 'Every extra pound costs you another hour',
+                p: "There are only so many hours, and you're already using most of them. The schools, the neighbourhood, the holidays you'd like to take, all of it still rests on you turning up for the same paycheck. That's a lot of weight for one income to carry, and working more hours isn't a way out of it.",
+              },
+              {
                 ic: 'book-open',
-                h: "The course you haven't opened since January",
-                p: "You bought it because the ads made it look like the tools would do the walking for you. You logged in twice, built a Notion board so it felt like progress, and never posted anything. The money isn't really what bothers you. It's opening it again months later and seeing all those half-watched videos. A course is a set of instructions, and instructions still need somebody with a free evening to follow them.",
+                h: 'You could learn all of this yourself',
+                p: "Niche research, scripts, packaging, thumbnails, finding editors, judging whether their work is any good. Every one of those is learnable. Learning all of them takes months of evenings, and at the end of it the channel still doesn't exist. You're not short on willingness. You're short on evenings.",
               },
               {
-                ic: 'user-cog',
-                h: "The editor you now spend your Sundays managing",
-                p: "You hired someone so the channel would finally run without you, and somehow you're the one writing briefs at ten at night, rewriting titles and chasing files. Take a fortnight off and nothing goes out. One freelancer didn't take the work off your hands. It just moved you into the manager's chair.",
-              },
-              {
-                ic: 'trending-up',
-                h: "The channel that stopped going anywhere",
-                p: "Maybe you're already earning from YouTube, or you were until growth flattened out or the money started getting squeezed. You don't need anyone to explain the platform to you. You want someone who's run channels at this level and knows what to do when one stalls.",
+                ic: 'target',
+                h: 'The expensive mistake is the niche',
+                p: "Pick the wrong one and you find out slowly, after you've paid for a stack of videos, because a channel that isn't working looks exactly like a channel that hasn't had enough time yet. Telling real demand apart from one lucky channel is the part that costs money, and it's the part nobody can do from a trending list.",
               },
             ].map((s, i) => (
               <Reveal className="scene" key={s.h} delay={i * 80}>
@@ -446,7 +539,7 @@ export default function LandingPage() {
                 n: '03',
                 ic: 'send',
                 h: 'You approve and post',
-                p: "You get the video ideas and why each one works, so you can approve them the way an owner would. Then it's thumbnails and posting, which is where your fifteen or twenty minutes goes.",
+                p: "You get the video ideas and why each one works, so you can approve them the way an owner would. Then it's thumbnails and posting, which is where your twenty or thirty minutes goes.",
               },
             ].map((s, i) => (
               <Reveal className="step" key={s.n} delay={i * 90}>
@@ -460,6 +553,60 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <section className="section" id="pay">
+        <div className="container">
+          <SectionHead
+            eyebrow="The arithmetic"
+            title="How YouTube actually pays you"
+            lead="You get paid for every thousand views, and the rate depends on who is watching and what they're worth to advertisers. Move the sliders and you'll see why the niche decides more than the effort does."
+          />
+          <Reveal>
+            <PayCalculator />
+          </Reveal>
+          <Reveal className="center" style={{ marginTop: 22 }}>
+            <p style={{ fontSize: 15, color: 'var(--fg-subtle)', margin: '0 auto', maxWidth: '58ch', lineHeight: 1.6 }}>
+              This is the arithmetic, not a projection and not a promise. Real channels ramp up, dip, and
+              depend on plenty of things nobody controls. It's here so the numbers on this page make sense
+              rather than sounding made up.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section section--sand" id="niche">
+        <div className="container">
+          <SectionHead
+            eyebrow="Before a single video is made"
+            title="What choosing a niche actually involves"
+            lead="This is what decides whether the money you put into videos comes back, so here's the work rather than a promise about it."
+          />
+          <Reveal className="checks">
+            {[
+              { ic: 'calendar-clock', h: 'How old the opportunity is', p: 'Whether it is forming, mature, or already picked over.' },
+              { ic: 'users-round', h: 'Whether the demand is real', p: 'Several channels doing well, not one that got lucky once.' },
+              { ic: 'bar-chart-3', h: 'Absolute views, not percentages', p: 'Small channels pulling big numbers means the algorithm is buying.' },
+              { ic: 'wallet', h: 'What a video costs to make', p: 'And whether that number fits a budget you can keep funding.' },
+              { ic: 'film', h: 'Where the footage comes from', p: 'When source material is hard to get, that is a moat rather than a problem.' },
+              { ic: 'user-round', h: 'Who watches, and what they are worth', p: 'An older audience pays several times more per thousand views.' },
+              { ic: 'type', h: 'The title patterns that repeat', p: 'So the video ideas are read off the market instead of guessed at.' },
+              { ic: 'flask-conical', h: 'How many uploads a fair test takes', p: 'So nobody panics and changes everything after video four.' },
+            ].map((c, i) => (
+              <Reveal className="check" key={c.h} delay={(i % 2) * 60}>
+                <span className="check__ic"><Icon name={c.ic} /></span>
+                <span><strong>{c.h}</strong><span>{c.p}</span></span>
+              </Reveal>
+            ))}
+          </Reveal>
+          <Reveal className="center" style={{ marginTop: 36 }}>
+            <p style={{ fontSize: 17, color: 'var(--ink-700)', margin: '0 auto', maxWidth: '54ch', lineHeight: 1.6 }}>
+              None of that is clever. It's just the difference between knowing and hoping, and it's a
+              fortnight of work for someone who has done it before. On your own, after work, it's the six
+              months most people never get back.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       <section className="section" id="inside">
         <div className="container">
           <SectionHead
@@ -470,11 +617,13 @@ export default function LandingPage() {
           <Reveal className="offer">
             {[
               { ic: 'tv', h: 'A trusted channel to build on', p: "No uploads on it, nothing to inherit. An aged account in good standing, so your videos can get impressions instead of being held back by the account itself. Your Google, your login." },
-              { ic: 'compass', h: 'The niche, chosen with you', p: "Somewhere with room to grow that you're comfortable owning, decided together rather than guessed at." },
+              { ic: 'compass', h: 'The niche, chosen with you', p: "Somewhere with real demand behind it rather than one channel that got lucky, and somewhere you're happy to put your name on." },
               { ic: 'lightbulb', h: 'Your video ideas, and why they work', p: "The first stretch of what to post, with the thinking behind each one so you can approve them properly." },
               { ic: 'image', h: 'AI prompt templates for thumbnails', p: "You paste, generate, and pick the one you like. It's the reason thumbnails take minutes instead of an evening." },
-              { ic: 'users', h: 'The production team, in place', p: "People on your channel making the videos, so there's nothing for you to staff or manage after work." },
-              { ic: 'map', h: 'Direction from day one', p: "So the first few months go into a channel that's pointed the right way instead of into finding out it wasn't." },
+              { ic: 'users', h: 'The production team, in place', p: "We find the editors, check their work and put them on your channel. You're not interviewing freelancers in the evenings and hoping the first one is any good." },
+              { ic: 'wallet', h: 'A production budget that fits', p: "The niche gets chosen around what you can comfortably spend per video, instead of a lane that only works at three hundred a video." },
+              { ic: 'line-chart', h: 'Someone to read the numbers with you', p: "Early uploads are ambiguous and the usual mistake is changing everything after four videos. You'll know whether it's the idea, the packaging, or simply not enough data yet." },
+              { ic: 'graduation-cap', h: 'You learn how it works as we build it', p: "There's nothing to grind through, but you'll pick up why each call was made while it happens. That's what you'd need if you ever want a second channel, or to set one up for somebody in your family." },
             ].map((r) => (
               <div className="offer__row" key={r.h}>
                 <span className="offer__ic"><Icon name={r.ic} /></span>
@@ -647,20 +796,20 @@ export default function LandingPage() {
             <Reveal className="fit__card fit__yes">
               <p className="fit__tag">You're in the right place if</p>
               <ul>
-                <li><Icon name="check" /> You want a channel you own without having to run it yourself</li>
-                <li><Icon name="check" /> You've got a job or a business and a family, and you're keeping both</li>
-                <li><Icon name="check" /> Fifteen or twenty minutes a day is what you have, and that's fine</li>
-                <li><Icon name="check" /> You can fund the install comfortably</li>
-                <li><Icon name="check" /> You've tried a course or an editor, or you've got a channel that's stalled</li>
+                <li><Icon name="check" /> You want an asset you own, and you want it built properly the first time</li>
+                <li><Icon name="check" /> You'd rather buy experience than spend six months learning every job</li>
+                <li><Icon name="check" /> Twenty to thirty minutes a day is realistic, including the tired days</li>
+                <li><Icon name="check" /> You can fund the install, whether that's in one payment or across a few</li>
+                <li><Icon name="check" /> You've never posted, or you've got a channel that stalled. Both work.</li>
               </ul>
             </Reveal>
             <Reveal className="fit__card fit__no" delay={80}>
               <p className="fit__tag">Give this a miss if</p>
               <ul>
-                <li><Icon name="x" /> You're chasing your first small payday or a cheap side hustle</li>
-                <li><Icon name="x" /> What you actually want is a course, templates or a community</li>
-                <li><Icon name="x" /> You'd rather learn the tools and hire the team yourself</li>
-                <li><Icon name="x" /> You're planning to spend fifteen hours a week inside YouTube</li>
+                <li><Icon name="x" /> You want to learn every part of this and run the whole thing yourself</li>
+                <li><Icon name="x" /> What you're really after is a course, templates or a community</li>
+                <li><Icon name="x" /> You're expecting it to run with nothing at all from you</li>
+                <li><Icon name="x" /> You're after something free or nearly free to try out</li>
                 <li><Icon name="x" /> You're looking for a friendly chat with nothing on the table</li>
               </ul>
             </Reveal>
@@ -675,15 +824,19 @@ export default function LandingPage() {
             {[
               {
                 q: 'Is this a course?',
-                a: "No. There's no login and no set of lessons to work through. That's the thing that hasn't worked for most people who come to us, because a course still needs you to find the hours. Here the niche is chosen, the ideas are written and the team is already making videos.",
+                a: "No. There are no lessons to work through and no login that quietly turns into homework. The niche is chosen, the ideas are written and a team makes the videos. You will come out understanding why the decisions were made, because that's worth having, but understanding it is not the job we're handing you.",
               },
               {
                 q: 'So do I have to make the videos?',
-                a: "No, the team does that. You approve the ideas, make the thumbnail using the prompt templates we give you, and post. That's what the fifteen to twenty minutes a day is.",
+                a: "No, the team does that. You approve the ideas, make the thumbnail using the prompts we give you, and post. That's what the twenty to thirty minutes a day is.",
               },
               {
                 q: 'What if I have never posted on YouTube before?',
-                a: "That's common and it's fine, because the parts that need experience are the ones we handle. What matters more is whether you'll show up for a few minutes a day, because that bit stays with you.",
+                a: "That's common and it's fine, because the parts that need experience are the ones we're doing. What matters more is whether you'll show up for half an hour a day once videos start arriving, because that bit stays with you.",
+              },
+              {
+                q: "I've never run a business or earned online. Is that a problem?",
+                a: "No. Plenty of people we install for have done neither, and they're not learning to be marketers here. They own a channel, they post to it, and a team makes what goes on it.",
               },
               {
                 q: 'Am I buying a channel from you?',
@@ -714,8 +867,12 @@ export default function LandingPage() {
                 a: "We read it, and if it looks like a fit we'll set up a strategy call about installing this for you. It's a proper conversation about your channel, not a quick screening.",
               },
               {
+                q: 'What will it cost me to keep running each month?',
+                a: "Videos cost money to make, so the niche gets picked around a production budget you can actually sustain, and we go through those numbers with you before anything is made. Nobody should be funding a lane that only works at three hundred pounds a video.",
+              },
+              {
                 q: 'What does it cost?',
-                a: "We go through the investment in the application, before anyone books a call. It's a real purchase rather than something you'd try out, and if the number doesn't work for you right now it's better that we both know early.",
+                a: "We go through the investment in the application, before anyone books a call. It's a real purchase rather than something you try out. If paying the whole thing at once isn't practical, there are payment options, so raise it on the call rather than counting yourself out.",
               },
             ].map((it, i) => {
               const isOpen = faqOpen === i;
