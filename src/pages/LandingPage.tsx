@@ -490,8 +490,8 @@ export default function LandingPage() {
             {[
               {
                 ic: 'clock',
-                h: 'Every extra pound costs you another hour',
-                p: "There are only so many hours, and you're already using most of them. The schools, the neighbourhood, the holidays you'd like to take, all of it still rests on you turning up for the same paycheck. That's a lot of weight for one income to carry, and working more hours isn't a way out of it.",
+                h: 'Earning more still means working more hours',
+                p: "There are only so many hours, and you're already using most of them. The schools, the neighborhood, the trips you'd like to take, all of it still rests on you turning up for the same paycheck. That's a lot of weight for one income to carry, and picking up more hours isn't a way out of it.",
               },
               {
                 ic: 'book-open',
@@ -527,7 +527,7 @@ export default function LandingPage() {
                 n: '01',
                 ic: 'compass',
                 h: 'We pick the niche with you',
-                p: "We know which lanes actually hold up and which ones look brilliant for a month and then die. You'll end up somewhere you're happy to put your name on, rather than a topic you found on a trending list.",
+                p: "We know which lanes actually hold up and which ones look great for a month and then die. You'll end up somewhere you're happy to put your name on, rather than a topic you found on a trending list.",
               },
               {
                 n: '02',
@@ -600,7 +600,7 @@ export default function LandingPage() {
           <Reveal className="center" style={{ marginTop: 36 }}>
             <p style={{ fontSize: 17, color: 'var(--ink-700)', margin: '0 auto', maxWidth: '54ch', lineHeight: 1.6 }}>
               None of that is clever. It's just the difference between knowing and hoping, and it's a
-              fortnight of work for someone who has done it before. On your own, after work, it's the six
+              couple of weeks' work for someone who has done it before. On your own, after work, it's the six
               months most people never get back.
             </p>
           </Reveal>
@@ -621,7 +621,7 @@ export default function LandingPage() {
               { ic: 'lightbulb', h: 'Your video ideas, and why they work', p: "The first stretch of what to post, with the thinking behind each one so you can approve them properly." },
               { ic: 'image', h: 'AI prompt templates for thumbnails', p: "You paste, generate, and pick the one you like. It's the reason thumbnails take minutes instead of an evening." },
               { ic: 'users', h: 'The production team, in place', p: "We find the editors, check their work and put them on your channel. You're not interviewing freelancers in the evenings and hoping the first one is any good." },
-              { ic: 'wallet', h: 'A production budget that fits', p: "The niche gets chosen around what you can comfortably spend per video, instead of a lane that only works at three hundred a video." },
+              { ic: 'wallet', h: 'A production budget that fits', p: "The niche gets chosen around what you can comfortably spend per video, instead of a lane that only works at $300 a video." },
               { ic: 'line-chart', h: 'Someone to read the numbers with you', p: "Early uploads are ambiguous and the usual mistake is changing everything after four videos. You'll know whether it's the idea, the packaging, or simply not enough data yet." },
               { ic: 'graduation-cap', h: 'You learn how it works as we build it', p: "There's nothing to grind through, but you'll pick up why each call was made while it happens. That's what you'd need if you ever want a second channel, or to set one up for somebody in your family." },
             ].map((r) => (
@@ -856,7 +856,7 @@ export default function LandingPage() {
               },
               {
                 q: "I already earn from YouTube but I'm stuck. Is this for me?",
-                a: "Often, yes. If growth has flattened out or you're dealing with monetisation problems and you want the thing to be a proper asset rather than a grind, that's a conversation worth having.",
+                a: "Often, yes. If growth has flattened out or you're dealing with monetization problems and you want the thing to be a real asset rather than a grind, that's a conversation worth having.",
               },
               {
                 q: 'Do I need to be on camera?',
@@ -868,7 +868,7 @@ export default function LandingPage() {
               },
               {
                 q: 'What will it cost me to keep running each month?',
-                a: "Videos cost money to make, so the niche gets picked around a production budget you can actually sustain, and we go through those numbers with you before anything is made. Nobody should be funding a lane that only works at three hundred pounds a video.",
+                a: "Videos cost money to make, so the niche gets picked around a production budget you can actually sustain, and we go through those numbers with you before anything is made. Nobody should be funding a lane that only works at $300 a video.",
               },
               {
                 q: 'What does it cost?',
