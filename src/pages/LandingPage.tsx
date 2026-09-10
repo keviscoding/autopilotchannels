@@ -203,6 +203,7 @@ const videoStories = [
   { id: 'q9mYCUKB5Vk', name: 'Pluto', caption: 'A job, a family, and a channel that pays' },
   { id: 'PmCeZxdI2nI', name: 'Anton', caption: '100K subscribers in 30 days' },
   { id: 'nMcltSa9_vw', name: 'Rich', caption: '$329 a day from 30-second videos' },
+  { id: 'mcns8yAYJU8', name: 'Guilherme', caption: 'From flatlined uploads to $7K a month' },
 ];
 
 const moreResults = [
