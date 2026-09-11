@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { PopupButton } from '@typeform/embed-react';
+import { readAttribution } from '../webinar/attribution';
 import {
   WEBINAR,
   formatDay,
@@ -41,6 +42,8 @@ function Logo() {
 
 export default function WebinarConfirmed() {
   const [session] = useState(() => nextSession());
+  // Recovered from storage, since WebinarJam's redirect drops our query string.
+  const attribution = useMemo(() => readAttribution(), []);
 
   // A Typeform redirect can leave the page scroll-locked.
   useEffect(() => {
@@ -135,7 +138,7 @@ export default function WebinarConfirmed() {
             You don't have to wait for the session. Put an application in and we'll look at it before
             then. If it's a fit we'll set up a proper conversation about installing a channel for you.
           </p>
-          <PopupButton id={APPLICATION_TYPEFORM_ID} className="btn btn--primary">
+          <PopupButton id={APPLICATION_TYPEFORM_ID} hidden={attribution} className="btn btn--primary">
             Apply for a Channel Install <Icon name="arrow-right" />
           </PopupButton>
         </div>

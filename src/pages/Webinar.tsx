@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { PopupButton } from '@typeform/embed-react';
+import { captureAttribution } from '../webinar/attribution';
 import {
   WEBINAR,
   formatDay,
@@ -46,28 +47,9 @@ function Logo() {
   );
 }
 
-/**
- * Reads ?source= and utm tags so we can tell which video filled the room.
- * utm_campaign is forced to 'webinar' so webinar-sourced applications stay a
- * separate cohort from page-sourced ones, while source keeps the video tag.
- */
+/** Reads the video tag and stashes it, so it survives the trip through WebinarJam. */
 function useAttribution() {
-  return useMemo(() => {
-    const out: Record<string, string> = {};
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash;
-      const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
-      const searchQ = window.location.search.replace(/^\?/, '');
-      const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
-      for (const key of ['source', 'utm_source', 'utm_medium', 'utm_content']) {
-        const v = params.get(key);
-        if (v) out[key] = v;
-      }
-    }
-    out.source = out.source || 'webinar';
-    out.utm_campaign = 'webinar';
-    return out;
-  }, []);
+  return useMemo(() => captureAttribution(), []);
 }
 
 /** Thumbnail until clicked, then the embed. Keeps YouTube off the page on load. */
