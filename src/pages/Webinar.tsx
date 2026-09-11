@@ -13,6 +13,11 @@ import {
 
 const APPLICATION_TYPEFORM_ID = 'uNrHKe9G';
 
+const proofClips = [
+  { id: 'mcns8yAYJU8', name: 'Guilherme', caption: 'From flatlined uploads to $7K a month' },
+  { id: 'YOALp81wuhU', name: 'Sasha', caption: '53, new to YouTube, monetized in 17 days' },
+];
+
 function Icon({ name }: { name: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -40,21 +45,52 @@ function Logo() {
   );
 }
 
-/** Reads ?source= and utm tags so we can tell which video filled the room. */
+/**
+ * Reads ?source= and utm tags so we can tell which video filled the room.
+ * utm_campaign is forced to 'webinar' so webinar-sourced applications stay a
+ * separate cohort from page-sourced ones, while source keeps the video tag.
+ */
 function useAttribution() {
   return useMemo(() => {
-    if (typeof window === 'undefined') return {} as Record<string, string>;
-    const hash = window.location.hash;
-    const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
-    const searchQ = window.location.search.replace(/^\?/, '');
-    const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
     const out: Record<string, string> = {};
-    for (const key of ['source', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
-      const v = params.get(key);
-      if (v) out[key] = v;
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
+      const searchQ = window.location.search.replace(/^\?/, '');
+      const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
+      for (const key of ['source', 'utm_source', 'utm_medium', 'utm_content']) {
+        const v = params.get(key);
+        if (v) out[key] = v;
+      }
     }
+    out.source = out.source || 'webinar';
+    out.utm_campaign = 'webinar';
     return out;
   }, []);
+}
+
+/** Thumbnail until clicked, then the embed. Keeps YouTube off the page on load. */
+function YtClip({ id, title }: { id: string; title: string }) {
+  const [playing, setPlaying] = useState(false);
+  const [src, setSrc] = useState(`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`);
+  return (
+    <div className="ytclip">
+      {playing ? (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      ) : (
+        <button type="button" className="ytclip__poster" onClick={() => setPlaying(true)} aria-label={`Play ${title}`}>
+          <img src={src} alt="" onError={() => setSrc(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)} />
+          <span className="ytclip__play" aria-hidden="true" />
+        </button>
+      )}
+    </div>
+  );
 }
 
 function useNow(intervalMs = 1000) {
@@ -203,7 +239,32 @@ export default function Webinar() {
           </div>
           <p className="wb-card__meta">
             Runs about {WEBINAR.durationMinutes} minutes including questions. Free to attend. If you
-            cannot make this one, register anyway and come to the next one.
+            cannot make this one, register anyway and come to the next. The replay stays up for 48
+            hours, though the questions only happen live and that is the part people say was worth
+            most.
+          </p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container container--narrow">
+          <h2 className="section-title">The people who have already done it</h2>
+          <div className="yt-grid">
+            {proofClips.map((v) => (
+              <div className="proof-card" key={v.id}>
+                <YtClip id={v.id} title={`${v.name} on his channel`} />
+                <div className="proof-card__body">
+                  <span className="proof-card__label"><Icon name="badge-check" /> Client result</span>
+                  <h4>{v.name}</h4>
+                  <p>{v.caption}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="wb-note" style={{ marginTop: 18 }}>
+            These are individual client results and they are not typical. Most channels take longer
+            and earn less. What any channel does depends on the niche, the money put into videos and
+            things nobody controls, and plenty of people who start never get there at all.
           </p>
         </div>
       </section>
