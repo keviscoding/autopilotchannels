@@ -16,8 +16,13 @@ export const WEBINAR = {
   title: 'HeadStart Channels live workshop',
   summary:
     'How a faceless YouTube channel actually gets built: judging a niche, where the video ideas come from, who makes the videos and what it costs. Live with Kevis.',
-  // Paste the registration Typeform id here to switch the page from the
-  // Telegram fallback to a real capture form.
+  // Where "Save my place" sends people. Paste the Demio event registration URL
+  // here and every register button on both pages starts using it, with the
+  // ?source= tag from the video description appended so attribution survives.
+  // In Demio, set the post-registration redirect to /#/webinar/confirmed so we
+  // keep the calendar links, the Telegram prompt and the apply-now path.
+  registrationUrl: '',
+  // Fallback capture if we ever run registration through Typeform instead.
   typeformId: '',
   telegram: '',
 };

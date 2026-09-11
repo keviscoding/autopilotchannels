@@ -132,6 +132,15 @@ function RegisterButton({
   attribution: Record<string, string>;
 }) {
   const cls = 'btn btn--primary' + (large ? ' btn--lg' : '');
+  if (WEBINAR.registrationUrl) {
+    const qs = new URLSearchParams(attribution).toString();
+    const href = WEBINAR.registrationUrl + (qs ? (WEBINAR.registrationUrl.includes('?') ? '&' : '?') + qs : '');
+    return (
+      <a className={cls} href={href}>
+        {children}
+      </a>
+    );
+  }
   if (WEBINAR.typeformId) {
     return (
       <PopupButton id={WEBINAR.typeformId} hidden={attribution} className={cls}>
