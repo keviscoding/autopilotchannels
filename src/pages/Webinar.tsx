@@ -4,6 +4,7 @@ import {
   WEBINAR,
   formatDay,
   formatTime,
+  formatWeekdayOnly,
   googleCalendarUrl,
   isLive,
   localZoneLabel,
@@ -214,9 +215,11 @@ export default function Webinar() {
 
       <header className="wb-hero">
         <div className="container container--narrow">
-          <span className="pill-tag">Free live workshop, every week</span>
+          <span className="pill-tag">
+            Free live workshop, {formatWeekdayOnly(session.start)} {formatTime(session.start)}
+          </span>
           <h1>
-            How a faceless YouTube channel actually gets built, <em>live every week</em>
+            How a faceless YouTube channel <em>actually gets built</em>
           </h1>
           <p className="wb-hero__sub">
             A working session rather than a pitch. We judge a niche in front of you, show where the
@@ -229,7 +232,7 @@ export default function Webinar() {
       <section className="container container--narrow">
         <div className="wb-card">
           <p className="wb-card__tag">
-            {live ? 'Happening right now' : 'Next session'}
+            {live ? 'Happening right now' : 'This session'}
           </p>
           <p className="wb-card__when">
             {formatDay(session.start)}
@@ -247,10 +250,10 @@ export default function Webinar() {
             </a>
           </div>
           <p className="wb-card__meta">
-            Runs about {WEBINAR.durationMinutes} minutes including questions. Free to attend. If you
-            cannot make this one, register anyway and come to the next. The replay stays up for 48
-            hours, though the questions only happen live and that is the part people say was worth
-            most.
+            Set aside a couple of hours. The session itself runs about 75 minutes and the questions
+            after it usually run longer than people expect. Free to attend, and registration closes
+            when we start. The recording goes out for 48 hours, though the questions only happen live
+            and that is the part people say was worth most.
           </p>
         </div>
       </section>

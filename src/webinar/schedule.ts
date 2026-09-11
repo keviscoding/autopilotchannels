@@ -9,7 +9,10 @@ export const WEBINAR = {
   // Set in the host's own timezone, so the slot never drifts for the host
   // when the clocks change. 16:00 London is 11am New York and 8am Los Angeles.
   timeZone: 'Europe/London',
-  durationMinutes: 75,
+  // The room is booked for two hours. The presentation is about 75 minutes and
+  // the questions after it are meant to run long, so the calendar hold and the
+  // "is it live right now" check both use the full window.
+  durationMinutes: 120,
   // People arriving late can still be let in, and until this window closes
   // the page keeps pointing at today's session rather than next week's.
   joinWindowMinutes: 20,
