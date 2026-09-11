@@ -623,7 +623,7 @@ export default function LandingPage() {
               { ic: 'image', h: 'AI prompt templates for thumbnails', p: "You paste, generate, and pick the one you like. It's the reason thumbnails take minutes instead of an evening." },
               { ic: 'users', h: 'The production team, in place', p: "We find the editors, check their work and put them on your channel. You're not interviewing freelancers in the evenings and hoping the first one is any good." },
               { ic: 'wallet', h: 'A production budget that fits', p: "The niche gets chosen around what you can comfortably spend per video, instead of a lane that only works at $300 a video." },
-              { ic: 'line-chart', h: 'Someone to read the numbers with you', p: "Early uploads are ambiguous and the usual mistake is changing everything after four videos. You'll know whether it's the idea, the packaging, or simply not enough data yet." },
+              { ic: 'line-chart', h: 'Someone to read the numbers with you', p: "The first uploads usually look like nothing, and that's the point where people quit or tear up the plan. You'll know whether it's the idea, the packaging, or simply a channel YouTube hasn't gathered enough data on yet." },
               { ic: 'graduation-cap', h: 'You learn how it works as we build it', p: "There's nothing to grind through, but you'll pick up why each call was made while it happens. That's what you'd need if you ever want a second channel, or to set one up for somebody in your family." },
             ].map((r) => (
               <div className="offer__row" key={r.h}>
@@ -838,6 +838,10 @@ export default function LandingPage() {
               {
                 q: "I've never run a business or earned online. Is that a problem?",
                 a: "No. Plenty of people we install for have done neither, and they're not learning to be marketers here. They own a channel, they post to it, and a team makes what goes on it.",
+              },
+              {
+                q: 'What if my first videos get no views?',
+                a: "Expect that, because it's where people quit. A new channel has no data on it yet, so YouTube doesn't know who to put your videos in front of, and the first few uploads often do close to nothing. Guilherme's first two barely registered and he messaged us asking whether we'd picked the wrong niche. His fourth and fifth were the ones that got picked up, and that lift dragged the earlier videos along with it. That's one person's example and nobody can promise the timing, so our job is to tell you what the numbers actually mean while it's happening, instead of you rewriting everything at video three.",
               },
               {
                 q: 'Am I buying a channel from you?',
