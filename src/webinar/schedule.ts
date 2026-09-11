@@ -4,11 +4,10 @@
 
 export const WEBINAR = {
   weekday: 3, // 0 = Sunday
-  hour: 20, // 24h clock, in the timeZone below
+  hour: 16, // 24h clock, in the timeZone below
   minute: 0,
-  // Set in the host's own timezone. 20:00 London is 3pm New York and noon
-  // Los Angeles, which is the widest overlap that does not put Kevis on at
-  // one in the morning every week.
+  // Set in the host's own timezone, so the slot never drifts for the host
+  // when the clocks change. 16:00 London is 11am New York and 8am Los Angeles.
   timeZone: 'Europe/London',
   durationMinutes: 75,
   // People arriving late can still be let in, and until this window closes
