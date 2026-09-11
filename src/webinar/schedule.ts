@@ -110,6 +110,30 @@ export function isLive(session: Session, now: Date = new Date()): boolean {
   return now >= session.start && now <= session.end;
 }
 
+/**
+ * Builds the session for a specific date, for the confirmation page. Registrants
+ * can pick a later date than the one our page advertised, so if the registration
+ * platform can hand us the chosen date we use it rather than assuming the
+ * nearest one. Accepts "2026-09-27" or anything Date can parse. Returns null on
+ * anything it cannot trust, so the caller can fall back.
+ */
+export function sessionOnDate(value: string | null | undefined): Session | null {
+  if (!value) return null;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  const { hour, minute, timeZone, durationMinutes } = WEBINAR;
+  let start: Date;
+  if (m) {
+    start = zonedToUtc(Number(m[1]), Number(m[2]), Number(m[3]), hour, minute, timeZone);
+  } else {
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return null;
+    start = parsed;
+  }
+  // Guard against a stale or malformed value sending someone to a past date.
+  if (start.getTime() < Date.now() - 86400000) return null;
+  return { start, end: new Date(start.getTime() + durationMinutes * 60000) };
+}
+
 /** "Wednesday, September 17" in the visitor's own timezone. */
 export function formatDay(d: Date): string {
   return new Intl.DateTimeFormat(undefined, {

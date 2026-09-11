@@ -9,6 +9,7 @@ import {
   icsHref,
   localZoneLabel,
   nextSession,
+  sessionOnDate,
 } from '../webinar/schedule';
 
 const APPLICATION_TYPEFORM_ID = 'uNrHKe9G';
@@ -40,8 +41,21 @@ function Logo() {
   );
 }
 
+/** Reads ?date= from either the search or the hash query. */
+function chosenDateParam(): string | null {
+  if (typeof window === 'undefined') return null;
+  const hash = window.location.hash;
+  const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
+  const searchQ = window.location.search.replace(/^\?/, '');
+  const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
+  return params.get('date') || params.get('d');
+}
+
 export default function WebinarConfirmed() {
-  const [session] = useState(() => nextSession());
+  // Registrants can choose a later date than the one the page advertised, so
+  // prefer a date handed to us over assuming they took the nearest slot.
+  const [confirmed] = useState(() => sessionOnDate(chosenDateParam()));
+  const [session] = useState(() => confirmed ?? nextSession());
   // Recovered from storage, since WebinarJam's redirect drops our query string.
   const attribution = useMemo(() => readAttribution(), []);
 
@@ -93,6 +107,7 @@ export default function WebinarConfirmed() {
           <p className="wb-card__meta">
             Put it in your calendar now. The people who do are the ones who actually turn up, and this
             only works if you're in the room asking things.
+            {!confirmed && ' If you picked a later date, go by the details in your confirmation email rather than the date above.'}
           </p>
         </div>
 
