@@ -3,7 +3,7 @@
 // still lands on "the next session" instead of a dead date.
 
 export const WEBINAR = {
-  weekday: 3, // 0 = Sunday
+  weekday: 0, // 0 = Sunday. Change this one number to move the slot.
   hour: 16, // 24h clock, in the timeZone below
   minute: 0,
   // Set in the host's own timezone, so the slot never drifts for the host
