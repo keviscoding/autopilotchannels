@@ -19,14 +19,12 @@ export const WEBINAR = {
   title: 'HeadStart Channels live workshop',
   summary:
     'How a faceless YouTube channel actually gets built: judging a niche, where the video ideas come from, who makes the videos and what it costs. Live with Kevis.',
-  // Where "Save my place" sends people: the hosted registration form URL from
-  // whatever captures emails (Brevo free to start). Every register button on
-  // both pages switches to it, with the ?source= tag from the video description
-  // appended so attribution survives. Set that form's redirect to
-  // /#/webinar/confirmed so we keep the calendar links, the Telegram prompt and
-  // the apply-now path. If the form can be embedded instead, we do that on the
-  // page and drop this.
-  registrationUrl: '',
+  // Where "Save my place" sends people. Every register button on both pages
+  // uses this, with the ?source= tag from the video description appended so
+  // attribution survives the round trip. WebinarJam's thank-you page is set to
+  // redirect to /#/webinar/confirmed, which is where we recover the tag and
+  // hand over the calendar links and the apply-now path.
+  registrationUrl: 'https://event.webinarjam.com/0qgyrm/register/8wgyk5by',
   // Fallback capture if we ever run registration through Typeform instead.
   typeformId: '',
   telegram: '',
