@@ -15,6 +15,67 @@ import {
 
 const APPLICATION_TYPEFORM_ID = 'uNrHKe9G';
 
+// WebinarJam's inline form, so registering never leaves this page. Accent set to
+// our green and the background to white to match .wb-card.
+const WJ_HASH = '8wgyk5by';
+const WJ_EMBED_SRC =
+  `https://event.webinarjam.com/register/${WJ_HASH}/embed-form` +
+  '?formButtonText=Save%20my%20place' +
+  '&formAccentColor=%2315875B&formAccentOpacity=1' +
+  '&formBgColor=%23ffffff&formBgOpacity=1';
+
+/**
+ * WebinarJam's embed script scrapes window.location.href for keys beginning
+ * with utm_ and forwards them into the registration form, which is the only way
+ * our per-video tag reaches their side of the funnel and shows up against a
+ * registrant. It ignores a plain ?source=, so mirror it across before the script
+ * reads the URL. Keeps the link we put in video descriptions short.
+ */
+function mirrorSourceIntoUtm(source: string | undefined) {
+  if (typeof window === 'undefined' || !source) return;
+  if (window.location.href.includes('utm_content=')) return;
+  const hash = window.location.hash || '#/webinar';
+  const q = hash.indexOf('?');
+  const path = q === -1 ? hash : hash.slice(0, q);
+  const params = new URLSearchParams(q === -1 ? '' : hash.slice(q + 1));
+  params.set('utm_source', 'youtube');
+  params.set('utm_medium', 'video');
+  params.set('utm_content', source);
+  // replaceState does not fire hashchange, so the router is left alone.
+  window.history.replaceState(null, '', `${window.location.pathname}${path}?${params.toString()}`);
+}
+
+/** The registration form itself, inline. Falls back to the hosted page. */
+function WjEmbed({ attribution }: { attribution: Record<string, string> }) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    const el = wrap.current;
+    if (!el || el.dataset.wjLoaded) return;
+    el.dataset.wjLoaded = '1';
+    mirrorSourceIntoUtm(attribution.source);
+    const s = document.createElement('script');
+    s.src = WJ_EMBED_SRC;
+    s.async = true;
+    s.onerror = () => setFailed(true);
+    el.appendChild(s);
+  }, [attribution.source]);
+
+  const qs = new URLSearchParams(attribution).toString();
+  const hosted = WEBINAR.registrationUrl + (qs ? '?' + qs : '');
+
+  return (
+    <div className="wj-embed">
+      <div className="wj-embed-wrapper" data-webinar-hash={WJ_HASH} ref={wrap} />
+      <p className="wj-embed__fallback">
+        {failed ? 'The form did not load. ' : 'Form not showing? '}
+        <a href={hosted}>Register here instead</a>.
+      </p>
+    </div>
+  );
+}
+
 const proofClips = [
   { id: 'mcns8yAYJU8', name: 'Guilherme', caption: 'From flatlined uploads to $7K a month' },
   { id: 'YOALp81wuhU', name: 'Sasha', caption: '53, new to YouTube, monetized in 17 days' },
@@ -50,6 +111,12 @@ function Logo() {
 /** Reads the video tag and stashes it, so it survives the trip through WebinarJam. */
 function useAttribution() {
   return useMemo(() => captureAttribution(), []);
+}
+
+/** Every secondary CTA sends people to the one form rather than a second copy of it. */
+function toRegister(e: React.MouseEvent) {
+  e.preventDefault();
+  document.getElementById('register')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 /** Thumbnail until clicked, then the embed. Keeps YouTube off the page on load. */
@@ -159,28 +226,33 @@ export default function Webinar() {
   const agenda = [
     {
       ic: 'compass',
-      h: 'How a niche gets judged before anyone spends money',
-      p: "How old the opportunity is, whether several channels are winning or just one got lucky, why absolute views matter more than percentages, and what a video costs to make in that lane. This is the part that decides whether the money you put into videos comes back.",
+      h: 'The four checks a niche has to pass before it is worth a dollar',
+      p: "How old the opportunity is, whether several channels are winning or just one got lucky, why absolute views matter more than percentages, and what a video costs to make in that lane. You will be able to run all four yourself on any idea by the time we finish.",
     },
     {
       ic: 'lightbulb',
-      h: 'Where the video ideas come from',
+      h: 'Where the video ideas come from once you run out of your own',
       p: "The title patterns that repeat inside a niche, and how to read them instead of guessing. A production team without good ideas just makes bad videos faster.",
     },
     {
       ic: 'users',
-      h: 'Who actually makes the videos, and what it costs',
-      p: "Where we find editors, what a long video really costs to produce, and where AI is good enough to publish and where it gets you mass terminated. Most people either overspend here or publish slop.",
+      h: 'What a video actually costs, line by line',
+      p: "Where we find editors, what each part of a video costs to produce, and what a month of production realistically costs before any money comes back. Most people either overspend here or pay for videos nobody watches.",
+    },
+    {
+      ic: 'shield-alert',
+      h: 'The AI shortcut that is getting channels terminated right now',
+      p: "Where AI is genuinely good enough to publish, and where using it will get your channel wiped. This is the most expensive mistake being made in this business at the moment, and it is being sold to beginners as the clever way to do it.",
     },
     {
       ic: 'line-chart',
-      h: 'What the first thirty days look like',
-      p: "The flat start, why it happens, and how to tell a channel that is not working apart from a channel YouTube has not gathered enough data on yet. This is where nearly everyone quits.",
+      h: 'Why the first thirty days look like failure, and how to read them',
+      p: "The flat start, why it happens, and how to tell a channel that is not working apart from a channel YouTube has not gathered enough data on yet. This is where nearly everyone quits, usually about two weeks too early.",
     },
     {
       ic: 'message-circle',
-      h: 'Then you ask whatever you want',
-      p: "Bring your niche idea, your channel, or the thing you are stuck on. People tell us this part is worth more than the rest of it, because you are watching the reasoning rather than reading a summary of it.",
+      h: 'Bring your niche and get a straight answer on it',
+      p: "Put what you are considering in the chat and Kevis works through them on air, out loud, with a yes or a no and the reason behind it. Bring a channel you already have if you have one. This only happens live, and it is the part people say made the session worth turning up for.",
     },
   ];
 
@@ -190,7 +262,9 @@ export default function Webinar() {
         <div className="container nav__inner">
           <Logo />
           <div className="nav__cta">
-            <RegisterButton attribution={attribution}>Register</RegisterButton>
+            <a className="btn btn--primary" href="#/webinar#register" onClick={toRegister}>
+              Register
+            </a>
           </div>
         </div>
       </nav>
@@ -204,14 +278,15 @@ export default function Webinar() {
             How a faceless YouTube channel <em>actually gets built</em>
           </h1>
           <p className="wb-hero__sub">
-            A working session rather than a pitch. We judge a niche in front of you, show where the
-            video ideas come from, what the production actually costs and what the first month really
-            looks like. Then you ask questions and Kevis answers them on the spot.
+            A channel you run yourself is a second job. A channel a team runs is an asset. This is the
+            session where we show you how the second one gets built: how a niche gets judged, where the
+            ideas come from, who makes the videos and what it costs. Then you ask questions and Kevis
+            answers them on the spot.
           </p>
         </div>
       </header>
 
-      <section className="container container--narrow">
+      <section className="container container--narrow" id="register">
         <div className="wb-card">
           <p className="wb-card__tag">
             {live ? 'Happening right now' : 'This session'}
@@ -224,18 +299,23 @@ export default function Webinar() {
           </p>
           {!live && <Countdown target={session.start} now={now} />}
           <div className="wb-card__act">
-            <RegisterButton large attribution={attribution}>
-              {live ? 'Get the link and join' : 'Save my place'} <Icon name="arrow-right" />
-            </RegisterButton>
+            {live ? (
+              <RegisterButton large attribution={attribution}>
+                Get the link and join <Icon name="arrow-right" />
+              </RegisterButton>
+            ) : (
+              <WjEmbed attribution={attribution} />
+            )}
             <a className="wb-card__cal" href={googleCalendarUrl(session)} target="_blank" rel="noreferrer">
               <Icon name="calendar-plus" /> Add to calendar
             </a>
           </div>
           <p className="wb-card__meta">
             Set aside a couple of hours. The session itself runs about 75 minutes and the questions
-            after it usually run longer than people expect. Free to attend, and registration closes
-            when we start. The recording goes out for 48 hours, though the questions only happen live
-            and that is the part people say was worth most.
+            after it usually run longer than people expect. It is interactive, so come ready to type in
+            the chat, because Kevis asks the room questions throughout and works from the answers. Free
+            to attend, and registration closes when we start. The recording goes out for 48 hours,
+            though the questions only happen live and that is the part people say was worth most.
           </p>
         </div>
       </section>
@@ -281,6 +361,44 @@ export default function Webinar() {
         </div>
       </section>
 
+      <section className="section">
+        <div className="container container--narrow">
+          <h2 className="section-title">What you leave with, whether or not you ever buy anything</h2>
+          <div className="checks checks--pair">
+            {[
+              {
+                ic: 'list-checks',
+                h: 'The four-check niche filter, written down',
+                p: 'So you can run it yourself on any idea you have, that night, without us.',
+              },
+              {
+                ic: 'wallet',
+                h: 'Real production numbers',
+                p: 'Per video and per month, so you can work out whether this fits what you can actually spend.',
+              },
+              {
+                ic: 'message-square-reply',
+                h: 'A straight answer on your own niche',
+                p: 'If you bring one to the chat, you get a yes or a no and the reasoning behind it.',
+              },
+            ].map((c) => (
+              <div className="check" key={c.h}>
+                <span className="check__ic"><Icon name={c.ic} /></span>
+                <div>
+                  <strong>{c.h}</strong>
+                  <span>{c.p}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="wb-note" style={{ marginTop: 22 }}>
+            At the end Kevis explains how we build these for people who would rather have it done than
+            do it, because that is our business and pretending otherwise would be silly. It comes after
+            the teaching, not instead of it, and you are free to leave before it.
+          </p>
+        </div>
+      </section>
+
       <section className="section section--sand">
         <div className="container container--narrow">
           <div className="wb-fit">
@@ -313,9 +431,9 @@ export default function Webinar() {
             that the useful answers come out of real questions about real channels, not from a script.
           </p>
           <div className="wb-host__act">
-            <RegisterButton large attribution={attribution}>
+            <a className="btn btn--primary btn--lg" href="#/webinar#register" onClick={toRegister}>
               Save my place <Icon name="arrow-right" />
-            </RegisterButton>
+            </a>
             <p>
               Want the results first? <a href="#/">See what clients have done</a>.
             </p>

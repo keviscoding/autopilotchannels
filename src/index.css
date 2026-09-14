@@ -197,6 +197,22 @@ button { font-family: inherit; cursor: pointer; }
   gap: 12px;
   margin-top: 22px;
 }
+/* WebinarJam's inline form. It sizes its own iframe by postMessage, so give it
+   width and let it set the height rather than constraining it. */
+.wj-embed { width: 100%; }
+.wj-embed-wrapper {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  min-height: 220px;
+}
+.wj-embed-wrapper iframe { width: 100%; border: 0; }
+.wj-embed__fallback {
+  font-size: 13.5px;
+  color: var(--fg-subtle);
+  margin: 10px 0 0;
+}
+.wj-embed__fallback a { color: var(--green-700); }
 .wb-card__cal {
   display: inline-flex;
   align-items: center;
@@ -336,6 +352,13 @@ button { font-family: inherit; cursor: pointer; }
   gap: 14px 22px;
   margin: 48px auto 0;
   max-width: 900px;
+}
+/* Three across, and a smaller top gap when the grid follows a section title
+   rather than a block of body copy. */
+.checks--pair {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 26px;
+  max-width: none;
 }
 .check {
   display: flex;
@@ -618,7 +641,7 @@ button { font-family: inherit; cursor: pointer; }
   .case__nums { grid-template-columns: 1fr; gap: 12px; }
   .tf-inline > div { height: 600px; }
   .yt-grid { grid-template-columns: 1fr; }
-  .checks { grid-template-columns: 1fr; }
+  .checks, .checks--pair { grid-template-columns: 1fr; }
   .wb-fit { grid-template-columns: 1fr; gap: 22px; }
   .wb-item { grid-template-columns: auto 1fr; }
   .wb-item__n { display: none; }
