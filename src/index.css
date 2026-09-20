@@ -197,6 +197,125 @@ button { font-family: inherit; cursor: pointer; }
   gap: 12px;
   margin-top: 22px;
 }
+/* ---- Toolkit delivery page ---- */
+.tk-hero__act {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  margin-top: 28px;
+}
+.tk-hero__meta { font-size: 14px; color: var(--fg-subtle); }
+.tk-lead {
+  max-width: 68ch;
+  margin: 0 auto 22px;
+  text-align: center;
+  color: var(--ink-700);
+}
+.tk-list { display: flex; flex-direction: column; gap: 14px; margin-top: 30px; }
+.tk-file {
+  display: flex;
+  gap: 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 24px;
+}
+.tk-file__n {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--green-600);
+  flex: none;
+  padding-top: 2px;
+}
+.tk-file__body { flex: 1; min-width: 0; }
+.tk-file__body h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: 18.5px;
+  letter-spacing: -0.02em;
+  margin: 0 0 7px;
+}
+.tk-file__ic { color: var(--green-700); display: inline-flex; }
+.tk-file__ic svg { width: 18px; height: 18px; }
+.tk-file__body p {
+  margin: 0;
+  font-size: 15.2px;
+  line-height: 1.58;
+  color: var(--fg-muted);
+  max-width: 72ch;
+}
+.tk-file__act { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.tk-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-900);
+  text-decoration: none;
+  background: var(--sand);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 8px 15px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tk-dl svg { width: 16px; height: 16px; }
+.tk-dl em {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12.5px;
+  color: var(--fg-subtle);
+}
+.tk-dl:hover { background: var(--green-50); border-color: var(--green-300); color: var(--green-900); }
+.tk-dl--slim {
+  margin-top: 11px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  color: var(--green-700);
+}
+.tk-dl--slim:hover { background: none; color: var(--green-900); text-decoration: underline; }
+.tk-steps {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding-left: 22px;
+  color: var(--ink-700);
+}
+.tk-steps li { margin-bottom: 11px; line-height: 1.6; }
+.tk-steps code {
+  font-size: 13.4px;
+  background: var(--sand);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 2px 6px;
+  /* These are long example prompts. Without this they push the whole document
+     wider than a phone viewport and everything else gets clipped. */
+  overflow-wrap: anywhere;
+}
+.tk-cta { text-align: center; }
+.tk-cta > p {
+  max-width: 66ch;
+  margin: 0 auto;
+  color: var(--ink-700);
+}
+.tk-cta__act {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.tk-cta__alt { font-size: 14.5px; color: var(--fg-muted); }
+@media (max-width: 620px) {
+  .tk-file { flex-direction: column; gap: 10px; padding: 20px; }
+  .tk-file__body h3 { font-size: 17px; }
+}
+
 /* WebinarJam's inline form. It sizes its own iframe by postMessage, so give it
    width and let it set the height rather than constraining it. */
 .wj-embed { width: 100%; }

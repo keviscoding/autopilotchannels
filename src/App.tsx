@@ -4,6 +4,7 @@ import CourseApp from './course/CourseApp'
 import Confirmed from './pages/Confirmed'
 import Webinar from './pages/Webinar'
 import WebinarConfirmed from './pages/WebinarConfirmed'
+import Toolkit from './pages/Toolkit'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/booked" element={<Confirmed />} />
         <Route path="/webinar" element={<Webinar />} />
         <Route path="/webinar/confirmed" element={<WebinarConfirmed />} />
+        <Route path="/toolkit" element={<Toolkit />} />
         <Route path="/course" element={<CourseApp />} />
         <Route path="/course/:lessonId" element={<CourseApp />} />
       </Routes>

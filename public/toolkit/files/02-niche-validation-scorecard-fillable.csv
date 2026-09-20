@@ -1,0 +1,5 @@
+candidate_name,channel_url,date_scored,watched_10min,A1_demo,A2_advertiser,A3_rpm_evidence,B1_views_vs_subs,B2_emergence,B3_anti_fluke,C1_30_edit,C2_faceless,C3_repeat_format,C4_time_to_spin,D1_copyright,D2_compliance,hard_gate_fail,total_score,verdict,weakest_criteria,next_action,notes
+EXAMPLE_UncleJohn_pattern,https://youtube.com/@EXAMPLE,2026-09-20,yes,2,2,1,2,2,2,2,2,2,2,2,2,no,23,PASS,A3 verify live RPM,Plan first 10,Teaching pattern only — replace with live URL
+EXAMPLE_SelfImprovement_trap,https://youtube.com/@EXAMPLE,2026-09-20,yes,1,0,0,1,1,1,1,0,1,1,2,2,no,11,KILL,A2 A3 C2,Pivot per decision tree,Kevis origin: monetized ~$2 RPM still failed as business
+,,,,,,,,,2,2,2,2,2,2,2,2,2,2,2,2,,0,,
+,,,,,,,,, , , , , , , , , , , , , ,
