@@ -3,11 +3,6 @@ import { Widget } from '@typeform/embed-react';
 
 const TYPEFORM_ID = 'uNrHKe9G';
 
-// WebinarJam replay click URL (thank-you page, may have 48h window)
-// Replace with YouTube/Vimeo/Loom embed URL once confirmed by Kevis
-const REPLAY_EMBED_URL = 'https://event.webinarjam.com/t/click/8wgyk5byintwwavioioao';
-const REPLAY_WATCH_URL = 'https://event.webinarjam.com/t/click/8wgyk5byintwwavioioao';
-
 function Icon({ name }: { name: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -123,136 +118,51 @@ function getAttribution(): Record<string, string> {
   return hidden;
 }
 
-/** Replay player component - handles iframe embed fallback */
-function ReplayPlayer() {
-  const [embedError, setEmbedError] = useState(false);
-  const [tryEmbed, setTryEmbed] = useState(false);
+/** Vidalytics player component */
+function VidalyticsPlayer() {
+  const scriptLoaded = useRef(false);
 
-  // Try to detect if iframe will work (note: X-Frame-Options will block cross-origin WJ embeds)
-  const handleIframeError = () => {
-    setEmbedError(true);
-  };
+  useEffect(() => {
+    // Avoid double-loading in StrictMode
+    if (scriptLoaded.current) return;
+    scriptLoaded.current = true;
 
-  if (!tryEmbed) {
-    // Show poster with play button
-    return (
-      <div className="replay-player">
-        <div className="replay-player__poster">
-          <div className="replay-player__poster-inner">
-            <div style={{ textAlign: 'center', padding: '60px 30px' }}>
-              <div style={{ 
-                width: '92px', 
-                height: '92px', 
-                margin: '0 auto 24px',
-                borderRadius: '50%',
-                background: 'rgba(255,255,255,0.95)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 10px 30px rgba(0,0,0,.3)'
-              }}>
-                <Icon name="play" />
-              </div>
-              <h3 style={{ 
-                fontFamily: 'var(--font-display)', 
-                fontSize: '26px', 
-                fontWeight: 700,
-                color: '#fff',
-                margin: '0 0 16px',
-                textWrap: 'balance'
-              }}>
-                Free Training: How a Faceless YouTube Channel Actually Gets Built
-              </h3>
-              <p style={{ 
-                fontSize: '17px', 
-                color: 'rgba(255,255,255,0.85)', 
-                margin: '0 0 32px',
-                lineHeight: 1.5,
-                maxWidth: '48ch',
-                marginLeft: 'auto',
-                marginRight: 'auto'
-              }}>
-                Learn the full channel-automation approach at your own pace
-              </p>
-              <button
-                onClick={() => setTryEmbed(true)}
-                className="btn btn--primary btn--lg"
-                style={{ display: 'inline-flex' }}
-              >
-                Watch Free Training <Icon name="arrow-right" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.textContent = `
+      (function (v, i, d, a, l, y, t, c, s) {
+        y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl + 'Script'],vlf=v[c][vl + 'Loaded'],ve='Embed';
+        if (!vsl){vsl=function(u,cb){
+          if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;
+          if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}
+          i.getElementsByTagName("head")[0].appendChild(s);
+        };}
+        vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
+      })(window, document, 'Vidalytics', 'vidalytics_embed_PY7FIWoxTwL9_Rpl', 'https://fast.vidalytics.com/embeds/tlH3XS0p/PY7FIWoxTwL9_Rpl/');
+    `;
+    document.head.appendChild(script);
 
-  if (embedError || REPLAY_EMBED_URL.includes('webinarjam')) {
-    // Fallback: open in new tab (WJ likely blocks iframe)
-    return (
-      <div className="replay-player">
-        <div className="replay-player__fallback">
-          <div style={{ textAlign: 'center', padding: '48px 30px' }}>
-            <div style={{ 
-              width: '72px', 
-              height: '72px', 
-              margin: '0 auto 20px',
-              borderRadius: '50%',
-              background: 'var(--green-50)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Icon name="external-link" />
-            </div>
-            <p style={{ 
-              fontSize: '17px', 
-              color: 'var(--fg-muted)', 
-              margin: '0 0 24px',
-              lineHeight: 1.5
-            }}>
-              The training opens in a new window
-            </p>
-            <a
-              href={REPLAY_WATCH_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn--primary btn--lg"
-            >
-              Open Training <Icon name="external-link" />
-            </a>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
 
-  // Try iframe embed
   return (
-    <div className="replay-player">
-      <iframe
-        src={REPLAY_EMBED_URL}
-        title="Free Training Replay"
-        style={{
-          width: '100%',
-          height: '100%',
-          border: 'none',
-          borderRadius: '16px',
-        }}
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-        onError={handleIframeError}
-      />
-    </div>
+    <div 
+      id="vidalytics_embed_PY7FIWoxTwL9_Rpl" 
+      style={{ width: '100%', position: 'relative', paddingTop: '56.25%' }}
+    />
   );
 }
 
 export default function FreeTraining() {
   const [attribution] = useState(getAttribution);
 
-  // Client testimonials - reuse existing site proof
+  // Client testimonials - Pamela first, then others
   const testimonials = [
+    { name: 'Pamela', result: 'Past $10k a month, working on the channel once her kids are in bed', video: '/pamela-stats.mp4', poster: '/pamela-poster.jpg', location: 'Australia' },
     { name: 'Theo', result: 'Went from nothing to $43,000 in a month', src: '/theo-dashboard.jpeg' },
     { name: 'Fahad', result: 'Monetised in 29 days', lead: 'From a few hundred views to 15 million', video: 'JKAP6p9nnh8' },
     { name: 'Anton', result: '100K subscribers in 30 days', src: '/anton-100k.jpeg' },
@@ -292,7 +202,7 @@ export default function FreeTraining() {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container" style={{ maxWidth: '920px' }}>
           <Reveal className="frame" style={{ background: 'var(--dark-bg)', borderRadius: '20px' }}>
-            <ReplayPlayer />
+            <VidalyticsPlayer />
           </Reveal>
         </div>
       </section>
@@ -305,6 +215,24 @@ export default function FreeTraining() {
               Real client results from channels we've been behind. Different niches, different people, same approach.
             </p>
           </div>
+
+          <Reveal className="proof-card" style={{ maxWidth: '560px', margin: '0 auto 48px' }}>
+            <div style={{ borderBottom: '1px solid var(--line)' }}>
+              <video
+                src="/pamela-stats.mp4"
+                poster="/pamela-poster.jpg"
+                controls
+                playsInline
+                preload="metadata"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+            </div>
+            <div className="proof-card__body">
+              <span className="proof-card__label"><Icon name="badge-check" /> Client result</span>
+              <h4>Pamela, in Australia</h4>
+              <p>Past $10k a month, working on the channel once her kids are in bed</p>
+            </div>
+          </Reveal>
 
           <div className="proof-grid">
             {testimonials.filter(t => t.src).slice(0, 3).map((t, i) => (
@@ -322,7 +250,7 @@ export default function FreeTraining() {
           </div>
 
           <div className="yt-grid" style={{ marginTop: '32px' }}>
-            {testimonials.filter(t => t.video).map((v, i) => (
+            {testimonials.filter(t => t.video && !t.poster).map((v, i) => (
               <Reveal className="proof-card" key={v.name} delay={(i % 2) * 60}>
                 <YtClip id={v.video!} title={`${v.name} on their channel`} />
                 <div className="proof-card__body">
