@@ -766,6 +766,32 @@ button { font-family: inherit; cursor: pointer; }
   .wb-item__n { display: none; }
 }
 
+/* Replay player for free-training page */
+.replay-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--dark-bg);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.replay-player__poster,
+.replay-player__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #11201B 0%, #1A2C25 100%);
+}
+.replay-player__poster-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 480px) {
   .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
   .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
