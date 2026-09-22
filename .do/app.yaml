@@ -32,6 +32,7 @@ static_sites:
   name: autopilotchannels
   output_dir: dist
   source_dir: /
+  catchall_document: index.html
 services:
 - name: film-board-gateway
   github:

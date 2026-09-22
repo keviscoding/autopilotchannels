@@ -259,7 +259,7 @@ export default function FreeTraining() {
     { name: 'Pluto', result: '149M views and 38.7K new subscribers in 28 days', lead: 'A job, a family, and a channel that pays', video: 'q9mYCUKB5Vk' },
     { name: 'Sasha', result: '53, new to YouTube, monetised in 17 days', video: 'YOALp81wuhU' },
     { name: 'Guilherme', result: 'From flatlined uploads to $7K a month', video: 'mcns8yAYJU8' },
-    { name: 'Rich', result: '$329 a day from 30-second videos', video: 'PmCeZxdI2nI' },
+    { name: 'Rich', result: '$329 a day from 30-second videos', video: 'nMcltSa9_vw' },
   ];
 
   return (

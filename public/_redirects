@@ -1,3 +1,0 @@
-# DigitalOcean App Platform SPA routing
-# Serve index.html for all paths (HashRouter handles client-side routing)
-/*    /index.html   200
