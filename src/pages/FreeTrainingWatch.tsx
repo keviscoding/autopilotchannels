@@ -150,7 +150,12 @@ function VidalyticsPlayer() {
   return (
     <div 
       id="vidalytics_embed_PY7FIWoxTwL9_Rpl" 
-      style={{ width: '100%', position: 'relative' }}
+      style={{ 
+        width: '100%', 
+        height: '100%',
+        position: 'absolute',
+        inset: 0
+      }}
     />
   );
 }
@@ -198,7 +203,7 @@ export default function FreeTrainingWatch() {
         </div>
       </nav>
 
-      <header className="hero" style={{ paddingTop: 'clamp(96px, 8vw, 64px)', paddingBottom: 'clamp(32px, 4vw, 48px)' }}>
+      <header className="hero" style={{ paddingTop: 'clamp(64px, 8vw, 96px)', paddingBottom: 'clamp(32px, 4vw, 48px)' }}>
         <div className="container" style={{ maxWidth: '880px', margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
             <span className="pill-tag">Free Training</span>
@@ -219,7 +224,13 @@ export default function FreeTrainingWatch() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container" style={{ maxWidth: '920px' }}>
-          <Reveal className="frame" style={{ background: 'var(--dark-bg)', borderRadius: '20px' }}>
+          <Reveal className="frame" style={{ 
+            background: 'var(--dark-bg)', 
+            borderRadius: '20px',
+            aspectRatio: '16/9',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
             <VidalyticsPlayer />
           </Reveal>
           
