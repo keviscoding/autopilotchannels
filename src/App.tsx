@@ -7,6 +7,7 @@ import WebinarConfirmed from './pages/WebinarConfirmed'
 import Toolkit from './pages/Toolkit'
 import FreeTrainingRegistration from './pages/FreeTrainingRegistration'
 import FreeTrainingWatch from './pages/FreeTrainingWatch'
+import Privacy from './pages/Privacy'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/toolkit" element={<Toolkit />} />
         <Route path="/free-training" element={<FreeTrainingRegistration />} />
         <Route path="/free-training/watch" element={<FreeTrainingWatch />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/course" element={<CourseApp />} />
         <Route path="/course/:lessonId" element={<CourseApp />} />
       </Routes>

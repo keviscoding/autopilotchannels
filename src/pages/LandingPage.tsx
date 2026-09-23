@@ -923,7 +923,7 @@ export default function LandingPage() {
             </div>
             <nav className="footer__links" aria-label="Legal">
               <a href="/terms">Terms of Service</a>
-              <a href="/privacy">Privacy Policy</a>
+              <a href="#/privacy">Privacy Policy</a>
               <a href="/earnings-disclaimer">Earnings Disclaimer</a>
               <a href="mailto:support@headstartchannels.com">Contact</a>
             </nav>

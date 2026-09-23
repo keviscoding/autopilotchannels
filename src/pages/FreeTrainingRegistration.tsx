@@ -120,7 +120,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         <div ref={mlFormContainerRef}></div>
         
         <p className="modal-footer-text">
-          You'll get the training by email plus occasional HeadStart tips. Unsubscribe anytime. <a href="/privacy">Privacy Policy</a>.
+          You'll get the training by email plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
         </p>
       </div>
     </div>
@@ -315,7 +315,7 @@ export default function FreeTrainingRegistration() {
             </div>
             <nav className="footer__links" aria-label="Legal">
               <a href="/terms">Terms of Service</a>
-              <a href="/privacy">Privacy Policy</a>
+              <a href="#/privacy">Privacy Policy</a>
               <a href="/earnings-disclaimer">Earnings Disclaimer</a>
               <a href="mailto:support@headstartchannels.com">Contact</a>
             </nav>
