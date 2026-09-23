@@ -59,6 +59,7 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 
 /** Modal for email gate */
 function EmailGateModal({ onClose }: { onClose: () => void }) {
+  const mlFormContainerRef = useRef<HTMLDivElement>(null);
   const mlFormLoaded = useRef(false);
   const location = useLocation();
 
@@ -66,6 +67,41 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
     // Initialize MailerLite embedded form
     if (mlFormLoaded.current) return;
     mlFormLoaded.current = true;
+
+    // MailerLite's universal script only scans for .ml-embedded on page load.
+    // Since the modal mounts after page load, we need to manually trigger form rendering.
+    const initForm = () => {
+      const ml = (window as any).ml;
+      const container = mlFormContainerRef.current;
+      
+      if (typeof ml === 'function' && container) {
+        // Clear any existing content
+        container.innerHTML = '';
+        
+        // Ensure data-form attribute is set
+        container.setAttribute('data-form', 'hPCyUL');
+        container.setAttribute('class', 'ml-embedded');
+        
+        // Manually trigger MailerLite to render this specific container
+        ml('render', container);
+      }
+    };
+
+    // Give MailerLite's universal script time to load if it hasn't yet
+    if ((window as any).ml) {
+      // Small delay to ensure DOM is ready
+      setTimeout(initForm, 50);
+    } else {
+      const checkInterval = setInterval(() => {
+        if ((window as any).ml) {
+          clearInterval(checkInterval);
+          initForm();
+        }
+      }, 100);
+      
+      // Stop checking after 5 seconds
+      setTimeout(() => clearInterval(checkInterval), 5000);
+    }
 
     // Listen for MailerLite form success event to set localStorage flag
     const handleMLSuccess = () => {
@@ -98,7 +134,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
             Form ID: 199393963230103185, Account: 994180
             Success redirect set in MailerLite to: https://headstartchannels.com/free-training/watch
             Consent checkbox is handled by MailerLite form (GDPR compliant) */}
-        <div className="ml-embedded" data-form="hPCyUL"></div>
+        <div ref={mlFormContainerRef} className="ml-embedded" data-form="hPCyUL"></div>
       </div>
     </div>
   );
