@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Widget } from '@typeform/embed-react';
 
 const TYPEFORM_ID = 'uNrHKe9G';
@@ -165,18 +164,9 @@ function scrollToAnchor(id: string) {
 }
 
 export default function FreeTrainingWatch() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [attribution] = useState(getAttribution);
 
-  // Check if user is registered, if not redirect back to registration
-  useEffect(() => {
-    if (localStorage.getItem('hs_ft_registered') !== '1') {
-      navigate('/free-training' + location.search, { replace: true });
-    }
-  }, [navigate, location.search]);
-
-  // Set noindex meta tag
+  // Set noindex meta tag (protection via noindex, not redirect)
   useEffect(() => {
     const meta = document.createElement('meta');
     meta.name = 'robots';
@@ -188,11 +178,16 @@ export default function FreeTrainingWatch() {
     };
   }, []);
 
-  // Shortened testimonials for watch page (Pamela + 2)
+  // Full testimonials for watch page - Pamela first, then all others
   const testimonials = [
     { name: 'Pamela', result: 'Past $10k a month, working on the channel once her kids are in bed', video: '/pamela-stats.mp4', poster: '/pamela-poster.jpg', location: 'Australia' },
+    { name: 'Theo', result: 'Went from nothing to $43,000 in a month', src: '/theo-dashboard.jpeg' },
     { name: 'Fahad', result: 'Monetised in 29 days', lead: 'From a few hundred views to 15 million', video: 'JKAP6p9nnh8' },
+    { name: 'Anton', result: '100K subscribers in 30 days', src: '/anton-100k.jpeg' },
     { name: 'Pluto', result: '149M views and 38.7K new subscribers in 28 days', lead: 'A job, a family, and a channel that pays', video: 'q9mYCUKB5Vk' },
+    { name: 'Sasha', result: '53, new to YouTube, monetised in 17 days', video: 'YOALp81wuhU' },
+    { name: 'Guilherme', result: 'From flatlined uploads to $7K a month', video: 'mcns8yAYJU8' },
+    { name: 'Rich', result: '$329 a day from 30-second videos', video: 'nMcltSa9_vw' },
   ];
 
   return (
@@ -277,6 +272,21 @@ export default function FreeTrainingWatch() {
               <p>Past $10k a month, working on the channel once her kids are in bed</p>
             </div>
           </Reveal>
+
+          <div className="proof-grid">
+            {testimonials.filter(t => t.src).slice(0, 3).map((t, i) => (
+              <Reveal className="proof-card" key={t.name + i} delay={(i % 2) * 90}>
+                <div style={{ borderBottom: '1px solid var(--line)' }}>
+                  <img src={t.src} alt={`${t.name} results`} style={{ width: '100%', height: 'auto', display: 'block' }} loading="lazy" />
+                </div>
+                <div className="proof-card__body">
+                  <span className="proof-card__label"><Icon name="badge-check" /> Client result</span>
+                  <h4>{t.name}</h4>
+                  <p>{t.result}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
 
           <div className="yt-grid" style={{ marginTop: '32px' }}>
             {testimonials.filter(t => t.video && !t.poster).map((v, i) => (
