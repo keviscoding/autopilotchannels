@@ -60,47 +60,20 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 /** Modal for email gate */
 function EmailGateModal({ onClose }: { onClose: () => void }) {
   const mlFormContainerRef = useRef<HTMLDivElement>(null);
-  const mlFormLoaded = useRef(false);
   const location = useLocation();
 
   useEffect(() => {
-    // Initialize MailerLite embedded form
-    if (mlFormLoaded.current) return;
-    mlFormLoaded.current = true;
+    const container = mlFormContainerRef.current;
+    if (!container) return;
 
-    // MailerLite's universal script only scans for .ml-embedded on page load.
-    // Since the modal mounts after page load, we need to manually trigger form rendering.
-    const initForm = () => {
-      const ml = (window as any).ml;
-      const container = mlFormContainerRef.current;
-      
-      if (typeof ml === 'function' && container) {
-        // Clear any existing content
-        container.innerHTML = '';
-        
-        // Ensure data-form attribute is set
-        container.setAttribute('data-form', 'hPCyUL');
-        container.setAttribute('class', 'ml-embedded');
-        
-        // Manually trigger MailerLite to render this specific container
-        ml('render', container);
-      }
-    };
-
-    // Give MailerLite's universal script time to load if it hasn't yet
-    if ((window as any).ml) {
-      // Small delay to ensure DOM is ready
-      setTimeout(initForm, 50);
-    } else {
-      const checkInterval = setInterval(() => {
-        if ((window as any).ml) {
-          clearInterval(checkInterval);
-          initForm();
-        }
-      }, 100);
-      
-      // Stop checking after 5 seconds
-      setTimeout(() => clearInterval(checkInterval), 5000);
+    // Find the pre-mounted MailerLite form in the body
+    const preMountedForm = document.getElementById('ml-form-premount');
+    
+    if (preMountedForm) {
+      // Move the already-hydrated form into the modal
+      // This preserves the form fields that MailerLite has already rendered
+      container.appendChild(preMountedForm);
+      preMountedForm.style.display = 'block';
     }
 
     // Listen for MailerLite form success event to set localStorage flag
@@ -118,6 +91,12 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
 
     return () => {
       window.removeEventListener('ml:success', handleMLSuccess);
+      
+      // Move the form back to body when modal closes so it can be reused
+      if (preMountedForm && preMountedForm.parentNode === container) {
+        preMountedForm.style.display = 'none';
+        document.body.appendChild(preMountedForm);
+      }
     };
   }, [location.search]);
 
@@ -130,11 +109,8 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         
         <h3 className="modal-heading">Where should we send your free training?</h3>
         
-        {/* MailerLite embedded form - HeadStart Free Training Signup
-            Form ID: 199393963230103185, Account: 994180
-            Success redirect set in MailerLite to: https://headstartchannels.com/free-training/watch
-            Consent checkbox is handled by MailerLite form (GDPR compliant) */}
-        <div ref={mlFormContainerRef} className="ml-embedded" data-form="hPCyUL"></div>
+        {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open */}
+        <div ref={mlFormContainerRef}></div>
       </div>
     </div>
   );
