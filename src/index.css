@@ -929,11 +929,36 @@ button { font-family: inherit; cursor: pointer; }
 .modal-heading {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 24px;
+  font-size: 22px;
   color: var(--ink-900);
-  margin: 0 0 26px;
+  margin: 0 0 12px;
   line-height: 1.2;
   text-align: center;
+}
+
+.modal-description {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-700);
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.modal-footer-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--fg-muted);
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+.modal-footer-text a {
+  color: var(--green-700);
+  text-decoration: none;
+}
+
+.modal-footer-text a:hover {
+  text-decoration: underline;
 }
 
 .modal-form {
@@ -1023,10 +1048,11 @@ button { font-family: inherit; cursor: pointer; }
 /* MailerLite form container inside modal */
 .modal-content--ml {
   max-width: 560px;
+  padding: 32px 28px 28px;
 }
 
 .modal-content--ml .ml-embedded {
-  margin-top: 24px;
+  margin-top: 0;
 }
 
 /* Pre-mount: visually hide but keep in DOM for MailerLite hydration.
@@ -1048,11 +1074,21 @@ button { font-family: inherit; cursor: pointer; }
 
 @media (max-width: 560px) {
   .modal-content {
-    padding: 32px 24px 28px;
+    padding: 28px 20px 24px;
+  }
+  
+  .modal-content--ml {
+    padding: 24px 18px 20px;
   }
   
   .modal-heading {
-    font-size: 21px;
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+
+  .modal-description {
+    font-size: 15px;
+    margin-bottom: 16px;
   }
 
   .video-gate-thumb {

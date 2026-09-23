@@ -110,10 +110,13 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
           <Icon name="x" />
         </button>
         
-        <h3 className="modal-heading">Where should we send your free training?</h3>
-        
-        {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open */}
+        {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open.
+            The form (LLFJEN) includes the heading and description, so we don't duplicate them here. */}
         <div ref={mlFormContainerRef}></div>
+        
+        <p className="modal-footer-text">
+          You'll get the training by email plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
+        </p>
       </div>
     </div>
   );
@@ -307,7 +310,7 @@ export default function FreeTrainingRegistration() {
             </div>
             <nav className="footer__links" aria-label="Legal">
               <a href="/terms">Terms of Service</a>
-              <a href="/privacy">Privacy Policy</a>
+              <a href="#/privacy">Privacy Policy</a>
               <a href="/earnings-disclaimer">Earnings Disclaimer</a>
               <a href="mailto:support@headstartchannels.com">Contact</a>
             </nav>
