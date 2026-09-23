@@ -187,6 +187,35 @@ export default function FreeTrainingRegistration() {
               See the three-part system behind the channels we build: choosing the right opportunity, finding a repeatable winning format and installing a production system around a channel you own.
             </p>
           </Reveal>
+
+          {/* Video-style thumbnail CTA */}
+          <Reveal delay={150}>
+            <div style={{ marginTop: '36px', maxWidth: '720px', margin: '36px auto 0' }}>
+              <button
+                type="button"
+                className="video-gate-thumb"
+                onClick={handleCTAClick}
+                aria-label="Register to watch the free training"
+              >
+                <img
+                  src="/pamela-poster.jpg"
+                  alt=""
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+                <span className="video-gate-thumb__play" aria-hidden="true" />
+                <span className="video-gate-thumb__duration">68 min</span>
+              </button>
+              <p style={{ 
+                fontSize: '14px', 
+                color: 'var(--fg-subtle)', 
+                marginTop: '14px',
+                lineHeight: 1.5
+              }}>
+                Free instant access. No card required. Examples are not typical results. No earnings are guaranteed.
+              </p>
+            </div>
+          </Reveal>
+
           <Reveal delay={180}>
             <div style={{ marginTop: '32px' }}>
               <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '18px', fontWeight: 600, color: 'var(--ink-700)', marginBottom: '16px' }}>
@@ -221,29 +250,13 @@ export default function FreeTrainingRegistration() {
               </ul>
             </div>
           </Reveal>
-          <Reveal delay={240}>
-            <div style={{ marginTop: '36px' }}>
-              <button 
-                type="button"
-                className="btn btn--primary btn--lg"
-                onClick={handleCTAClick}
-                style={{ fontSize: '18px' }}
-              >
-                Watch the Free Training →
-              </button>
-              <p style={{ 
-                fontSize: '14px', 
-                color: 'var(--fg-subtle)', 
-                marginTop: '14px',
-                lineHeight: 1.5
-              }}>
-                Free instant access. No card required. Examples are not typical results. No earnings are guaranteed.
-              </p>
+          <Reveal delay={210}>
+            <div style={{ marginTop: '28px' }}>
               <p style={{ 
                 fontSize: '16.5px', 
                 fontWeight: 600,
                 color: 'var(--ink-700)', 
-                marginTop: '20px',
+                marginTop: 0,
                 lineHeight: 1.4
               }}>
                 A channel you own. A team makes the videos. You keep your evenings.
