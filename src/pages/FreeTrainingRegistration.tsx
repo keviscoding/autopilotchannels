@@ -110,13 +110,8 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
           <Icon name="x" />
         </button>
         
-        <h2 className="modal-heading">Watch the free faceless YouTube training</h2>
-        
-        <p className="modal-description">
-          Learn how to choose a niche, plan your videos and build a production workflow—even if you're starting alongside a job.
-        </p>
-        
-        {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open */}
+        {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open.
+            The form (LLFJEN) includes the heading and description, so we don't duplicate them here. */}
         <div ref={mlFormContainerRef}></div>
         
         <p className="modal-footer-text">
