@@ -110,7 +110,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         <h3 className="modal-heading">Where should we send your free training?</h3>
         
         {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open */}
-        <div ref={mlFormContainerRef} style={{ marginTop: '24px' }}></div>
+        <div ref={mlFormContainerRef}></div>
       </div>
     </div>
   );
