@@ -110,10 +110,18 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
           <Icon name="x" />
         </button>
         
-        <h3 className="modal-heading">Where should we send your free training?</h3>
+        <h2 className="modal-heading">Watch the free faceless YouTube training</h2>
+        
+        <p className="modal-description">
+          Learn how to choose a niche, plan your videos and build a production workflow—even if you're starting alongside a job.
+        </p>
         
         {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open */}
         <div ref={mlFormContainerRef}></div>
+        
+        <p className="modal-footer-text">
+          We'll email your training link and occasional HeadStart updates. <a href="#/privacy">Privacy Policy</a>.
+        </p>
       </div>
     </div>
   );
