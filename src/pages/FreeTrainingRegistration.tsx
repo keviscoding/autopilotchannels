@@ -58,77 +58,47 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 }
 
 /** Modal for email gate */
-function EmailGateModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: (data: { firstName: string; email: string }) => void }) {
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [consent, setConsent] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+function EmailGateModal({ onClose }: { onClose: () => void }) {
+  const mlFormLoaded = useRef(false);
+  const location = useLocation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!firstName.trim() || !email.trim() || !consent) return;
-    setIsSubmitting(true);
-    
-    // Pass data to parent
-    onSubmit({ firstName: firstName.trim(), email: email.trim() });
-  };
+  useEffect(() => {
+    // Initialize MailerLite embedded form
+    if (mlFormLoaded.current) return;
+    mlFormLoaded.current = true;
+
+    // Listen for MailerLite form success event to set localStorage flag
+    const handleMLSuccess = () => {
+      // Set localStorage flag for analytics
+      localStorage.setItem('hs_ft_registered', '1');
+      
+      // MailerLite will handle redirect to /free-training/watch via success URL
+      // configured in MailerLite dashboard. UTMs are preserved by MailerLite
+      // redirect if they're in the page URL when form is submitted.
+    };
+
+    // MailerLite triggers 'ml:success' event on successful form submission
+    window.addEventListener('ml:success', handleMLSuccess);
+
+    return () => {
+      window.removeEventListener('ml:success', handleMLSuccess);
+    };
+  }, [location.search]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content modal-content--ml" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="modal-close" onClick={onClose} aria-label="Close">
           <Icon name="x" />
         </button>
         
         <h3 className="modal-heading">Where should we send your free training?</h3>
         
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="modal-field">
-            <label htmlFor="firstName">First name</label>
-            <input
-              type="text"
-              id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-              disabled={isSubmitting}
-              autoFocus
-            />
-          </div>
-
-          <div className="modal-field">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={isSubmitting}
-            />
-          </div>
-
-          <div className="modal-consent">
-            <label>
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-                required
-                disabled={isSubmitting}
-              />
-              <span>Send me the training and occasional HeadStart emails about building and operating YouTube channels. Unsubscribe anytime.</span>
-            </label>
-          </div>
-
-          <button 
-            type="submit" 
-            className="btn btn--primary btn--lg btn--full"
-            disabled={!firstName.trim() || !email.trim() || !consent || isSubmitting}
-          >
-            {isSubmitting ? 'Starting...' : 'Start Watching Now →'}
-          </button>
-        </form>
+        {/* MailerLite embedded form - HeadStart Free Training Signup
+            Form ID: 199393963230103185, Account: 994180
+            Success redirect set in MailerLite to: https://headstartchannels.com/free-training/watch
+            Consent checkbox is handled by MailerLite form (GDPR compliant) */}
+        <div className="ml-embedded" data-form="hPCyUL"></div>
       </div>
     </div>
   );
@@ -149,41 +119,6 @@ export default function FreeTrainingRegistration() {
 
   const handleCTAClick = () => {
     setShowModal(true);
-  };
-
-  const handleModalSubmit = async (data: { firstName: string; email: string }) => {
-    // Capture attribution for MailerLite
-    const params = new URLSearchParams(location.search);
-    
-    const attribution = {
-      first_name: data.firstName,
-      email: data.email,
-      utm_source: params.get('utm_source') || '',
-      utm_medium: params.get('utm_medium') || '',
-      utm_campaign: params.get('utm_campaign') || '',
-      utm_content: params.get('utm_content') || '',
-      referrer: document.referrer || '',
-      landing_page: window.location.href.split('?')[0],
-      registered_at: new Date().toISOString(),
-    };
-
-    // MailerLite integration: Use VITE_MAILERLITE_ACCOUNT and VITE_MAILERLITE_FORM_ID
-    // If env vars are not set, we still proceed to allow the build to work
-    // Example: const accountId = import.meta.env.VITE_MAILERLITE_ACCOUNT;
-    // Example: const formId = import.meta.env.VITE_MAILERLITE_FORM_ID;
-    // For now, we just store locally and redirect
-    // TODO: Implement MailerLite API submission when env vars are configured
-    // Expected env vars:
-    //   - VITE_MAILERLITE_ACCOUNT: MailerLite account ID
-    //   - VITE_MAILERLITE_FORM_ID: Form ID for free training subscribers
-    
-    console.log('Registration data:', attribution);
-
-    // Set local flag
-    localStorage.setItem('hs_ft_registered', '1');
-
-    // Navigate to watch page, preserving query params
-    navigate('/free-training/watch' + location.search, { replace: true });
   };
 
   // Shortened proof testimonials for registration page (Pamela + 2 others)
@@ -361,8 +296,7 @@ export default function FreeTrainingRegistration() {
 
       {showModal && (
         <EmailGateModal 
-          onClose={() => setShowModal(false)} 
-          onSubmit={handleModalSubmit}
+          onClose={() => setShowModal(false)}
         />
       )}
     </>

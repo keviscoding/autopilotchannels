@@ -951,6 +951,20 @@ button { font-family: inherit; cursor: pointer; }
   }
 }
 
+/* MailerLite form container inside modal */
+.modal-content--ml {
+  max-width: 560px;
+}
+
+.modal-content--ml .ml-embedded {
+  margin-top: 24px;
+}
+
+/* Override MailerLite form styles to fit modal */
+.modal-content--ml .ml-embedded iframe {
+  border-radius: 12px;
+}
+
 @media (max-width: 560px) {
   .modal-content {
     padding: 32px 24px 28px;
