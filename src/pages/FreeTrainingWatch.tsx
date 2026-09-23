@@ -110,10 +110,9 @@ function getAttribution(): Record<string, string> {
     utm_medium: params.get('utm_medium') || '',
     utm_campaign: params.get('utm_campaign') || '',
     referrer: document.referrer || '',
-    landing_page: window.location.href.replace(/\?.*$/, '') || '/free-training',
+    landing_page: window.location.href.replace(/\?.*$/, '') || '/free-training/watch',
   };
 
-  // Clean up empty values
   Object.keys(hidden).forEach((k) => { if (!hidden[k]) delete hidden[k]; });
   return hidden;
 }
@@ -123,7 +122,6 @@ function VidalyticsPlayer() {
   const scriptLoaded = useRef(false);
 
   useEffect(() => {
-    // Avoid double-loading in StrictMode
     if (scriptLoaded.current) return;
     scriptLoaded.current = true;
 
@@ -157,10 +155,30 @@ function VidalyticsPlayer() {
   );
 }
 
-export default function FreeTraining() {
+/** Scroll to anchor helper */
+function scrollToAnchor(id: string) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+export default function FreeTrainingWatch() {
   const [attribution] = useState(getAttribution);
 
-  // Client testimonials - Pamela first, then others
+  // Set noindex meta tag (protection via noindex, not redirect)
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex,nofollow';
+    document.head.appendChild(meta);
+    
+    return () => {
+      document.head.removeChild(meta);
+    };
+  }, []);
+
+  // Full testimonials for watch page - Pamela first, then all others
   const testimonials = [
     { name: 'Pamela', result: 'Past $10k a month, working on the channel once her kids are in bed', video: '/pamela-stats.mp4', poster: '/pamela-poster.jpg', location: 'Australia' },
     { name: 'Theo', result: 'Went from nothing to $43,000 in a month', src: '/theo-dashboard.jpeg' },
@@ -180,7 +198,7 @@ export default function FreeTraining() {
         </div>
       </nav>
 
-      <header className="hero" style={{ paddingTop: 'clamp(96px, 8vw, 64px)', paddingBottom: 'clamp(48px, 6vw, 80px)' }}>
+      <header className="hero" style={{ paddingTop: 'clamp(96px, 8vw, 64px)', paddingBottom: 'clamp(32px, 4vw, 48px)' }}>
         <div className="container" style={{ maxWidth: '880px', margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
             <span className="pill-tag">Free Training</span>
@@ -203,6 +221,27 @@ export default function FreeTraining() {
         <div className="container" style={{ maxWidth: '920px' }}>
           <Reveal className="frame" style={{ background: 'var(--dark-bg)', borderRadius: '20px' }}>
             <VidalyticsPlayer />
+          </Reveal>
+          
+          <div style={{ 
+            textAlign: 'center', 
+            marginTop: '18px',
+            fontSize: '15px',
+            color: 'var(--fg-muted)',
+            lineHeight: 1.5
+          }}>
+            68-minute training (+ optional Q&A). Watch at up to 2× speed.
+          </div>
+
+          <Reveal style={{ marginTop: '32px', textAlign: 'center' }}>
+            <button 
+              type="button"
+              className="btn btn--primary btn--lg"
+              onClick={() => scrollToAnchor('apply')}
+              style={{ fontSize: '17px' }}
+            >
+              Already want us to build the system with you? Apply for a Channel Install →
+            </button>
           </Reveal>
         </div>
       </section>
@@ -273,7 +312,7 @@ export default function FreeTraining() {
         </div>
       </section>
 
-      <section className="section section--sand">
+      <section className="section section--sand" id="apply">
         <div className="container" style={{ maxWidth: '760px' }}>
           <div className="center" style={{ marginBottom: '48px' }}>
             <h2 className="section-title">Apply for a Channel Install</h2>

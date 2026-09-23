@@ -8,6 +8,7 @@ import App from './App'
 if (typeof window !== 'undefined' && !window.location.hash && window.location.pathname !== '/') {
   const knownRoutes = [
     '/free-training',
+    '/free-training/watch',
     '/webinar',
     '/webinar/confirmed',
     '/toolkit',

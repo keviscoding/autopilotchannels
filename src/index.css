@@ -807,3 +807,170 @@ button { font-family: inherit; cursor: pointer; }
   .calc__field h4 { font-size: 14.5px; }
   .calc__chart { height: 104px; gap: 2px; }
 }
+
+/* Additional button utility */
+.btn--full { width: 100%; }
+
+/* Email gate modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 32, 27, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 40px 36px 36px;
+  max-width: 520px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(17, 32, 27, 0.32);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  padding: 8px;
+  color: var(--fg-subtle);
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-close:hover {
+  background: var(--sand);
+  color: var(--fg);
+}
+
+.modal-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--ink-900);
+  margin: 0 0 26px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-field label {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-700);
+}
+
+.modal-field input {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  padding: 13px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--fg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.modal-field input:focus {
+  outline: none;
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 3px var(--green-50);
+}
+
+.modal-field input:disabled {
+  background: var(--sand);
+  color: var(--fg-muted);
+  cursor: not-allowed;
+}
+
+.modal-consent {
+  margin-top: 6px;
+}
+
+.modal-consent label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-700);
+}
+
+.modal-consent input[type="checkbox"] {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--green-600);
+}
+
+.modal-consent input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MailerLite form container inside modal */
+.modal-content--ml {
+  max-width: 560px;
+}
+
+.modal-content--ml .ml-embedded {
+  margin-top: 24px;
+}
+
+/* Override MailerLite form styles to fit modal */
+.modal-content--ml .ml-embedded iframe {
+  border-radius: 12px;
+}
+
+@media (max-width: 560px) {
+  .modal-content {
+    padding: 32px 24px 28px;
+  }
+  
+  .modal-heading {
+    font-size: 21px;
+  }
+}
