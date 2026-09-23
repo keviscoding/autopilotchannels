@@ -201,7 +201,7 @@ export default function FreeTrainingRegistration() {
         </div>
       </nav>
 
-      <header className="hero" style={{ paddingTop: 'clamp(36px, 5vw, 64px)', paddingBottom: 'clamp(48px, 6vw, 80px)' }}>
+      <header className="hero" style={{ paddingTop: 'clamp(96px, 8vw, 64px)', paddingBottom: 'clamp(48px, 6vw, 80px)' }}>
         <div className="container" style={{ maxWidth: '880px', margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
             <span className="pill-tag">FREE 68-MINUTE ON-DEMAND TRAINING</span>
