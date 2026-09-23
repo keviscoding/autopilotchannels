@@ -73,7 +73,9 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       // Move the already-hydrated form into the modal
       // This preserves the form fields that MailerLite has already rendered
       container.appendChild(preMountedForm);
-      preMountedForm.style.display = 'block';
+      // Remove the visually-hidden styles by removing the id
+      // (CSS targets #ml-form-premount specifically)
+      preMountedForm.removeAttribute('id');
     }
 
     // Listen for MailerLite form success event to set localStorage flag
@@ -94,7 +96,8 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       
       // Move the form back to body when modal closes so it can be reused
       if (preMountedForm && preMountedForm.parentNode === container) {
-        preMountedForm.style.display = 'none';
+        // Restore the visually-hidden state by re-adding the id
+        preMountedForm.setAttribute('id', 'ml-form-premount');
         document.body.appendChild(preMountedForm);
       }
     };

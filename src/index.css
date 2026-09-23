@@ -1029,6 +1029,18 @@ button { font-family: inherit; cursor: pointer; }
   margin-top: 24px;
 }
 
+/* Pre-mount: visually hide but keep in DOM for MailerLite hydration.
+   Using position/clip instead of display:none so the iframe renders. */
+#ml-form-premount {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
 /* Override MailerLite form styles to fit modal */
 .modal-content--ml .ml-embedded iframe {
   border-radius: 12px;

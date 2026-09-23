@@ -32,9 +32,10 @@
   <body>
     <div id="root"></div>
     <!-- Pre-mount MailerLite form so universal.js can hydrate it on page load.
-         This div is hidden and will be moved into the modal when it opens.
+         This div is visually hidden (not display:none) so MailerLite can render the iframe.
+         It will be moved into the modal when the modal opens.
          Pre-mounting is required because universal.js only scans .ml-embedded elements once on page load. -->
-    <div id="ml-form-premount" class="ml-embedded" data-form="hPCyUL" style="display: none;"></div>
+    <div id="ml-form-premount" class="ml-embedded" data-form="hPCyUL"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
