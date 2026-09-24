@@ -867,6 +867,27 @@ button { font-family: inherit; cursor: pointer; }
   border-color: transparent transparent transparent #fff;
 }
 
+.video-gate-thumb__cta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 50px));
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink-900);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(17, 32, 27, 0.22);
+  transition: background 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.video-gate-thumb:hover .video-gate-thumb__cta {
+  background: #fff;
+  transform: translate(-50%, calc(-50% + 50px)) scale(1.02);
+}
+
 .video-gate-thumb__duration {
   position: absolute;
   bottom: 16px;
@@ -1113,5 +1134,10 @@ button { font-family: inherit; cursor: pointer; }
     right: 12px;
     font-size: 13px;
     padding: 5px 10px;
+  }
+
+  .video-gate-thumb__cta {
+    font-size: 15px;
+    padding: 10px 20px;
   }
 }
