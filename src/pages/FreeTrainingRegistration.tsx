@@ -110,12 +110,15 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
           <Icon name="x" />
         </button>
         
-        {/* MailerLite embedded form container - the actual form is pre-mounted in body and moved here on modal open.
-            The form (LLFJEN) includes the heading and description, so we don't duplicate them here. */}
+        <h2 className="modal-heading">Get instant access to the free training</h2>
+        <p className="modal-description">
+          Enter your email to watch now. We'll also send you the link so you can return later.
+        </p>
+        
         <div ref={mlFormContainerRef}></div>
         
         <p className="modal-footer-text">
-          You'll get the training by email plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
+          You'll start watching right away. We'll also email a return link so you can come back, plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
         </p>
       </div>
     </div>
