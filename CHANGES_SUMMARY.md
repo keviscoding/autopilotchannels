@@ -31,8 +31,8 @@
 
 **Modal footer:**
 - **Before:** "You'll get the training by email plus occasional HeadStart tips..."
-- **After:** "You'll start watching right away. We'll also email a return link, plus occasional HeadStart tips..."
-- **Why:** Matches actual behavior (MailerLite success redirects to watch page immediately)
+- **After:** "You'll start watching right away. We'll also email a return link so you can come back, plus occasional HeadStart tips. Unsubscribe anytime."
+- **Why:** Matches actual behavior (MailerLite success redirects to watch page immediately) and clarifies return link purpose
 
 ---
 
@@ -53,9 +53,14 @@
 - **After:** `paddingTop: clamp(48px, 6vw, 72px)`, `paddingBottom: clamp(20px, 3vw, 32px)`
 - **Why:** Player sits higher on screen
 
+#### Duration Line
+- **Before:** "68-minute training (+ optional Q&A). Watch at up to 2× speed."
+- **After:** "68-minute training + 16-minute optional Q&A"
+- **Why:** Exact durations for clarity, removed speed note to keep focus on value
+
 #### Chapter Hints
-- **Added:** Light text under player: "Opportunity · Formats · Production · Examples · Working together"
-- **Why:** Quick content preview without another sales block (plain HTML, not fake player chapters)
+- **Added:** Light text under player: "Opportunity · Formats · Production · Examples · Working together · Q&A"
+- **Why:** Quick content preview without another sales block (plain HTML, not fake player chapters). Q&A marked as final section.
 
 ---
 
@@ -80,9 +85,10 @@
 ## Technical Details
 
 ### Files Changed
-1. `src/pages/FreeTrainingRegistration.tsx` (gate page)
-2. `src/pages/FreeTrainingWatch.tsx` (watch page)
+1. `src/pages/FreeTrainingRegistration.tsx` (gate page - copy updates)
+2. `src/pages/FreeTrainingWatch.tsx` (watch page - copy and duration updates)
 3. `src/index.css` (added `.video-gate-thumb__cta` styles)
+4. `CHANGES_SUMMARY.md` (this document)
 
 ### New CSS Classes
 - `.video-gate-thumb__cta` - "Get free access" overlay label
@@ -91,10 +97,14 @@
   - Scales slightly on hover
 
 ### Build Status
-✅ `npm run build` successful
+✅ `npm run build` successful (both commits)
 ✅ No TypeScript errors
 ✅ No linting errors
-✅ Vite bundle size: 581KB (same as before)
+✅ Vite bundle size: 581KB (unchanged)
+
+### Commits
+1. **95da93a** - Initial UX improvements (gate + watch page structure)
+2. **8c3b8d3** - Copy refinements (modal footer + Q&A duration)
 
 ---
 
