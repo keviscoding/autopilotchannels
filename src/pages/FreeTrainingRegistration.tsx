@@ -115,7 +115,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         <div ref={mlFormContainerRef}></div>
         
         <p className="modal-footer-text">
-          You'll get the training by email plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
+          You'll start watching right away. We'll also email a return link so you can come back, plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
         </p>
       </div>
     </div>
@@ -163,37 +163,38 @@ export default function FreeTrainingRegistration() {
         </div>
       </nav>
 
-      <header className="hero" style={{ paddingTop: 'clamp(96px, 8vw, 64px)', paddingBottom: 'clamp(48px, 6vw, 80px)' }}>
+      <header className="hero" style={{ paddingTop: 'clamp(64px, 8vw, 96px)', paddingBottom: 'clamp(48px, 6vw, 80px)' }}>
         <div className="container" style={{ maxWidth: '880px', margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
             <span className="pill-tag">FREE 68-MINUTE ON-DEMAND TRAINING</span>
           </Reveal>
           <Reveal delay={60}>
-            <h1 style={{ margin: '18px 0 0' }}>
-              How Working Adults Are Building Faceless YouTube Channels Beside Their Jobs—Without Building Themselves Another Job
+            <h1 style={{ margin: '14px 0 0' }}>
+              Build a faceless YouTube channel beside your job, without building yourself another job
             </h1>
           </Reveal>
           <Reveal delay={120}>
-            <p className="hero__sub" style={{ marginTop: '22px' }}>
-              See the three-part system behind the channels we build: choosing the right opportunity, finding a repeatable winning format and installing a production system around a channel you own.
+            <p className="hero__sub" style={{ marginTop: '18px' }}>
+              See the three-part system: choosing the right opportunity, finding a repeatable winning format and installing a production system around a channel you own.
             </p>
           </Reveal>
 
           {/* Video-style thumbnail CTA */}
           <Reveal delay={150}>
-            <div style={{ marginTop: '36px', maxWidth: '720px', margin: '36px auto 0' }}>
+            <div style={{ marginTop: '28px', maxWidth: '720px', margin: '28px auto 0' }}>
               <button
                 type="button"
                 className="video-gate-thumb"
                 onClick={handleCTAClick}
-                aria-label="Register to watch the free training"
+                aria-label="Get free access to the training"
               >
                 <img
                   src="/pamela-poster.jpg"
                   alt=""
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 35%', display: 'block' }}
                 />
                 <span className="video-gate-thumb__play" aria-hidden="true" />
+                <span className="video-gate-thumb__cta">Get free access</span>
                 <span className="video-gate-thumb__duration">68 min</span>
               </button>
               <p style={{ 
@@ -202,7 +203,7 @@ export default function FreeTrainingRegistration() {
                 marginTop: '14px',
                 lineHeight: 1.5
               }}>
-                Free instant access. No card required. Examples are not typical results. No earnings are guaranteed.
+                Watch instantly after you enter your email. We'll also email a link so you can come back. No card required. Examples are not typical results. No earnings are guaranteed.
               </p>
             </div>
           </Reveal>
@@ -236,7 +237,7 @@ export default function FreeTrainingRegistration() {
                 </li>
                 <li style={{ marginBottom: '10px', paddingLeft: '26px', position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 0, color: 'var(--green-600)' }}>•</span>
-                  Real examples of channels that reached $3K, $5K and $10K+ months—and what actually went into those results
+                  Real examples of channels that reached $3K, $5K and $10K+ months, and what actually went into those results
                 </li>
               </ul>
             </div>

@@ -212,21 +212,15 @@ export default function FreeTrainingWatch() {
         </div>
       </nav>
 
-      <header className="hero" style={{ paddingTop: 'clamp(64px, 8vw, 96px)', paddingBottom: 'clamp(32px, 4vw, 48px)' }}>
+      <header className="hero" style={{ paddingTop: 'clamp(48px, 6vw, 72px)', paddingBottom: 'clamp(20px, 3vw, 32px)' }}>
         <div className="container" style={{ maxWidth: '880px', margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
             <span className="pill-tag">Free Training</span>
           </Reveal>
           <Reveal delay={60}>
-            <h1 style={{ margin: '18px 0 0' }}>
-              How a faceless YouTube channel <em>actually gets built</em>
+            <h1 style={{ margin: '14px 0 0' }}>
+              Free faceless YouTube training
             </h1>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="hero__sub" style={{ marginTop: '22px' }}>
-              Learn the full channel-automation approach at your own pace. How the niche gets chosen, 
-              where the video ideas come from, who makes the videos, and what it really costs.
-            </p>
           </Reveal>
         </div>
       </header>
@@ -250,8 +244,19 @@ export default function FreeTrainingWatch() {
             color: 'var(--fg-muted)',
             lineHeight: 1.5
           }}>
-            68-minute training (+ optional Q&A). Watch at up to 2× speed.
+            68-minute training + 16-minute optional Q&A
           </div>
+
+          <Reveal style={{ marginTop: '22px' }}>
+            <div style={{ 
+              textAlign: 'center',
+              fontSize: '14.5px',
+              color: 'var(--fg-subtle)',
+              lineHeight: 1.6
+            }}>
+              Opportunity · Formats · Production · Examples · Working together · Q&A
+            </div>
+          </Reveal>
 
           <Reveal style={{ marginTop: '32px', textAlign: 'center' }}>
             <button 
