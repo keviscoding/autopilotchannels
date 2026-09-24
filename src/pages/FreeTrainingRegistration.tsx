@@ -170,7 +170,7 @@ export default function FreeTrainingRegistration() {
           </Reveal>
           <Reveal delay={60}>
             <h1 style={{ margin: '14px 0 0' }}>
-              Build a faceless YouTube channel beside your job—without building yourself another job
+              Build a faceless YouTube channel beside your job, without building yourself another job
             </h1>
           </Reveal>
           <Reveal delay={120}>
@@ -237,7 +237,7 @@ export default function FreeTrainingRegistration() {
                 </li>
                 <li style={{ marginBottom: '10px', paddingLeft: '26px', position: 'relative' }}>
                   <span style={{ position: 'absolute', left: 0, color: 'var(--green-600)' }}>•</span>
-                  Real examples of channels that reached $3K, $5K and $10K+ months—and what actually went into those results
+                  Real examples of channels that reached $3K, $5K and $10K+ months, and what actually went into those results
                 </li>
               </ul>
             </div>
