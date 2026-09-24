@@ -115,7 +115,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         <div ref={mlFormContainerRef}></div>
         
         <p className="modal-footer-text">
-          You'll start watching right away. We'll also email a return link, plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
+          You'll start watching right away. We'll also email a return link so you can come back, plus occasional HeadStart tips. Unsubscribe anytime. <a href="#/privacy">Privacy Policy</a>.
         </p>
       </div>
     </div>

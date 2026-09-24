@@ -244,7 +244,7 @@ export default function FreeTrainingWatch() {
             color: 'var(--fg-muted)',
             lineHeight: 1.5
           }}>
-            68-minute training (+ optional Q&A). Watch at up to 2× speed.
+            68-minute training + 16-minute optional Q&A
           </div>
 
           <Reveal style={{ marginTop: '22px' }}>
@@ -254,7 +254,7 @@ export default function FreeTrainingWatch() {
               color: 'var(--fg-subtle)',
               lineHeight: 1.6
             }}>
-              Opportunity · Formats · Production · Examples · Working together
+              Opportunity · Formats · Production · Examples · Working together · Q&A
             </div>
           </Reveal>
 
