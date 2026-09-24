@@ -1076,6 +1076,17 @@ button { font-family: inherit; cursor: pointer; }
   margin-top: 0;
 }
 
+/* Hide MailerLite form's own title and description blocks inside the modal
+   so they don't duplicate our modal heading/description. Keep fields, consent, button. */
+.modal-content--ml .ml-form-embedContent h4,
+.modal-content--ml .ml-form-embedContent > p:first-of-type,
+.modal-content--ml .ml-form-embedWrapper h4,
+.modal-content--ml .ml-form-embedWrapper > p:first-of-type,
+.modal-content--ml .ml-form-embedBody h4,
+.modal-content--ml .ml-form-embedBody > p:first-of-type {
+  display: none !important;
+}
+
 /* Pre-mount: visually hide but keep in DOM for MailerLite hydration.
    Using position/clip instead of display:none so the iframe renders. */
 #ml-form-premount {
