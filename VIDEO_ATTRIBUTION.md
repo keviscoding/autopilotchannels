@@ -86,6 +86,8 @@ Pages: `/` (LandingPage), `/free-training/watch` (Typeform application widget)
 ### MailerLite (LLFJEN)
 Attribution fields injected as hidden form inputs on submission.
 
+**Date Format**: MailerLite DATE custom fields (`first_touch_at`, `latest_touch_at`) use `YYYY-MM-DD` format, not ISO 8601 timestamps. The `formatForMailerLite()` function automatically converts these fields.
+
 Page: `/free-training` (email gate modal)
 
 ## Mobile Testing
