@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { captureAttribution, formatForMailerLite } from '../attribution';
 
 function Icon({ name }: { name: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -58,7 +59,7 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 }
 
 /** Modal for email gate */
-function EmailGateModal({ onClose }: { onClose: () => void }) {
+function EmailGateModal({ onClose, attributionData }: { onClose: () => void; attributionData: Record<string, string> }) {
   const mlFormContainerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -78,6 +79,36 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       preMountedForm.removeAttribute('id');
     }
 
+    // Inject attribution data into MailerLite form submission
+    const handleMLSubmit = () => {
+      // Try to inject attribution as hidden fields into the form data
+      // MailerLite forms use custom fields which can be set via JavaScript
+      const form = container.querySelector('form');
+      if (form && attributionData) {
+        // Create hidden inputs for each attribution field
+        Object.entries(attributionData).forEach(([key, value]) => {
+          if (!value) return;
+          
+          // Check if field already exists
+          let input = form.querySelector(`input[name="${key}"]`) as HTMLInputElement;
+          if (!input) {
+            // Create new hidden input
+            input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            form.appendChild(input);
+          }
+          input.value = value;
+        });
+      }
+    };
+
+    // Listen for form submission
+    const form = container.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', handleMLSubmit);
+    }
+    
     // Listen for MailerLite form success event to set localStorage flag
     const handleMLSuccess = () => {
       // Set localStorage flag for analytics
@@ -94,6 +125,10 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
     return () => {
       window.removeEventListener('ml:success', handleMLSuccess);
       
+      if (form) {
+        form.removeEventListener('submit', handleMLSubmit);
+      }
+      
       // Move the form back to body when modal closes so it can be reused
       if (preMountedForm && preMountedForm.parentNode === container) {
         // Restore the visually-hidden state by re-adding the id
@@ -101,7 +136,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         document.body.appendChild(preMountedForm);
       }
     };
-  }, [location.search]);
+  }, [location.search, attributionData]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -130,6 +165,10 @@ export default function FreeTrainingRegistration() {
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [attributionData] = useState(() => {
+    const attr = captureAttribution();
+    return formatForMailerLite(attr);
+  });
 
   // Sticky nav scroll handler
   useEffect(() => {
@@ -341,6 +380,7 @@ export default function FreeTrainingRegistration() {
       {showModal && (
         <EmailGateModal 
           onClose={() => setShowModal(false)}
+          attributionData={attributionData}
         />
       )}
     </>

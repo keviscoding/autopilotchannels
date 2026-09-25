@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Widget } from '@typeform/embed-react';
+import { captureAttribution, formatForTypeform } from '../attribution';
 
 const TYPEFORM_ID = 'uNrHKe9G';
 
@@ -87,35 +88,7 @@ function YtClip({ id, title }: { id: string; title: string }) {
 }
 
 /** Attribution helper - capture hidden fields for Typeform */
-function getAttribution(): Record<string, string> {
-  if (typeof window === 'undefined') return {};
-  const hash = window.location.hash;
-  const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
-  const searchQ = window.location.search.startsWith('?') ? window.location.search.slice(1) : '';
-  const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
-
-  const readParam = (keys: string[]): string => {
-    for (const k of keys) {
-      const v = params.get(k);
-      if (v) return v;
-    }
-    return '';
-  };
-
-  const source = readParam(['source', 'src', 'utm_content']) || 'free_training';
-  const hidden: Record<string, string> = {
-    source,
-    first_source: source,
-    utm_source: params.get('utm_source') || '',
-    utm_medium: params.get('utm_medium') || '',
-    utm_campaign: params.get('utm_campaign') || '',
-    referrer: document.referrer || '',
-    landing_page: window.location.href.replace(/\?.*$/, '') || '/free-training/watch',
-  };
-
-  Object.keys(hidden).forEach((k) => { if (!hidden[k]) delete hidden[k]; });
-  return hidden;
-}
+// Attribution is now handled by src/attribution/index.ts
 
 /** Vidalytics player component */
 function VidalyticsPlayer() {
@@ -169,7 +142,10 @@ function scrollToAnchor(id: string) {
 }
 
 export default function FreeTrainingWatch() {
-  const [attribution] = useState(getAttribution);
+  const [attribution] = useState(() => {
+    const attr = captureAttribution();
+    return formatForTypeform(attr);
+  });
   const [scrolled, setScrolled] = useState(false);
 
   // Sticky nav scroll handler
