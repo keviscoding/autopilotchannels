@@ -335,12 +335,34 @@ export function formatForTypeform(attr: Attribution): Record<string, string> {
 /**
  * Format attribution for MailerLite custom fields
  * 
- * MailerLite fields are injected via JavaScript into the subscribe payload.
- * This returns the same structure as Typeform for consistency.
+ * MailerLite DATE fields require YYYY-MM-DD format (not ISO 8601 timestamps).
+ * This converts first_touch_at and latest_touch_at to date-only format.
  */
 export function formatForMailerLite(attr: Attribution): Record<string, string> {
-  // Same format as Typeform
-  return formatForTypeform(attr);
+  const hidden: Record<string, string> = {};
+  
+  // Map attribution to MailerLite custom fields
+  if (attr.first_source) hidden.first_source = attr.first_source;
+  if (attr.first_video_id) hidden.first_video_id = attr.first_video_id;
+  // Convert ISO timestamp to YYYY-MM-DD for MailerLite DATE field
+  if (attr.first_touch_at) {
+    hidden.first_touch_at = attr.first_touch_at.split('T')[0];
+  }
+  
+  if (attr.latest_source) hidden.latest_source = attr.latest_source;
+  if (attr.latest_content_id) hidden.latest_content_id = attr.latest_content_id;
+  if (attr.latest_youtube_video_id) hidden.latest_youtube_video_id = attr.latest_youtube_video_id;
+  // Convert ISO timestamp to YYYY-MM-DD for MailerLite DATE field
+  if (attr.latest_touch_at) {
+    hidden.latest_touch_at = attr.latest_touch_at.split('T')[0];
+  }
+  
+  if (attr.link_placement) hidden.link_placement = attr.link_placement;
+  if (attr.entry_route) hidden.entry_route = attr.entry_route;
+  // Default tracking_version to v1 when empty
+  hidden.tracking_version = attr.tracking_version || 'v1';
+  
+  return hidden;
 }
 
 /**
