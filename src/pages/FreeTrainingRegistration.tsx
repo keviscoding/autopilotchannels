@@ -61,6 +61,7 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 /** Modal for email gate */
 function EmailGateModal({ onClose }: { onClose: () => void }) {
   const mlFormContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -160,21 +161,24 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       form.addEventListener('submit', injectAttribution);
     }
     
-    // Listen for MailerLite form success event to set localStorage flag
+    // Listen for MailerLite form success callback
     const handleMLSuccess = () => {
       // Set localStorage flag for analytics
       localStorage.setItem('hs_ft_registered', '1');
       
-      // MailerLite will handle redirect to /free-training/watch via success URL
-      // configured in MailerLite dashboard. UTMs are preserved by MailerLite
-      // redirect if they're in the page URL when form is submitted.
+      // Navigate to watch page programmatically
+      // (MailerLite universal.js doesn't auto-redirect; we handle it here)
+      navigate('/free-training/watch' + location.search, { replace: true });
     };
 
-    // MailerLite triggers 'ml:success' event on successful form submission
-    window.addEventListener('ml:success', handleMLSuccess);
+    // MailerLite universal.js calls window.ml_webform_success_<GROOT_ID> on successful submission
+    // Form LLFJEN has groot_id 46274164
+    const callbackName = 'ml_webform_success_46274164';
+    (window as any)[callbackName] = handleMLSuccess;
 
     return () => {
-      window.removeEventListener('ml:success', handleMLSuccess);
+      // Clean up the global callback
+      delete (window as any)[callbackName];
       
       if (form) {
         const submitButton = form.querySelector('button[type="submit"]');
