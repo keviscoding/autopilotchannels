@@ -111,8 +111,9 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
         let input = form.querySelector(`input[name="fields[${key}]"]`) as HTMLInputElement;
         
         // Strategy 2: Try to find input inside .ml-field-KEY container
+        let fieldContainer: Element | null = null;
         if (!input) {
-          const fieldContainer = form.querySelector(`.ml-field-${key}`);
+          fieldContainer = form.querySelector(`.ml-field-${key}`);
           if (fieldContainer) {
             input = fieldContainer.querySelector('input') as HTMLInputElement;
           }
@@ -128,6 +129,19 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
 
         // Set the value
         input.value = value;
+
+        // CRITICAL: MailerLite date validation fix
+        // For DATE fields (first_touch_at, latest_touch_at), MailerLite webforms.min.js
+        // validates that any non-empty value in an .ml-validate-date field must also
+        // have .ml-validate-date-valid on the field group. Normally this class is added
+        // by inputmask oncomplete when a human types. Since we're setting the value
+        // programmatically, we must add the class ourselves to pass validation.
+        if (!fieldContainer) {
+          fieldContainer = input.closest('.ml-field-group');
+        }
+        if (fieldContainer && fieldContainer.classList.contains('ml-validate-date')) {
+          fieldContainer.classList.add('ml-validate-date-valid');
+        }
       });
     };
 

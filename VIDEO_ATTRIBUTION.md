@@ -97,9 +97,18 @@ Attribution fields injected as hidden form inputs on submission.
 2. Populates existing `input[name="fields[KEY]"]` or `.ml-field-KEY input` elements
 3. Creates hidden inputs with `fields[KEY]` format if not found on form
 4. Runs on modal open AND on submit button click (capture phase)
+5. **DATE field validation**: For fields with `.ml-validate-date` on their group, adds `ml-validate-date-valid` class after setting the value (required by MailerLite `webforms.min.js` validation)
 
 **Field Visibility:**
 Attribution fields added to the MailerLite classic form are hidden via CSS on the host site (`src/index.css`). The classic builder cannot hide custom fields in the UI, so they would otherwise render visible. The fields are still populated and submitted, but the `.ml-field-group.ml-field-*` selectors ensure they remain hidden from users.
+
+**MailerLite DATE Validation (Critical):**
+MailerLite `webforms.min.js` validates DATE fields by checking that any **non-empty** value in an `.ml-validate-date` field must have the `ml-validate-date-valid` class on its field group. This class is normally added by inputmask `oncomplete` when a human types a date. When programmatically setting `input.value = YYYY-MM-DD`, we must manually add `ml-validate-date-valid` to the field group, or validation will fail silently and block form submission.
+
+The injection code in `FreeTrainingRegistration.tsx` handles this by:
+1. Setting the input value to `YYYY-MM-DD` format
+2. Finding the `.ml-field-group` container
+3. If the group has `.ml-validate-date`, adding `.ml-validate-date-valid`
 
 **Date Format**: MailerLite DATE custom fields (`first_touch_at`, `latest_touch_at`) use `YYYY-MM-DD` format, not ISO 8601 timestamps. The `formatForMailerLite()` function automatically converts these fields.
 
