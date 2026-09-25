@@ -98,6 +98,9 @@ Attribution fields injected as hidden form inputs on submission.
 3. Creates hidden inputs with `fields[KEY]` format if not found on form
 4. Runs on modal open AND on submit button click (capture phase)
 
+**Field Visibility:**
+Attribution fields added to the MailerLite classic form are hidden via CSS on the host site (`src/index.css`). The classic builder cannot hide custom fields in the UI, so they would otherwise render visible. The fields are still populated and submitted, but the `.ml-field-group.ml-field-*` selectors ensure they remain hidden from users.
+
 **Date Format**: MailerLite DATE custom fields (`first_touch_at`, `latest_touch_at`) use `YYYY-MM-DD` format, not ISO 8601 timestamps. The `formatForMailerLite()` function automatically converts these fields.
 
 **Fields:**
