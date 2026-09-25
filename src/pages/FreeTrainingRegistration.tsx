@@ -61,7 +61,6 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 /** Modal for email gate */
 function EmailGateModal({ onClose }: { onClose: () => void }) {
   const mlFormContainerRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -166,12 +165,13 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       // Set localStorage flag for analytics
       localStorage.setItem('hs_ft_registered', '1');
       
-      // Navigate to watch page programmatically, preserving UTM query params
-      // UTMs are in window.location.search (before #), not React Router location.search
-      // Attribution is already captured in localStorage, but preserving UTMs in watch
-      // URL allows re-attribution on refresh and consistent analytics tracking
+      // Navigate to watch page using window.location (not React Router navigate)
+      // HashRouter requires UTMs before # in actual URL, hash route after
+      // React Router navigate() called from MailerLite callback context doesn't
+      // reliably update the hash - use hard navigation instead
       const queryString = window.location.search;
-      navigate('/free-training/watch' + queryString, { replace: true });
+      const watchUrl = window.location.origin + queryString + '#/free-training/watch';
+      window.location.replace(watchUrl);
     };
 
     // MailerLite universal.js calls window.ml_webform_success_<GROOT_ID> on successful submission
