@@ -1106,7 +1106,12 @@ button { font-family: inherit; cursor: pointer; }
 
 /* Hide MailerLite attribution custom fields (added by Prophet for tracking)
    Classic builder cannot hide custom fields, so they render visible by default.
-   These fields are populated via JS and submitted with the form, but should not be visible to users. */
+   These fields are populated via JS and submitted with the form, but should not be visible to users.
+   
+   IMPORTANT: We use position/clip instead of display:none to avoid validation issues.
+   MailerLite date fields (first_touch_at, latest_touch_at) may have validation requirements
+   that would silently block form submission if the fields were display:none.
+   This technique keeps fields in the DOM for validation while hiding them visually. */
 .ml-field-group.ml-field-first_source,
 .ml-field-group.ml-field-first_video_id,
 .ml-field-group.ml-field-first_touch_at,
@@ -1117,7 +1122,13 @@ button { font-family: inherit; cursor: pointer; }
 .ml-field-group.ml-field-link_placement,
 .ml-field-group.ml-field-entry_route,
 .ml-field-group.ml-field-tracking_version {
-  display: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
 }
 
 @media (max-width: 560px) {
