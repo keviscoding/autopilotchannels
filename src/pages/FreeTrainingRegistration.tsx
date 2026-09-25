@@ -166,9 +166,12 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       // Set localStorage flag for analytics
       localStorage.setItem('hs_ft_registered', '1');
       
-      // Navigate to watch page programmatically
-      // (MailerLite universal.js doesn't auto-redirect; we handle it here)
-      navigate('/free-training/watch' + location.search, { replace: true });
+      // Navigate to watch page programmatically, preserving UTM query params
+      // UTMs are in window.location.search (before #), not React Router location.search
+      // Attribution is already captured in localStorage, but preserving UTMs in watch
+      // URL allows re-attribution on refresh and consistent analytics tracking
+      const queryString = window.location.search;
+      navigate('/free-training/watch' + queryString, { replace: true });
     };
 
     // MailerLite universal.js calls window.ml_webform_success_<GROOT_ID> on successful submission

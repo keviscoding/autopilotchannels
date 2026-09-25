@@ -112,6 +112,8 @@ The injection code in `FreeTrainingRegistration.tsx` handles this by:
 
 **Date Format**: MailerLite DATE custom fields (`first_touch_at`, `latest_touch_at`) use `YYYY-MM-DD` format, not ISO 8601 timestamps. The `formatForMailerLite()` function automatically converts these fields.
 
+**Success Callback**: MailerLite universal.js invokes `window.ml_webform_success_<GROOT_ID>` on successful submission. For form LLFJEN (groot_id 46274164), the callback is `window.ml_webform_success_46274164`. The callback sets `localStorage.setItem('hs_ft_registered', '1')` and navigates to `/free-training/watch` with UTMs preserved. Note: MailerLite does NOT fire an `ml:success` event for universal.js embeds.
+
 **Fields:**
 - `fields[first_source]`, `fields[first_video_id]`, `fields[first_touch_at]`
 - `fields[latest_source]`, `fields[latest_content_id]`, `fields[latest_youtube_video_id]`, `fields[latest_touch_at]`
