@@ -86,7 +86,24 @@ Pages: `/` (LandingPage), `/free-training/watch` (Typeform application widget)
 ### MailerLite (LLFJEN)
 Attribution fields injected as hidden form inputs on submission.
 
+**Requirements:**
+- Fields must be added to the form in MailerLite UI first (Prophet handles this)
+- Input names must use `fields[KEY]` format (e.g., `fields[first_source]`)
+- MailerLite classic embed only submits inputs that exist on the form
+- Date fields expect YYYY-MM-DD format (ISO timestamps are converted)
+
+**Implementation:**
+1. Captures fresh attribution when modal opens (via `captureAttribution()`)
+2. Populates existing `input[name="fields[KEY]"]` or `.ml-field-KEY input` elements
+3. Creates hidden inputs with `fields[KEY]` format if not found on form
+4. Runs on modal open AND on submit button click (capture phase)
+
 **Date Format**: MailerLite DATE custom fields (`first_touch_at`, `latest_touch_at`) use `YYYY-MM-DD` format, not ISO 8601 timestamps. The `formatForMailerLite()` function automatically converts these fields.
+
+**Fields:**
+- `fields[first_source]`, `fields[first_video_id]`, `fields[first_touch_at]`
+- `fields[latest_source]`, `fields[latest_content_id]`, `fields[latest_youtube_video_id]`, `fields[latest_touch_at]`
+- `fields[link_placement]`, `fields[entry_route]`, `fields[tracking_version]`
 
 Page: `/free-training` (email gate modal)
 

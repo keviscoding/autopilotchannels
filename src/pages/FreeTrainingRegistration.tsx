@@ -59,7 +59,7 @@ function Reveal({ children, className = '', delay = 0, style }: { children: Reac
 }
 
 /** Modal for email gate */
-function EmailGateModal({ onClose, attributionData }: { onClose: () => void; attributionData: Record<string, string> }) {
+function EmailGateModal({ onClose }: { onClose: () => void }) {
   const mlFormContainerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -79,34 +79,71 @@ function EmailGateModal({ onClose, attributionData }: { onClose: () => void; att
       preMountedForm.removeAttribute('id');
     }
 
-    // Inject attribution data into MailerLite form submission
-    const handleMLSubmit = () => {
-      // Try to inject attribution as hidden fields into the form data
-      // MailerLite forms use custom fields which can be set via JavaScript
+    // Attribution injection: MailerLite classic embed requires fields[KEY] format
+    // and only submits inputs that exist on the form (Prophet adds them in ML UI)
+    const injectAttribution = () => {
+      // Capture fresh attribution (URL may have changed since page load)
+      const attr = captureAttribution();
+      const formatted = formatForMailerLite(attr);
+      
       const form = container.querySelector('form');
-      if (form && attributionData) {
-        // Create hidden inputs for each attribution field
-        Object.entries(attributionData).forEach(([key, value]) => {
-          if (!value) return;
-          
-          // Check if field already exists
-          let input = form.querySelector(`input[name="${key}"]`) as HTMLInputElement;
-          if (!input) {
-            // Create new hidden input
-            input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            form.appendChild(input);
+      if (!form || !formatted) return;
+
+      // Keys that need to be populated
+      const keys = [
+        'first_source',
+        'first_video_id',
+        'first_touch_at',
+        'latest_source',
+        'latest_content_id',
+        'latest_touch_at',
+        'latest_youtube_video_id',
+        'link_placement',
+        'entry_route',
+        'tracking_version'
+      ];
+
+      keys.forEach((key) => {
+        const value = formatted[key];
+        if (!value) return;
+
+        // Strategy 1: Try to find existing input with fields[KEY] format
+        let input = form.querySelector(`input[name="fields[${key}]"]`) as HTMLInputElement;
+        
+        // Strategy 2: Try to find input inside .ml-field-KEY container
+        if (!input) {
+          const fieldContainer = form.querySelector(`.ml-field-${key}`);
+          if (fieldContainer) {
+            input = fieldContainer.querySelector('input') as HTMLInputElement;
           }
-          input.value = value;
-        });
-      }
+        }
+
+        // Strategy 3: Create hidden input with fields[KEY] format if not found
+        if (!input) {
+          input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = `fields[${key}]`;
+          form.appendChild(input);
+        }
+
+        // Set the value
+        input.value = value;
+      });
     };
 
-    // Listen for form submission
+    // Inject attribution on modal open (initial load)
+    injectAttribution();
+
+    // Also inject on submit button click (capture phase) in case MailerLite
+    // reads values before native submit event fires
     const form = container.querySelector('form');
     if (form) {
-      form.addEventListener('submit', handleMLSubmit);
+      const submitButton = form.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.addEventListener('click', injectAttribution, true);
+      }
+      // Also listen for form submit as fallback
+      form.addEventListener('submit', injectAttribution);
     }
     
     // Listen for MailerLite form success event to set localStorage flag
@@ -126,7 +163,11 @@ function EmailGateModal({ onClose, attributionData }: { onClose: () => void; att
       window.removeEventListener('ml:success', handleMLSuccess);
       
       if (form) {
-        form.removeEventListener('submit', handleMLSubmit);
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+          submitButton.removeEventListener('click', injectAttribution, true);
+        }
+        form.removeEventListener('submit', injectAttribution);
       }
       
       // Move the form back to body when modal closes so it can be reused
@@ -136,7 +177,7 @@ function EmailGateModal({ onClose, attributionData }: { onClose: () => void; att
         document.body.appendChild(preMountedForm);
       }
     };
-  }, [location.search, attributionData]);
+  }, [location.search]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -165,10 +206,6 @@ export default function FreeTrainingRegistration() {
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [attributionData] = useState(() => {
-    const attr = captureAttribution();
-    return formatForMailerLite(attr);
-  });
 
   // Sticky nav scroll handler
   useEffect(() => {
@@ -380,7 +417,6 @@ export default function FreeTrainingRegistration() {
       {showModal && (
         <EmailGateModal 
           onClose={() => setShowModal(false)}
-          attributionData={attributionData}
         />
       )}
     </>
