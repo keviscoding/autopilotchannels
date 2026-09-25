@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { PopupButton, Widget } from '@typeform/embed-react';
+import { captureAttribution, formatForTypeform } from '../attribution';
 
 const TYPEFORM_ID = 'uNrHKe9G';
 
@@ -313,73 +314,16 @@ function WinsCarousel() {
   );
 }
 
-/* ---- Attribution: per-video source code into Typeform hidden fields ---- */
-const FIRST_TOUCH_KEY = 'hs_first_touch';
-const LAST_TOUCH_KEY = 'hs_last_touch';
-
-function readParam(params: URLSearchParams, keys: string[]): string {
-  for (const k of keys) {
-    const v = params.get(k);
-    if (v) return v;
-  }
-  return '';
-}
-
-function getAttribution(): Record<string, string> {
-  if (typeof window === 'undefined') return {};
-  const hash = window.location.hash;
-  const hashQ = hash.includes('?') ? hash.slice(hash.indexOf('?') + 1) : '';
-  const searchQ = window.location.search.startsWith('?') ? window.location.search.slice(1) : '';
-  const params = new URLSearchParams([searchQ, hashQ].filter(Boolean).join('&'));
-
-  const source = readParam(params, ['source', 'src', 'v', 'utm_content']);
-  const touch: Record<string, string> = {
-    source,
-    utm_source: params.get('utm_source') || '',
-    utm_medium: params.get('utm_medium') || '',
-    utm_campaign: params.get('utm_campaign') || '',
-    utm_content: params.get('utm_content') || '',
-    referrer: document.referrer || '',
-    landing_page: window.location.href,
-    ts: new Date().toISOString(),
-  };
-
-  let firstSource = source;
-  try {
-    if (source) {
-      if (!localStorage.getItem(FIRST_TOUCH_KEY)) {
-        localStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(touch));
-      } else {
-        firstSource = JSON.parse(localStorage.getItem(FIRST_TOUCH_KEY) || '{}').source || source;
-      }
-      localStorage.setItem(LAST_TOUCH_KEY, JSON.stringify(touch));
-    } else {
-      const last = JSON.parse(localStorage.getItem(LAST_TOUCH_KEY) || '{}');
-      const first = JSON.parse(localStorage.getItem(FIRST_TOUCH_KEY) || '{}');
-      Object.assign(touch, { ...last, referrer: touch.referrer, landing_page: touch.landing_page });
-      firstSource = first.source || last.source || '';
-    }
-  } catch {
-    // private browsing
-  }
-
-  const hidden: Record<string, string> = {
-    source: touch.source || '',
-    first_source: firstSource || touch.source || '',
-    utm_source: touch.utm_source || '',
-    utm_medium: touch.utm_medium || '',
-    utm_campaign: touch.utm_campaign || '',
-    referrer: touch.referrer || '',
-    landing_page: touch.landing_page || '',
-  };
-  Object.keys(hidden).forEach((k) => { if (!hidden[k]) delete hidden[k]; });
-  return hidden;
-}
+/* ---- Attribution: video-level tracking with 90-day TTL ---- */
+// Attribution is now handled by src/attribution/index.ts
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const [faqOpen, setFaqOpen] = useState(0);
-  const [attribution] = useState(getAttribution);
+  const [attribution] = useState(() => {
+    const attr = captureAttribution();
+    return formatForTypeform(attr);
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);

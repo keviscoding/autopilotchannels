@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { PopupButton } from '@typeform/embed-react';
-import { captureAttribution } from '../webinar/attribution';
+import { captureAttribution as captureWebinarAttribution } from '../webinar/attribution';
+import { captureAttribution, formatForTypeform } from '../attribution';
 import {
   WEBINAR,
   formatDay,
@@ -110,7 +111,17 @@ function Logo() {
 
 /** Reads the video tag and stashes it, so it survives the trip through WebinarJam. */
 function useAttribution() {
-  return useMemo(() => captureAttribution(), []);
+  return useMemo(() => {
+    // Capture with new attribution system
+    const newAttr = captureAttribution();
+    const formatted = formatForTypeform(newAttr);
+    
+    // Also capture with legacy webinar system for WebinarJam compatibility
+    const legacyAttr = captureWebinarAttribution();
+    
+    // Merge both: new system provides full fields, legacy provides backward compat
+    return { ...legacyAttr, ...formatted };
+  }, []);
 }
 
 /** Every secondary CTA sends people to the one form rather than a second copy of it. */
