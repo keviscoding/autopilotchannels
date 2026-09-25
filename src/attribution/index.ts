@@ -335,7 +335,13 @@ export function formatForTypeform(attr: Attribution): Record<string, string> {
 /**
  * Format attribution for MailerLite custom fields
  * 
- * MailerLite DATE fields require YYYY-MM-DD format (not ISO 8601 timestamps).
+ * MailerLite classic embed requires:
+ * 1. Fields must be added to the form in MailerLite UI first
+ * 2. Input names must use fields[KEY] format (not bare KEY)
+ * 3. DATE fields require YYYY-MM-DD format (not ISO 8601 timestamps)
+ * 
+ * This returns key-value pairs. The calling code must inject these as
+ * input[name="fields[KEY]"] or populate existing .ml-field-KEY inputs.
  * This converts first_touch_at and latest_touch_at to date-only format.
  */
 export function formatForMailerLite(attr: Attribution): Record<string, string> {
