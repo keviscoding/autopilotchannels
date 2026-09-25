@@ -180,8 +180,15 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
     (window as any)[callbackName] = handleMLSuccess;
 
     return () => {
-      // Clean up the global callback
-      delete (window as any)[callbackName];
+      // Clean up the global callback safely
+      // MailerLite or the navigation may have made the property non-configurable,
+      // so use try/catch to prevent cleanup errors from breaking the page
+      try {
+        delete (window as any)[callbackName];
+      } catch (e) {
+        // If delete fails, set to undefined as fallback
+        (window as any)[callbackName] = undefined;
+      }
       
       if (form) {
         const submitButton = form.querySelector('button[type="submit"]');
