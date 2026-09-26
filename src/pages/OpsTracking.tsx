@@ -155,6 +155,7 @@ function OpsTrackingDashboard() {
   const [dataSource, setDataSource] = useState<'live' | 'fallback'>('live');
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [hideTestLeads, setHideTestLeads] = useState(false);
 
   const loadData = useCallback(async (isManualRefresh = false) => {
     if (isManualRefresh) {
@@ -250,16 +251,24 @@ function OpsTrackingDashboard() {
     );
   }
 
-  // Filter out test leads
-  const realLeads = data.leads.filter((lead) => {
+  // Helper to check if a lead is a test
+  const isTestLead = (lead: Lead): boolean => {
     const isTest = lead['Is test'];
     if (Array.isArray(isTest)) {
-      return !isTest.some(v => String(v).toUpperCase() === 'Y');
+      return isTest.some(v => String(v).toUpperCase() === 'Y');
     }
-    return String(isTest).toUpperCase() !== 'Y';
-  });
+    return String(isTest).toUpperCase() === 'Y';
+  };
 
-  // Compute video stats
+  // Filter out test leads for video stats (Content Performance)
+  const realLeads = data.leads.filter(lead => !isTestLead(lead));
+
+  // For display in Lead List: filter based on hideTestLeads toggle
+  const displayLeads = hideTestLeads 
+    ? data.leads.filter(lead => !isTestLead(lead))
+    : data.leads;
+
+  // Compute video stats (exclude test leads from metrics)
   const videoMap = new Map<string, VideoStats>();
 
   realLeads.forEach((lead) => {
@@ -501,9 +510,32 @@ function OpsTrackingDashboard() {
 
       {/* Lead List Section */}
       <section>
-        <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#16221F', marginBottom: '16px' }}>
-          Lead List ({realLeads.length} leads)
-        </h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#16221F', margin: 0 }}>
+            Lead List ({displayLeads.length} leads)
+          </h2>
+          <label style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            fontSize: '14px',
+            color: '#6B7280',
+            cursor: 'pointer',
+            userSelect: 'none'
+          }}>
+            <input 
+              type="checkbox" 
+              checked={hideTestLeads}
+              onChange={(e) => setHideTestLeads(e.target.checked)}
+              style={{ 
+                width: '16px', 
+                height: '16px',
+                cursor: 'pointer'
+              }}
+            />
+            Hide test leads
+          </label>
+        </div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ 
             width: '100%', 
@@ -539,10 +571,27 @@ function OpsTrackingDashboard() {
               </tr>
             </thead>
             <tbody>
-              {realLeads.map((lead, index) => (
-                <tr key={lead['Response ID'] || index} style={{ borderBottom: index < realLeads.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
+              {displayLeads.map((lead, index) => (
+                <tr key={lead['Response ID'] || index} style={{ borderBottom: index < displayLeads.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
                   <td style={{ padding: '14px 16px', fontSize: '14px', color: '#16221F' }}>
-                    {lead['First name'] || <span style={{ color: '#9CA3AF' }}>—</span>}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span>{lead['First name'] || <span style={{ color: '#9CA3AF' }}>—</span>}</span>
+                      {isTestLead(lead) && (
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '2px 8px',
+                          background: '#FEF3C7',
+                          color: '#92400E',
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          borderRadius: '4px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em'
+                        }}>
+                          Test
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td style={{ padding: '14px 16px', fontSize: '14px', color: '#16221F' }}>
                     {lead['Email'] || <span style={{ color: '#9CA3AF' }}>—</span>}
@@ -611,7 +660,7 @@ function OpsTrackingDashboard() {
                   </td>
                 </tr>
               ))}
-              {realLeads.length === 0 && (
+              {displayLeads.length === 0 && (
                 <tr>
                   <td colSpan={7} style={{ padding: '24px', textAlign: 'center', color: '#9CA3AF', fontSize: '14px' }}>
                     No leads available
