@@ -15,6 +15,7 @@ if (typeof window !== 'undefined' && !window.location.hash && window.location.pa
     '/booked',
     '/course',
     '/tools/video-link',
+    '/ops/tracking',
   ];
   const pathname = window.location.pathname;
   const search = window.location.search;
