@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Parser Test</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+    .pass { background: #d1fae5; border-color: #6ee7b7; }
+    .fail { background: #fee2e2; border-color: #fca5a5; }
+    pre { background: #f3f4f6; padding: 10px; border-radius: 4px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>CSV Parser Test</h1>
+  <div id="results"></div>
+
+  <script>
+    // CSV Parser (from OpsTracking.tsx)
+    function parseCsvToLeads(csvText) {
+      const lines = csvText.split('\n').filter(line => line.trim());
+      if (lines.length < 2) return [];
+      
+      const parseCSVLine = (line) => {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          
+          if (char === '"') {
+            if (inQuotes && line[i + 1] === '"') {
+              current += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        result.push(current);
+        return result;
+      };
+      
+      const headers = parseCSVLine(lines[0]);
+      const leads = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i]);
+        const lead = {};
+        
+        headers.forEach((header, index) => {
+          lead[header] = values[index] || '';
+        });
+        
+        leads.push(lead);
+      }
+      
+      return leads;
+    }
+
+    // Test Cases
+    const tests = [
+      {
+        name: "Basic CSV with simple fields",
+        csv: `Name,Email,Status
+John Doe,john@example.com,Active
+Jane Smith,jane@example.com,Inactive`,
+        expected: 2,
+        check: (leads) => leads[0].Name === 'John Doe' && leads[1].Email === 'jane@example.com'
+      },
+      {
+        name: "CSV with quoted fields containing commas",
+        csv: `Name,Description,Status
+"Smith, John","A person with a comma, in their name",Active
+"Doe, Jane","Another comma, here too",Won`,
+        expected: 2,
+        check: (leads) => leads[0].Name === 'Smith, John' && leads[0].Description === 'A person with a comma, in their name'
+      },
+      {
+        name: "CSV with escaped quotes",
+        csv: `Name,Quote,Status
+John,"He said ""Hello""",Active
+Jane,"She replied ""Hi there""",Won`,
+        expected: 2,
+        check: (leads) => leads[0].Quote === 'He said "Hello"' && leads[1].Quote === 'She replied "Hi there"'
+      },
+      {
+        name: "CSV with empty fields",
+        csv: `Name,Email,Phone,Status
+John,john@example.com,,Active
+Jane,,555-1234,Won`,
+        expected: 2,
+        check: (leads) => leads[0].Phone === '' && leads[1].Email === ''
+      },
+      {
+        name: "Lead List format with Is test field",
+        csv: `Response ID,First name,Email,First video title,Is test
+r5k0xbpyf162,Test User,test@example.com,"[TEST] Video Title",Y
+2u382ns69uq4,Real User,real@example.com,"Real Video",N`,
+        expected: 2,
+        check: (leads) => {
+          return leads[0]['Is test'] === 'Y' && 
+                 leads[1]['Is test'] === 'N' &&
+                 leads[0]['First video title'] === '[TEST] Video Title';
+        }
+      }
+    ];
+
+    // Run Tests
+    const resultsDiv = document.getElementById('results');
+    let passCount = 0;
+    let failCount = 0;
+
+    tests.forEach((test, index) => {
+      const testDiv = document.createElement('div');
+      testDiv.className = 'test';
+      
+      try {
+        const leads = parseCsvToLeads(test.csv);
+        const pass = leads.length === test.expected && test.check(leads);
+        
+        if (pass) {
+          testDiv.classList.add('pass');
+          passCount++;
+          testDiv.innerHTML = `
+            <h3>✅ Test ${index + 1}: ${test.name}</h3>
+            <p><strong>Result:</strong> PASS</p>
+            <p>Parsed ${leads.length} rows correctly</p>
+            <details>
+              <summary>View parsed data</summary>
+              <pre>${JSON.stringify(leads, null, 2)}</pre>
+            </details>
+          `;
+        } else {
+          testDiv.classList.add('fail');
+          failCount++;
+          testDiv.innerHTML = `
+            <h3>❌ Test ${index + 1}: ${test.name}</h3>
+            <p><strong>Result:</strong> FAIL</p>
+            <p>Expected ${test.expected} rows, got ${leads.length}</p>
+            <pre>${JSON.stringify(leads, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        testDiv.classList.add('fail');
+        failCount++;
+        testDiv.innerHTML = `
+          <h3>❌ Test ${index + 1}: ${test.name}</h3>
+          <p><strong>Result:</strong> ERROR</p>
+          <p>${error.message}</p>
+        `;
+      }
+      
+      resultsDiv.appendChild(testDiv);
+    });
+
+    // Summary
+    const summaryDiv = document.createElement('div');
+    summaryDiv.className = 'test ' + (failCount === 0 ? 'pass' : 'fail');
+    summaryDiv.innerHTML = `
+      <h2>Test Summary</h2>
+      <p>Total: ${tests.length} | Pass: ${passCount} | Fail: ${failCount}</p>
+    `;
+    resultsDiv.insertBefore(summaryDiv, resultsDiv.firstChild);
+  </script>
+</body>
+</html>
