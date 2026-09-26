@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import OpsGate from '../ops/OpsGate';
+import { LIVE_SHEET_CONFIG } from '../ops/opsConfig';
 
 interface Lead {
   'Response ID': string;
@@ -54,26 +55,160 @@ function parseCash(value: string): number {
   return isNaN(parsed) ? 0 : parsed;
 }
 
+/**
+ * Parse Google Visualization CSV response into Lead objects
+ * CSV format: first row is headers, subsequent rows are data
+ */
+function parseCsvToLeads(csvText: string): Lead[] {
+  const lines = csvText.split('\n').filter(line => line.trim());
+  if (lines.length < 2) return []; // Need at least header + 1 row
+  
+  // Parse CSV respecting quoted fields
+  const parseCSVLine = (line: string): string[] => {
+    const result: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      
+      if (char === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          // Escaped quote
+          current += '"';
+          i++;
+        } else {
+          // Toggle quote state
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        // Field separator
+        result.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current); // Add last field
+    return result;
+  };
+  
+  const headers = parseCSVLine(lines[0]);
+  const leads: Lead[] = [];
+  
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCSVLine(lines[i]);
+    const lead: Lead = {} as Lead;
+    
+    headers.forEach((header, index) => {
+      lead[header] = values[index] || '';
+    });
+    
+    leads.push(lead);
+  }
+  
+  return leads;
+}
+
+/**
+ * Fetch live data from Google Sheets via gviz CSV endpoint
+ */
+async function fetchLiveSheetData(): Promise<TrackingData> {
+  const response = await fetch(LIVE_SHEET_CONFIG.gvizCsvUrl, {
+    method: 'GET',
+    headers: {
+      'Accept': 'text/csv',
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch sheet data: ${response.status} ${response.statusText}`);
+  }
+  
+  const csvText = await response.text();
+  const leads = parseCsvToLeads(csvText);
+  
+  return {
+    exportedAt: new Date().toISOString(),
+    spreadsheetId: LIVE_SHEET_CONFIG.spreadsheetId,
+    spreadsheetUrl: LIVE_SHEET_CONFIG.spreadsheetUrl,
+    cashPathNote: 'Cash is MANUAL on Lead List: set Outcome=won, fill Cash collected (+ Contract value, Collection dates). Live data refreshed automatically.',
+    leads,
+  };
+}
+
+/**
+ * Fetch fallback data from bundled JSON
+ */
+async function fetchFallbackData(): Promise<TrackingData> {
+  const response = await fetch('/ops/tracking-data.json');
+  if (!response.ok) {
+    throw new Error('Failed to load fallback tracking data');
+  }
+  return response.json();
+}
+
 function OpsTrackingDashboard() {
   const [data, setData] = useState<TrackingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dataSource, setDataSource] = useState<'live' | 'fallback'>('live');
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    fetch('/ops/tracking-data.json')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load tracking data');
-        return res.json();
-      })
-      .then((json: TrackingData) => {
-        setData(json);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+  const loadData = useCallback(async (isManualRefresh = false) => {
+    if (isManualRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    setError(null);
+
+    try {
+      // Try live sheet first
+      const liveData = await fetchLiveSheetData();
+      setData(liveData);
+      setDataSource('live');
+      setLastUpdated(new Date());
+      setError(null);
+    } catch (liveError) {
+      console.warn('Live sheet fetch failed, falling back to bundled JSON:', liveError);
+      
+      try {
+        // Fall back to bundled JSON
+        const fallbackData = await fetchFallbackData();
+        setData(fallbackData);
+        setDataSource('fallback');
+        setLastUpdated(new Date());
+        setError('Live sheet unreachable — showing last bundled snapshot');
+      } catch (fallbackError) {
+        console.error('Fallback data also failed:', fallbackError);
+        setError('Failed to load tracking data from both live sheet and fallback');
+        setData(null);
+      }
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   }, []);
+
+  // Initial load on mount
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  // Auto-refresh every 30 minutes
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      loadData();
+    }, LIVE_SHEET_CONFIG.autoRefreshMs);
+
+    return () => clearInterval(intervalId);
+  }, [loadData]);
+
+  const handleManualRefresh = () => {
+    loadData(true);
+  };
 
   if (loading) {
     return (
@@ -83,10 +218,34 @@ function OpsTrackingDashboard() {
     );
   }
 
-  if (error || !data) {
+  if (error && !data) {
     return (
       <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-        <p style={{ color: '#d32f2f' }}>Error: {error || 'No data available'}</p>
+        <p style={{ color: '#d32f2f' }}>Error: {error}</p>
+        <button
+          onClick={handleManualRefresh}
+          style={{
+            marginTop: '16px',
+            padding: '10px 20px',
+            background: '#15875B',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer',
+          }}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+        <p style={{ color: '#6B7280' }}>No data available</p>
       </div>
     );
   }
@@ -156,12 +315,90 @@ function OpsTrackingDashboard() {
   return (
     <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '32px 24px', fontFamily: 'system-ui, sans-serif' }}>
       <header style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: '800', color: '#16221F', margin: '0 0 8px' }}>
-          Ops Tracking Dashboard
-        </h1>
-        <p style={{ color: '#6B7280', fontSize: '15px', margin: '0 0 12px' }}>
-          Content performance and lead pipeline. Data exported: {new Date(data.exportedAt).toLocaleString()}
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+          <div>
+            <h1 style={{ fontSize: '32px', fontWeight: '800', color: '#16221F', margin: '0 0 8px' }}>
+              Ops Tracking Dashboard
+            </h1>
+            <p style={{ color: '#6B7280', fontSize: '15px', margin: '0' }}>
+              Content performance and lead pipeline.
+            </p>
+          </div>
+          <button
+            onClick={handleManualRefresh}
+            disabled={refreshing}
+            style={{
+              padding: '10px 20px',
+              background: refreshing ? '#E5E7EB' : '#15875B',
+              color: refreshing ? '#6B7280' : '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: refreshing ? 'not-allowed' : 'pointer',
+              transition: 'background 0.2s',
+            }}
+            onMouseOver={(e) => {
+              if (!refreshing) e.currentTarget.style.background = '#0F6B47';
+            }}
+            onMouseOut={(e) => {
+              if (!refreshing) e.currentTarget.style.background = '#15875B';
+            }}
+          >
+            {refreshing ? '🔄 Refreshing...' : '🔄 Refresh Now'}
+          </button>
+        </div>
+        
+        {/* Data Source & Last Updated Info */}
+        <div style={{ 
+          background: dataSource === 'live' ? '#D1FAE5' : '#FFF3CD',
+          border: `1px solid ${dataSource === 'live' ? '#6EE7B7' : '#FFEB99'}`,
+          borderRadius: '8px',
+          padding: '12px 16px',
+          marginBottom: '12px',
+          fontSize: '14px',
+          lineHeight: '1.5',
+          color: dataSource === 'live' ? '#065F46' : '#856404'
+        }}>
+          <strong>{dataSource === 'live' ? '✅ Live data' : '⚠️ Fallback mode'}:</strong>{' '}
+          {dataSource === 'live' ? (
+            <>
+              Auto-refreshes from{' '}
+              <a 
+                href={LIVE_SHEET_CONFIG.spreadsheetUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#15875B', fontWeight: '600' }}
+              >
+                Google Sheet Lead List
+              </a>
+              {' '}every 30 minutes.
+            </>
+          ) : (
+            <>
+              Live sheet unreachable — showing last bundled snapshot.{' '}
+              <a 
+                href={LIVE_SHEET_CONFIG.spreadsheetUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#15875B', fontWeight: '600' }}
+              >
+                Check sheet
+              </a>
+              {' '}or try refreshing.
+            </>
+          )}
+          {lastUpdated && (
+            <>
+              <br />
+              <span style={{ fontSize: '13px', opacity: 0.9 }}>
+                Last updated: {lastUpdated.toLocaleString()}
+              </span>
+            </>
+          )}
+        </div>
+
+        {/* Cash Manual Entry Note */}
         <div style={{ 
           background: '#FFF3CD', 
           border: '1px solid #FFEB99', 
@@ -173,7 +410,7 @@ function OpsTrackingDashboard() {
         }}>
           <strong>📝 Note:</strong> Cash is entered manually on the{' '}
           <a 
-            href={data.spreadsheetUrl} 
+            href={data?.spreadsheetUrl || LIVE_SHEET_CONFIG.spreadsheetUrl}
             target="_blank" 
             rel="noopener noreferrer"
             style={{ color: '#15875B', fontWeight: '600' }}
@@ -388,14 +625,15 @@ function OpsTrackingDashboard() {
 
       <footer style={{ marginTop: '48px', padding: '20px', background: '#F9FAFB', borderRadius: '8px', fontSize: '13px', color: '#6B7280' }}>
         <p style={{ margin: '0 0 8px' }}>
-          <strong>Refresh data:</strong> Export Lead List from the{' '}
-          <a href={data.spreadsheetUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#15875B' }}>
-            Google Sheet
+          <strong>How it works:</strong> Dashboard fetches live data from{' '}
+          <a href={data?.spreadsheetUrl || LIVE_SHEET_CONFIG.spreadsheetUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#15875B' }}>
+            Google Sheet Lead List
           </a>
-          {' '}and update <code style={{ background: '#fff', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>public/ops/tracking-data.json</code>.
+          {' '}via Google Visualization CSV API every 30 minutes and on page load.
+          No API keys or backend needed — sheet must remain link-viewable for this to work.
         </p>
         <p style={{ margin: '0' }}>
-          Spreadsheet ID: <code style={{ background: '#fff', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>{data.spreadsheetId}</code>
+          Spreadsheet ID: <code style={{ background: '#fff', padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>{data?.spreadsheetId || LIVE_SHEET_CONFIG.spreadsheetId}</code>
         </p>
       </footer>
     </div>
