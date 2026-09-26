@@ -1,4 +1,67 @@
-# React + TypeScript + Vite
+# HeadStart Channels / Autopilot Channels
+
+React + TypeScript + Vite marketing site for HeadStart Channels, including free training funnel, course access, and internal ops tools.
+
+## Features
+
+### Public Pages
+- Landing page with social proof and CTAs
+- Free training registration and watch pages (email-gated)
+- Course access (protected)
+- Webinar registration and confirmation
+- Toolkit page
+
+### Internal Ops Tools
+
+#### Ops Tracking Dashboard (`/ops/tracking`)
+Real-time lead tracking and content performance dashboard.
+
+**Access**: Protected by access code (see `src/ops/opsConfig.ts`)
+
+**Live Data Refresh**:
+- Auto-fetches from Google Sheet Lead List every 30 minutes via Google Visualization CSV API
+- Manual refresh button for immediate updates
+- Falls back to bundled `public/ops/tracking-data.json` if live fetch fails
+- No API keys or backend required
+
+**Requirements**:
+- Sheet must remain "Anyone with the link can view" for gviz access
+- CORS already configured for production domain
+
+**Features**:
+- Video performance metrics (applicants, booked, won, cash)
+- Lead list with attribution tracking
+- Test lead filtering (`Is test` = Y)
+- Cash collection (manual entry on sheet)
+
+**Configuration**: `src/ops/opsConfig.ts`
+- `LIVE_SHEET_CONFIG.spreadsheetId`: Google Sheet ID
+- `LIVE_SHEET_CONFIG.sheetName`: Sheet tab name (default: "Lead List")
+- `LIVE_SHEET_CONFIG.autoRefreshMs`: Refresh interval (default: 30 minutes)
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Tech Stack
+- React 19
+- TypeScript
+- Vite
+- React Router (HashRouter)
+- MailerLite (email capture)
+
+---
+
+# React + TypeScript + Vite Template Info
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
