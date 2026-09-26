@@ -9,6 +9,7 @@ import FreeTrainingRegistration from './pages/FreeTrainingRegistration'
 import FreeTrainingWatch from './pages/FreeTrainingWatch'
 import Privacy from './pages/Privacy'
 import VideoLinkHelper from './pages/VideoLinkHelper'
+import OpsTracking from './pages/OpsTracking'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/free-training/watch" element={<FreeTrainingWatch />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/tools/video-link" element={<VideoLinkHelper />} />
+        <Route path="/ops/tracking" element={<OpsTracking />} />
         <Route path="/course" element={<CourseApp />} />
         <Route path="/course/:lessonId" element={<CourseApp />} />
       </Routes>
