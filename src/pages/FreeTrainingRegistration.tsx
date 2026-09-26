@@ -90,6 +90,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
       if (!form || !formatted) return;
 
       // Keys that need to be populated
+      // Always inject entry_route and tracking_version, even when other fields are empty
       const keys = [
         'first_source',
         'first_video_id',
@@ -105,6 +106,7 @@ function EmailGateModal({ onClose }: { onClose: () => void }) {
 
       keys.forEach((key) => {
         const value = formatted[key];
+        // Skip only if value is truly missing (entry_route and tracking_version should always exist)
         if (!value) return;
 
         // Strategy 1: Try to find existing input with fields[KEY] format
