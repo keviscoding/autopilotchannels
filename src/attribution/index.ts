@@ -14,10 +14,18 @@
  * - ?source=VIDEO_ID → maps to first/latest youtube_video_id + source=youtube_organic_video
  * - utm_source, utm_medium, utm_campaign, utm_content (VIDEO_ID), utm_term (placement)
  * - utm_source=mailerlite updates latest_source but preserves first_video_id / latest_youtube_video_id
+ * - utm_source=twitter is normalized to utm_source=x for consistent reporting
+ * 
+ * X (Twitter) URL pattern requirement:
+ * - Query params MUST appear BEFORE the hash fragment for attribution to work
+ * - Correct: https://headstartchannels.com/?utm_source=x&utm_medium=social#/free-training
+ * - Wrong: https://headstartchannels.com/#/free-training?utm_source=x
+ * - This is a HashRouter requirement: window.location.search is only populated when ? comes before #
  * 
  * Unknown stays unknown - never invent "youtube" when no source exists.
  * Direct return visits must NOT erase known first source.
  * Internal hash navigation must preserve attribution (no new acquisition).
+ * Organic visits (no UTM params) to /free-training still get entry_route=free-training.
  */
 
 const STORE_KEY = 'hs_attribution_v1';
@@ -181,7 +189,8 @@ function deriveSourceFields(raw: RawTouch): {
   
   // Source priority: utm_source > derived from legacy source
   if (raw.utm_source) {
-    result.source = raw.utm_source;
+    // Normalize twitter → x for consistent reporting
+    result.source = raw.utm_source === 'twitter' ? 'x' : raw.utm_source;
   } else if (raw.source) {
     result.source = raw.source; // Already set to 'youtube_organic_video'
   }
@@ -221,21 +230,34 @@ export function captureAttribution(): Attribution {
   
   const stored = loadStoredAttribution();
   const rawTouch = extractRawTouch();
+  const currentRoute = getCurrentRoute();
   
-  // If no attribution params in URL and no stored data, return empty attribution
+  // If no attribution params in URL and no stored data, return minimal attribution
+  // but include entry_route if we're on a known entry page (e.g., free-training)
   if (!rawTouch && !stored) {
-    return {
+    const minimal: Attribution = {
       tracking_version: TRACKING_VERSION,
       _expires_at: expiresAt,
     };
+    // Always set entry_route for free-training pages, even without UTM params
+    if (currentRoute === '/free-training' || currentRoute === '/free-training/watch') {
+      minimal.entry_route = 'free-training';
+    }
+    return minimal;
   }
   
-  // If no new attribution params, return stored attribution (or empty)
+  // If no new attribution params, return stored attribution (or minimal)
   if (!rawTouch) {
-    return stored || {
+    const existing = stored || {
       tracking_version: TRACKING_VERSION,
       _expires_at: expiresAt,
     };
+    // Always set entry_route for free-training pages, even without UTM params
+    if (!existing.entry_route && (currentRoute === '/free-training' || currentRoute === '/free-training/watch')) {
+      existing.entry_route = 'free-training';
+      saveAttribution(existing);
+    }
+    return existing;
   }
   
   // We have new attribution params - process them
@@ -364,8 +386,9 @@ export function formatForMailerLite(attr: Attribution): Record<string, string> {
   }
   
   if (attr.link_placement) hidden.link_placement = attr.link_placement;
+  // Always include entry_route if present (even for organic traffic)
   if (attr.entry_route) hidden.entry_route = attr.entry_route;
-  // Default tracking_version to v1 when empty
+  // Always include tracking_version (default to v1 when empty)
   hidden.tracking_version = attr.tracking_version || 'v1';
   
   return hidden;
