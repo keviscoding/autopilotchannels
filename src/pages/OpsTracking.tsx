@@ -59,47 +59,69 @@ function parseCash(value: string): number {
 
 /**
  * Parse Google Visualization CSV response into Lead objects
- * CSV format: first row is headers, subsequent rows are data
+ * Implements RFC4180-compliant CSV parsing to handle:
+ * - Multiline quoted fields (e.g. "Main challenge" with newlines)
+ * - Escaped quotes within fields
+ * - Empty trailing columns from gviz
  */
 function parseCsvToLeads(csvText: string): Lead[] {
-  const lines = csvText.split('\n').filter(line => line.trim());
-  if (lines.length < 2) return [];
+  const rows: string[][] = [];
+  let currentRow: string[] = [];
+  let currentField = '';
+  let inQuotes = false;
   
-  const parseCSVLine = (line: string): string[] => {
-    const result: string[] = [];
-    let current = '';
-    let inQuotes = false;
+  for (let i = 0; i < csvText.length; i++) {
+    const char = csvText[i];
+    const nextChar = csvText[i + 1];
     
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      
-      if (char === '"') {
-        if (inQuotes && line[i + 1] === '"') {
-          current += '"';
-          i++;
-        } else {
-          inQuotes = !inQuotes;
-        }
-      } else if (char === ',' && !inQuotes) {
-        result.push(current);
-        current = '';
+    if (inQuotes) {
+      if (char === '"' && nextChar === '"') {
+        currentField += '"';
+        i++;
+      } else if (char === '"') {
+        inQuotes = false;
       } else {
-        current += char;
+        currentField += char;
+      }
+    } else {
+      if (char === '"') {
+        inQuotes = true;
+      } else if (char === ',') {
+        currentRow.push(currentField);
+        currentField = '';
+      } else if (char === '\n' || (char === '\r' && nextChar === '\n')) {
+        if (char === '\r') i++;
+        currentRow.push(currentField);
+        if (currentRow.length > 0 && currentRow.some(f => f.trim())) {
+          rows.push(currentRow);
+        }
+        currentRow = [];
+        currentField = '';
+      } else if (char !== '\r') {
+        currentField += char;
       }
     }
-    result.push(current);
-    return result;
-  };
+  }
   
-  const headers = parseCSVLine(lines[0]);
+  if (currentField || currentRow.length > 0) {
+    currentRow.push(currentField);
+    if (currentRow.some(f => f.trim())) {
+      rows.push(currentRow);
+    }
+  }
+  
+  if (rows.length < 2) return [];
+  
+  const headers = rows[0];
   const leads: Lead[] = [];
   
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
+  for (let i = 1; i < rows.length; i++) {
     const lead: Lead = {} as Lead;
     
     headers.forEach((header, index) => {
-      lead[header] = values[index] || '';
+      if (header && header.trim()) {
+        lead[header] = rows[i][index] || '';
+      }
     });
     
     leads.push(lead);
