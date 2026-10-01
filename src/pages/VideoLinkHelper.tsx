@@ -1,17 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+const CHANNEL_DESCRIPTION = 'channel_description';
 
 export default function VideoLinkHelper() {
   const [videoId, setVideoId] = useState('');
   const [placement, setPlacement] = useState('description');
   const [route, setRoute] = useState('/');
 
+  const isChannelDescription = placement === CHANNEL_DESCRIPTION;
+
+  // Channel About links use the category token as content (never a video ID)
+  useEffect(() => {
+    if (isChannelDescription) {
+      setVideoId(CHANNEL_DESCRIPTION);
+    }
+  }, [isChannelDescription]);
+
   const baseUrl = 'https://headstartchannels.com';
-  const params = new URLSearchParams({
-    utm_source: 'youtube',
-    utm_medium: 'organic_video',
-    utm_content: videoId || 'VIDEO_ID',
-    utm_term: placement,
-  });
+  const params = new URLSearchParams(
+    isChannelDescription
+      ? {
+          utm_source: 'youtube',
+          utm_medium: 'social',
+          utm_campaign: 'practical_content_test',
+          utm_content: CHANNEL_DESCRIPTION,
+          utm_term: CHANNEL_DESCRIPTION,
+        }
+      : {
+          utm_source: 'youtube',
+          utm_medium: 'organic_video',
+          utm_content: videoId || 'VIDEO_ID',
+          utm_term: placement,
+        }
+  );
   const fullUrl = `${baseUrl}/?${params.toString()}#${route}`;
 
   const copyToClipboard = () => {
@@ -28,7 +49,8 @@ export default function VideoLinkHelper() {
     }}>
       <h1 style={{ marginBottom: '8px' }}>Video Link Builder</h1>
       <p style={{ color: '#666', marginBottom: '32px' }}>
-        Create properly formatted attribution links for YouTube video descriptions.
+        Create properly formatted attribution links for YouTube video descriptions
+        and channel About links.
       </p>
 
       <div style={{ marginBottom: '24px' }}>
@@ -37,19 +59,24 @@ export default function VideoLinkHelper() {
         </label>
         <input
           type="text"
-          value={videoId}
+          value={isChannelDescription ? '' : videoId}
           onChange={(e) => setVideoId(e.target.value)}
-          placeholder="e.g., dQw4w9WgXcQ"
+          placeholder={isChannelDescription ? 'Not used for channel About (uses channel_description)' : 'e.g., dQw4w9WgXcQ'}
+          disabled={isChannelDescription}
           style={{
             width: '100%',
             padding: '10px 12px',
             fontSize: '15px',
             border: '1px solid #ddd',
             borderRadius: '6px',
+            background: isChannelDescription ? '#f0f0f0' : '#fff',
+            color: isChannelDescription ? '#888' : 'inherit',
           }}
         />
         <small style={{ color: '#666', fontSize: '13px' }}>
-          The 11-character ID from the YouTube URL (youtube.com/watch?v=<strong>THIS_PART</strong>)
+          {isChannelDescription
+            ? 'Channel About links set utm_content=channel_description (category, not a video ID). Lead List video ID fields stay blank.'
+            : <>The 11-character ID from the YouTube URL (youtube.com/watch?v=<strong>THIS_PART</strong>)</>}
         </small>
       </div>
 
@@ -72,6 +99,7 @@ export default function VideoLinkHelper() {
           <option value="pinned_comment">Pinned Comment</option>
           <option value="end_card">End Card</option>
           <option value="community_post">Community Post</option>
+          <option value="channel_description">Channel description / About</option>
         </select>
       </div>
 
@@ -140,7 +168,9 @@ export default function VideoLinkHelper() {
       <hr style={{ margin: '40px 0', border: 'none', borderTop: '1px solid #ddd' }} />
 
       <div>
-        <h2 style={{ fontSize: '20px', marginBottom: '12px' }}>Video Description Template</h2>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px' }}>
+          {isChannelDescription ? 'Channel About Template' : 'Video Description Template'}
+        </h2>
         <div style={{ 
           padding: '16px', 
           background: '#f5f5f5', 
@@ -154,7 +184,15 @@ export default function VideoLinkHelper() {
             lineHeight: 1.6,
             whiteSpace: 'pre-wrap'
           }}>
-{`Want your own done-for-you channel? Apply here:
+{isChannelDescription
+  ? `Paste into YouTube channel About / Links:
+
+Apply:
+${baseUrl}/?utm_source=youtube&utm_medium=social&utm_campaign=practical_content_test&utm_content=channel_description&utm_term=channel_description#/
+
+Free 68-min training:
+${baseUrl}/?utm_source=youtube&utm_medium=social&utm_campaign=practical_content_test&utm_content=channel_description&utm_term=channel_description#/free-training`
+  : `Want your own done-for-you channel? Apply here:
 ${baseUrl}/?utm_source=youtube&utm_medium=organic_video&utm_content=${videoId || 'VIDEO_ID'}&utm_term=description#/
 
 Free 68-min training on the full system:

@@ -196,15 +196,24 @@ function deriveSourceFields(raw: RawTouch): {
   }
   
   // Video ID from utm_content (used by both legacy ?source= and modern utm_content)
+  // Placement/category tokens (e.g. channel_description) are content IDs but NOT video IDs
+  const NON_VIDEO_CONTENT_IDS = new Set([
+    'channel_description',
+    'x_bio',
+    'x_post',
+    'x_reply',
+  ]);
+
   if (raw.utm_content) {
     result.content_id = raw.utm_content;
     
-    // If source is youtube-related, also set youtube_video_id
-    if (result.source && (
+    // If source is youtube-related AND content is a real video ID (not a placement category), set youtube_video_id
+    const isYoutubeSource = !!(result.source && (
       result.source.includes('youtube') || 
       result.source === 'youtube_organic_video' ||
       raw.source === 'youtube_organic_video'
-    )) {
+    ));
+    if (isYoutubeSource && !NON_VIDEO_CONTENT_IDS.has(raw.utm_content)) {
       result.youtube_video_id = raw.utm_content;
       result.video_id = raw.utm_content;
     }
