@@ -25,6 +25,14 @@ https://headstartchannels.com/?utm_source=mailerlite&utm_medium=email&utm_campai
 https://headstartchannels.com/?utm_source=youtube&utm_medium=organic_video&utm_campaign=launch_2026&utm_content=VIDEO_ID&utm_term=pinned_comment#/free-training
 ```
 
+### YouTube Channel About / Description (category, not a video)
+```
+https://headstartchannels.com/?utm_source=youtube&utm_medium=social&utm_campaign=practical_content_test&utm_content=channel_description&utm_term=channel_description#/
+https://headstartchannels.com/?utm_source=youtube&utm_medium=social&utm_campaign=practical_content_test&utm_content=channel_description&utm_term=channel_description#/free-training
+```
+- `utm_content=channel_description` is an attribution **category** (never a video ID).
+- Lead List: Link placement + Latest content ID = `channel_description`; First/Latest YouTube video ID stay blank.
+
 ## Query Parameter Order (CRITICAL for HashRouter)
 
 Query params must come **BEFORE** the hash (`#/`):
@@ -39,10 +47,10 @@ The React HashRouter expects params in `window.location.search` (before `#/`).
 | Parameter | Purpose | Example |
 |-----------|---------|---------|
 | `utm_source` | Traffic source | `youtube`, `mailerlite`, `facebook` |
-| `utm_medium` | Medium type | `organic_video`, `paid_ad`, `email` |
+| `utm_medium` | Medium type | `organic_video`, `social`, `paid_ad`, `email` |
 | `utm_campaign` | Campaign name | `launch_2026`, `webinar` |
-| `utm_content` | Video/Content ID | `VIDEO_ID_123`, `abc123xyz` |
-| `utm_term` | Placement detail | `description`, `pinned_comment`, `end_card` |
+| `utm_content` | Video/Content ID | `VIDEO_ID_123`, `channel_description` (About category) |
+| `utm_term` | Placement detail | `description`, `pinned_comment`, `end_card`, `channel_description` |
 
 ## Attribution Storage
 
